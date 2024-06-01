@@ -13,3 +13,8 @@ def listadoSQL(request):
     print(alumnos)
     context ={"alumnos":alumnos}
     return render(request, 'alumnos/listadoSQL.html', context)
+
+def listaGeneros(request):
+    generos = Genero.objects.all()
+    context ={"generos":generos}
+    return render(request, 'alumnos/listaGeneros.html', context)
