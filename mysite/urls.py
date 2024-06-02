@@ -19,8 +19,10 @@ from django.urls import path
 from django.urls import include
 from alumnos import views
 
+#urls que el usuario puede acceder
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    #engloba todas las urls de la app alumnos
     path('alumnos/', include('alumnos.urls')),
-    #path('listadoSQL', views.index, name='listadoSQL'),
 ]
