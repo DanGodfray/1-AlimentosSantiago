@@ -4,6 +4,9 @@ from .models import Genero, Alumno
 #se importan modelos ejemplo de las clases project y task
 from .models import Project, Task
 
+#manejo de errores en caso que no se encuentre un objeto
+from django.shortcuts import get_object_or_404
+
 #se debe importar el objeto al cual se le va a hacer referencia en la vista y se le almacena los datos captados en una variable, esto es para captura de datos en el url mismo
 from django.http import HttpResponse, JsonResponse
 
@@ -37,13 +40,25 @@ def indexUser(request, user):
     print(f"El usuario es tipo: {type(user)}")
     return HttpResponse("<h2>Hola %s</h2>" % user)
 
+    #esto es un ejemplo de consulta usando jason y se retorna los datos de la tabla project
 def projects(request):
     #se convierte en el objeto Project y se almacena en la variable projects
     projects = list(Project.objects.values()) 
     #return HttpResponse('projects')
-    return JsonResponse(projects, safe=False)
+    return JsonResponse(projects , safe=False)
 
+#ejemplo consulta de la tabla task con un id especifico
+def tasks(request,id):
+    #se obtiene el objeto task con el id especifico "id_task" es el nombre explicito en el modelo correspondiente
+    
+    #task = Task.objects.get(id_task=id)
+    task = get_object_or_404(Task, id_task=id)
+    return HttpResponse('task: %s ' % task.nombre)
 
-
-def tasks(request):
-    return HttpResponse('tasks')
+#ejemplo consulta de la tabla task con un id especifico
+def tasks2(request, nombre):
+    #se obtiene el objeto task con el id especifico "id_task" es el nombre explicito en el modelo correspondiente
+    
+    #task = Task.objects.get(id_task=id)
+    task2 = get_object_or_404(Task, nombre=nombre)
+    return HttpResponse('task: %s ' % task2.nombre)

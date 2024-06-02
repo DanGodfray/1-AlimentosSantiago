@@ -17,6 +17,11 @@ urlpatterns = [
    #esta es una vista que se llama cuando se accede a la url projects
    path('projects/', views.projects, name='projects'),
    
+   #es importante importar o referenciar el nombre de la vista en el el url correspondiente
+   path('tasks/<int:id>', views.tasks, name='projects'),
+   
+   path('tasks2/<str:nombre>', views.tasks2, name='projects'),
+   
 
     
 ]
