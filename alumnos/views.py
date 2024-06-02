@@ -20,3 +20,7 @@ def listaGeneros(request):
     generos = Genero.objects.all()
     context ={"generos":generos}
     return render(request, 'alumnos/listaGeneros.html', context)
+
+# esta es una vista que recibe un parametro usuario e imprime el nombre del usuario
+def index(request, user):
+    return HttpResponse("Hola " + user)
