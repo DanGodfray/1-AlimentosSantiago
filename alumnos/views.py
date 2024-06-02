@@ -4,9 +4,8 @@ from .models import Genero, Alumno
 #se importan modelos ejemplo de las clases project y task
 from .models import Project, Task
 
-#se debe importar el objeto al cual se le va a hacer referencia en la vista y se le almacena los datos captados en una variable
-
-from django.http import HttpResponse
+#se debe importar el objeto al cual se le va a hacer referencia en la vista y se le almacena los datos captados en una variable, esto es para captura de datos en el url mismo
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 # esta es la vista que se llama cuando se accede a la url y metodos asociados a entrara esos urls
@@ -39,8 +38,11 @@ def indexUser(request, user):
     return HttpResponse("<h2>Hola %s</h2>" % user)
 
 def projects(request):
-    projects = Project.objects.all()
-    return HttpResponse('projects')
+    projects = Project.objects.values()
+    #return HttpResponse('projects')
+    return JsonResponse('projects', safe=False)
+
+
 
 def tasks(request):
     return HttpResponse('tasks')
