@@ -38,9 +38,10 @@ def indexUser(request, user):
     return HttpResponse("<h2>Hola %s</h2>" % user)
 
 def projects(request):
-    projects = Project.objects.values()
+    #se convierte en el objeto Project y se almacena en la variable projects
+    projects = list(Project.objects.values()) 
     #return HttpResponse('projects')
-    return JsonResponse('projects', safe=False)
+    return JsonResponse(projects, safe=False)
 
 
 
