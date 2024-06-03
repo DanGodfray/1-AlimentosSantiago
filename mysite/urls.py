@@ -28,8 +28,8 @@ from menucomidas import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    #se incluye la url de la app menucomidas para captar las urls asociadas al menu de platos
-    path('menucomidas/', include('menucomidas.urls')),
+    #se incluye la url de la app menucomidas para captar las urls asociadas al menu de platos y/o ofertas/catalogos
+    path('menu/', include('menucomidas.urls')),
     
     #path('', include('perfil.urls'))
     
