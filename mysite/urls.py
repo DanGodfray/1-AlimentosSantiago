@@ -17,13 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+#este es la importacion del ejemplo visto en clases
 from alumnos import views
+
 
 
 
 #urls que el usuario puede acceder
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    #path('', include('perfil.urls'))
     
     #engloba todas las urls de la app alumnos
     path('alumnos/', include('alumnos.urls')),
