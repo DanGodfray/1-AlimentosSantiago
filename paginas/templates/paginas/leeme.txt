@@ -1,0 +1,5 @@
+la pagina home.html es un archivo de prueba 
+para navegar entre paginas y apps, al momento 
+de montar se podra reemplazar por la version
+del front diseañda 
+
