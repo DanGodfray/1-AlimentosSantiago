@@ -6,6 +6,10 @@ from .models import Plato, Categoria
 # Create your views here.
 
 def catalogos(request):
+    
+    return render(request, 'catalogos/catalogo.html')
+
+def platos(request):
     platos = Plato.objects.all()
     context = {"platos":platos}
-    return render(request, 'catalogos/catalogo.html', context)
+    return render(request, 'catalogos/platos.html', context)

@@ -3,15 +3,15 @@
 
 <!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
 {% block content %}
-<h1> catalogo de platos </h1>
-
-<p> aqui deberian mostrarse los catalogos </p>
-<p>listado de platos<a href="{% url 'platos' %}"> aqui</a></p
+<h1> lista de platos </h1>
 
 {% for plato in platos %}
-    
+    <h5> {{ plato.id_categoria.nom_categoria }} </h5>
+    <h2> {{ plato.nom_plato }} </h2>
+    <p> {{ plato.desc_plato}} </p>
+    <p> ${{ plato.precio_plato|floatformat }} </p>
+    <br>
 {% endfor %}
 
 
 {% endblock %}
-
