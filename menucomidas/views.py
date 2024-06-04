@@ -8,6 +8,6 @@ from django.http import HttpResponse, JsonResponse
 # Create your views here.
 
 #este metodo ayuda a renderizar la pagina menu.html
-def index(request):
+def catalogo(request):
     #esto es la pagina principal de menucomidas
-    return render(request, 'menucomidas/menu.html')
+    return render(request, 'menucomidas/catalogo.html')
