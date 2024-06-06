@@ -32,6 +32,20 @@ def listaGeneros(request):
     context ={"generos":generos}
     return render(request, 'alumnos/listaGeneros.html', context)
 
+def crud(request):
+    #retorna una consulta sql de todos los generos
+    alumnos = Alumno. objects.all()
+    context ={"alumnos":alumnos}
+    return render(request, 'alumnos/alumnos_list.html', context)
+
+def alumnosAdd(request):
+    #retorna una consulta sql de todos los generos
+    if request.method is not 'POST':
+        
+        generos = Genero.objects.all()
+        context ={"generos":generos}
+        return render(request, 'alumnos/alumnos_add.html', context)
+
 #----metodos ejemplo
 # esta es una vista que recibe un parametro usuario e imprime el nombre del usuario
 

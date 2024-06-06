@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My primera chamba</title>
+</head>
+<body>
+
+    <h1>Editar alumnos</h1>
+    <br>
+    <button type="button">
+        <a href="{% url 'alumnosAdd' %}">Add alumno</a>
+    </button>
+    <br>
+    <div id="idMensajes">
+        {% if mensaje %}
+
+            {{mensaje}}
+
+        {% endif %}
+    </div>
+    
+    <table>
+        {% if alumnos %}
+            <thead>
+                <tr>
+                    <th>Rut</th>    
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Eliminar</th>
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            
+            {% for alumno in alumnos %}
+                <tr>
+                    <td>{{alumno.rut}}</td>
+                    <td>{{alumno.nombre}}</td>
+                    <td>{{alumno.apellido_paterno}}</td>
+                    
+                    <td>
+                        
+                        <a href="#">Editar</a>
+                        <a href="#">Modificar</a>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}    
+        
+    </table>    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#idMensajes').delay(3000).fadeOut("slow");
+        }); 
+    </script>
+</body>
+</html>

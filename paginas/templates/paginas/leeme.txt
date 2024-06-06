@@ -6,3 +6,5 @@ del front diseañda
 la pagina main es una pagina de prueba que
 se monta a el view de catalogos y renderea 
 los templates de catalogo
+
+esta carpeta cntendra html, css, js 

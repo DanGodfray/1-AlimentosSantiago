@@ -6,10 +6,10 @@ class Categoria(models.Model):
     id_categoria = models.AutoField(db_column='idCategoria' ,primary_key=True)
     nom_categoria = models.CharField(max_length=100, blank=False, null=False)
     des_categoria = models.CharField(max_length=100, blank=False, null=False)
-    plato_activo = models.BooleanField(default=True)
-
-def _str_(self):
-    return str(self.nom_categoria)
+    cat_activo = models.BooleanField(default=True)
+    
+    def _str_(self):
+        return str(self.nom_categoria)
 
 class Plato(models.Model):
     id_plato = models.AutoField(primary_key=True)
@@ -21,8 +21,7 @@ class Plato(models.Model):
     oferta_plato = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     plato_activo = models.BooleanField(default=True)
 
-
-def _str_(self):
-    return self.nom_plato
+    def _str_(self):
+        return self.nom_plato
 
 

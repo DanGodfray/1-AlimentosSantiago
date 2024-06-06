@@ -1,0 +1,21 @@
+{%  extends "paginas/main.html"  %}
+<!-- extension de la pagina main donde se encuentra el navbar -->
+
+<!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
+{% block container  %}
+<h1> catalogo de categorias </h1>
+
+<p> aqui deberian mostrarse los catalogos </p>
+<p>listado de platos<a href="{% url 'platos' %}"> aqui</a></p>
+
+<h3> lista de categorias </h3>
+<br>    
+    {% for categoria in arreglo %}
+        <h5> <a href="{% url 'categorias' 'Pizza' %}"> {{categoria.nom_categoria}} </a></h5>
+        <br>
+        <p>esto es el fin de la iteracion</p>
+    {% endfor %}
+    
+
+{% endblock %}
+
