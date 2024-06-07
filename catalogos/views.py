@@ -36,13 +36,18 @@ def categoriaSeleccionada(request, cat):
     
     try:
         #busca la categoria seleccionada
-        categoria = Categoria.objects.get(nom_plato=cat)
-        
-        plato = Plato.objects.filter(id_categoria=categoria)
+        categoria = Categoria.objects.get(nom_categoria=cat)
+        idCategoria = Categoria.objects.filter(id_categoria=categoria)
+        plato = Plato.objects.filter(nom_plato=idCategoria)
         #context = {"platos":plato}
         return render(request, 'categorias.html', {'platos':plato, 'categoria':categoria})
 
     except:
         messages.success(request, ('No se encontra la categoria seleccionada'))
-        return redirect('catalogos')
+        return redirect('home')
+      
+      
+def platoSeleccionado(request, pk):
+    plato = Plato.objects.get(id=pk)
+    return render(request, 'plato.html', {'plato':plato})  
 
