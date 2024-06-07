@@ -51,3 +51,11 @@ def platoSeleccionado(request, pk):
     plato = Plato.objects.get(id=pk)
     return render(request, 'plato.html', {'plato':plato})  
 
+def platosCategoria(request,cat):
+    #nombre de la categoria como parametro de entrada
+    categoria = Categoria.objects.get(nom_categoria=cat)
+    categoria = categoria.id_categoria
+    plato = Plato.objects.filter(id_categoria=categoria)
+    
+    context = {"platos":plato}
+    return render(request, 'catalogos/platos.html', context)

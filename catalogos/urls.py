@@ -13,8 +13,11 @@ urlpatterns = [
     
     path('categorias/<str:cat>', views.categoriaSeleccionada , name='categorias'),
     
-    path('platos/<int:pk>', views.platoSeleccionado, name='platos'),
+    path('catalogos/platos/<int:pk>', views.platoSeleccionado, name='platos'),
         
     #el name= es importante, debe ser igual a la url para no perderse en la navegacion
     path('catalogos/platos/', views.platos , name='platos'),
+    
+    #aqui va se va insertar la version funcional de 
+    path('catalogos/platos/<str:cat>', views.platosCategoria , name='platosCategoria'),
 ] 
