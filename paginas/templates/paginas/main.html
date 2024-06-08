@@ -6,6 +6,9 @@
     <title>Homepage</title>
     <!-- Latest Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <link style="stylesheet" href="">
+    <link style="stylesheet" href="style.css">
+
 </head>
 <body>
     
@@ -36,9 +39,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Login</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pedidos</a>
-                        </li>
+                        {%block carrito%}
+                         
+                        {%endblock%}
+                        
                     </ul>
                 </div>
             </div>

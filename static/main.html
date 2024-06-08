@@ -6,11 +6,11 @@
     <title>Homepage</title>
     <!-- Latest Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="stylecarrito.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleproducto.css">
+    
 </head>
 <body>
+    
     <header>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -38,22 +38,26 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Login</a>
                         </li>
-                        {%block carrito%}
-                         
-                        {%endblock%}
-
-                        
+                        <li class="nav-item">
+                            
+                            <a class="nav-link" href="#">Pedidos</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+    
 
     <main>
         <section class="py-5">
             <div class="container">
-                <h1>Welcome to our Homepage</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus.</p>
+                
+                <!-- bloque de contenido para heredar el navbar y el footer-->
+                {% block container %} 
+
+                {% endblock %}
+
             </div>
         </section>
     </main>

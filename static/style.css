@@ -1,0 +1,388 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2c1a4d;
+}
+
+#sprite {
+    background: url('imagenes/vecteezy_cat-playing-tongue-illustration-of-cute-cat-playing-with_9551667-1.jpg') no-repeat;
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+}
+
+#container-logo {
+    border: 3px solid #e0cffc;
+    margin: auto;
+    border-radius: 50px;
+    background-color: white;
+    font-size: 20px;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar a:hover {
+    color: #8540f5;
+    text-decoration: none;
+    background-color: #e2d9f3;
+    border-radius: 50px;
+    transition: 0.6s;
+}
+
+.list-unstyled a:hover {
+    color: #8540f5;
+    border-color: #432874;
+    background-color: #e2d9f3;
+}
+
+.mb-1 button:hover {
+    color: #8540f5;
+    border-color: #432874;
+    background-color: #e2d9f3;
+    border-radius: 50px;
+}
+
+div a {
+    color: #2c1a4d;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    color: #8540f5;
+    border-color: #432874;
+    background-color: #e2d9f3;
+}
+
+.dropdown a:hover {
+    color: #8540f5;
+}
+
+#btn-oscuro {
+    background-color: #a370f7;
+    color: white;
+    border-color: #c29ffa;
+    border-radius: 50px;
+}
+
+.btn-oscuro{
+    background-color: #a370f7;
+    color: white;
+    border-color: #c29ffa;
+    border-radius: 50px;
+
+}
+
+#btn-oscuro:hover {
+    background-color: #8540f5;
+    color: white;
+}
+
+#btn-claro {
+    background-color: #f7f7f7;
+    color: #a370f7;
+    border-color: #c29ffa;
+    border-radius: 50px;
+}
+
+#btn-claro:hover {
+    background-color: #e2d9f3;
+    color: #a370f7;
+    border-color: #c29ffa;
+    border-radius: 50px;
+}
+
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    height: 5%;
+    background-color: #e2d9f3;
+    color: #432874;
+    text-align: center;
+    margin-top: auto;
+    width: 100%;
+}
+
+.container {
+    flex: 1;
+    margin-top: 80px; /* Ajusta esto según la altura de tu navbar */
+    margin-bottom: 60px;
+}
+
+.container .row {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
+
+.row {
+    width: 100%;
+    margin: 0 -5px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+.row-card {
+    margin: 0 -5px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+.row-cards:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.col-md-6 {
+    margin: 0 auto;
+    padding-top: 5px;
+    margin-bottom: 10px;
+}
+
+.column-card {
+    width: 25%;
+    height: 25%;
+    padding: 0 5px;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    text-align: center;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    border-color: #8540f5;
+}
+
+.row-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.column-card {
+    width: calc(33.3% - 5px);
+    margin-bottom: 20px;
+}
+
+@media (max-width: 992px) {
+    .column-card {
+        width: calc(50% - 10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .column-card {
+        width: 100%;
+    }
+}
+
+#columncard {
+    width: 25%;
+    padding: 0 10px;
+}
+
+.carousel-indicators button {
+    background-color: #8540f5 !important;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #8540f5 !important;
+    border-color: black !important;
+}
+
+.d-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 30rcap;
+}
+
+.thumbnail-container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+}
+
+.d-flex input {
+    border-radius: 50px;
+}
+
+.d-flex .btn {
+    right: 0;
+    margin-left: -106px;
+}
+
+#curvo {
+    border-radius: 50px;
+}
+
+#curvo2 {
+    border-radius: 25px;
+}
+
+#body-producto {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.contenido {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.imagen {
+    flex: 1;
+    max-width: 60%;
+    margin-right: 0%;
+}
+
+.imagen img {
+    width: 100%;
+    height: auto;
+}
+
+.detalles {
+    flex: 1;
+    max-width: 60%;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+}
+
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+}
+
+.nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.btn-bd-primary {
+    --bd-violet-bg: #712cf9;
+    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-violet-bg);
+    --bs-btn-border-color: var(--bd-violet-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #6528e0;
+    --bs-btn-hover-border-color: #6528e0;
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #5a23c8;
+    --bs-btn-active-border-color: #5a23c8;
+}
+
+.bd-mode-toggle {
+    z-index: 1500;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+    display: block !important;
+}
+
+/* Estilos del carrito */
+#cart {
+    position: fixed;
+    top: 80px; /* Ajusta esto según la altura de tu navbar */
+    right: 20px;
+    width: 300px; /* Ajusta según tus necesidades */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Asegura que el carrito esté por encima de otros elementos */
+    display: none; /* Inicialmente oculto */
+}
+
+#fotos {
+    align-content: center;
+    margin: 0;
+    padding: 0; 
+    height: 300px; 
+    width: auto;
+    border-radius: 25px;
+}
+
+table td{
+    padding:5px 8px;
+    border:1px solid #CCC;
+    border-radius: 25px;
+}

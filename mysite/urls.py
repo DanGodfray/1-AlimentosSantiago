@@ -21,8 +21,10 @@ from django.conf.urls.static import static
 #este es la importacion del ejemplo visto en clases
 from alumnos import views
 
+from . import views
+
 #se importa paginas
-from paginas import views
+#from paginas import views
 
 #urls que el usuario puede acceder
 urlpatterns = [
@@ -31,9 +33,7 @@ urlpatterns = [
     #estas son las rutas del home al iniciar el servidor
     path('', include('paginas.urls')),
     path('', include('catalogos.urls')),
-    #path('', include('pedidos.urls')),
-    #path('', include('perfiles.urls')),
-    #path('', include('publicaciones.urls')),
+    
     path('home/', include('paginas.urls')),
     
     #esta es la ruta de catalogos

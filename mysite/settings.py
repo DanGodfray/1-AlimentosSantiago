@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'alumnos',
     'paginas',
     'catalogos',
+
     
 ]
 
@@ -125,8 +126,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 #se agregaron estas lineas para configurar las rutas de los archivos estaticos
+#modificiacion de la ruta de los archivos estaticos
+#MEDIA_URL = 'static/media/'
 MEDIA_URL = 'media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#modificacion de la ruta de los archivos estaticos
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

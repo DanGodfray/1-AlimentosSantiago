@@ -81,7 +81,7 @@ class Pedido(models.Model):
     id_pedido = models.AutoField(primary_key=True)
     comentario_pedido = models.CharField(max_length=200, blank=False, null=False)
     plato = models.ForeignKey('Plato', on_delete=models.CASCADE, db_column='plato_id_plato')
-
+## hay que poneren tabla pedido todas la id's de las tablas que se relacionan
     def __str__(self):
         return f"Pedido {self.id_pedido}"
 

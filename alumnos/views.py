@@ -45,6 +45,15 @@ def alumnosAdd(request):
         generos = Genero.objects.all()
         context ={"generos":generos}
         return render(request, 'alumnos/alumnos_add.html', context)
+    """
+    else
+        rut=request.POST['rut']
+        nombre=request.POST['nombre']
+        apellido_paterno=request.POST['apellido_paterno']
+        apellido_materno=request.POST['apellido_materno']
+        fecha_nacimiento=request.POST['fecha_nacimiento']
+        id_genero=request.POST['id_genero']
+    """    
 
 #----metodos ejemplo
 # esta es una vista que recibe un parametro usuario e imprime el nombre del usuario

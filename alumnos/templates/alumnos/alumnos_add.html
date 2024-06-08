@@ -18,7 +18,8 @@
 
     <div style="text-align: center">    
         <h2>Formulario de CRUD de alumnos</h2><br>
-        <form action="{% url 'alumnosAdd' %}" method="POST">
+        <form action="alumnosAdd" method="POST">
+            <!--token de seguridad obligatorio para el traslado de datos-->
             {% csrf_token %}
             <pre>Rut                <input type="text" name="rut" ></pre>
 
@@ -28,11 +29,32 @@
 
             <pre>Apellido Materno   <input type="text" name="materno" ></pre>
             
-            <pre>Fecha Nacimiento   <input type="date" name="fecha_nacimiento" ></pre>
+            <pre>Fecha Nacimiento   <input type="date" name="fechNac" ></pre>
 
-            <pre>Genero             <input type="date" name="fecha_nacimiento" ></pre>
+            <pre>Genero:            <select name="genero" >
+                {% for genero in generos %}
+                    <option value="{{genero.id_genero}}">{{genero.genero}}</option>
+                {% endfor %}
+                </select>
+            </pre>
 
+            <pre>Celular            <input type="text" name="telefono" ></pre>
+
+            <pre>Email              <input type="mail" name="email" ></pre>
+
+            <pre>Direccion          <input type="text" name="direccion" ></pre>
+
+            <input type="submit" value="Agregar">
             
+        </form><br><br>
+
+        <a href="{% url 'crud' %}">Volver</a>
+        <br>
+        <div id="idMensajes">
+            {% if mensaje %}
+                {{mensaje}}
+            {% endif %}
+        </div>    
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
