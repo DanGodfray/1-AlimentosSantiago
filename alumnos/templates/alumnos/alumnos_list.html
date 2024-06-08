@@ -25,15 +25,12 @@
     
     <table>
         {% if alumnos %}
-            <thead>
-                <tr>
+            
                     <th>Rut</th>    
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Eliminar</th>
                     <th>Editar</th>
-                </tr>
-            </thead>
             
             {% for alumno in alumnos %}
                 <tr>
@@ -41,12 +38,9 @@
                     <td>{{alumno.nombre}}</td>
                     <td>{{alumno.apellido_paterno}}</td>
                     
-                    <td>
-                        
-                        <a href="#">Editar</a>
-                        <a href="#">Modificar</a>
-                        
-                    </td>
+                    <td><a href="#">Eliminar</a></td>
+                    <td><a href="#">Modificar</a><td>
+ 
                 </tr>
             {% endfor %}
         {% endif %}    

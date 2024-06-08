@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
    
+   #-----------------CRUD-------------------
+   
    path('index', views.index, name='index'),
    path('listadoSQL', views.listadoSQL, name='listadoSQL'),
    path('listaGeneros', views.listaGeneros, name='listaGeneros'),
@@ -11,6 +13,8 @@ urlpatterns = [
    path('crud', views.crud, name='crud'),
    
    path('alumnosAdd', views.alumnosAdd, name='alumnosAdd'),
+   
+   #-----------------CRUD-------------------
    
    # esta es una vista que recibe un parametro usuario, que se pasa por la url de index
    path('index/<str:user>', views.indexUser, name='index'),

@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALUMNO ADD</title>
+</head>
+<body>
+
+    <h1>Alumno ADD</h1>
+    <br>
+    <button type="button">
+        <a href="{% url 'alumnosAdd' %}">Add alumno</a>
+    </button>
+    <br>
+
+    <div style="text-align: center">    
+        <h2>Formulario de CRUD de alumnos</h2><br>
+        <form action="{% url 'alumnosAdd' %}" method="POST">
+            {% csrf_token %}
+            <pre>Rut                <input type="text" name="rut" ></pre>
+
+            <pre>Nombre             <input type="text" name="nombre" ></pre>
+
+            <pre>Apellido Paterno   <input type="text" name="paterno" ></pre>
+
+            <pre>Apellido Materno   <input type="text" name="materno" ></pre>
+            
+            <pre>Fecha Nacimiento   <input type="date" name="fecha_nacimiento" ></pre>
+
+            <pre>Genero             <input type="date" name="fecha_nacimiento" ></pre>
+
+            
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#idMensajes').delay(3000).fadeOut("slow");
+        }); 
+    </script>
+</body>
+</html>
