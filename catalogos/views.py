@@ -37,10 +37,10 @@ def categoriaSeleccionada(request, cat):
     try:
         #busca la categoria seleccionada
         categoria = Categoria.objects.get(nom_categoria=cat)
-        idCategoria = Categoria.objects.filter(id_categoria=categoria)
-        plato = Plato.objects.filter(nom_plato=idCategoria)
+        categoria = categoria.id_categoria
+        plato = Plato.objects.filter(id_plato=categoria)
         #context = {"platos":plato}
-        return render(request, 'categorias.html', {'platos':plato, 'categoria':categoria})
+        return render(request, 'catalogos/platos.html', {'platos':plato, 'categoria':categoria})
 
     except:
         messages.success(request, ('No se encontra la categoria seleccionada'))
