@@ -1,4 +1,10 @@
-/alumnos
-/venv
 /.venv
+/venv
 /myvenv
+/myvenv/
+/paginas/
+/.paginas
+paginas/
+/mysite
+
+

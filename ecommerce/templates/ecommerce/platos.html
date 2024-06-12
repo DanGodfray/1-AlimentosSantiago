@@ -1,0 +1,36 @@
+{%  extends "usuarios/main.html"  %}
+
+{% block container %}
+
+    {% if banderaOferta %}
+    <h1>Ofertas</h1>
+    {% else %}
+    <h1>Platos</h1>
+    {% endif %}
+
+
+    {% for plato in platos %}
+
+        <h5> {{ plato.id_categoria.nom_categoria }} </h5>
+        <h2> {{ plato.nom_plato }} </h2>
+        <img src="/media/{{ plato.foto_plato }}" alt="imagen del plato" width="300"/>
+
+        <p> {{ plato.descripcion_plato}} </p>
+        
+        <div >
+        {% if banderaOferta %}
+            <h6 style="color: gray;"><s>${{ plato.precio_plato|floatformat }}</s></h6>
+            <h5>${{ plato.oferta_plato|floatformat}}</h5>
+        {% else %}
+
+        <h5> ${{ plato.precio_plato|floatformat }} </h5>
+
+        {% endif %}
+        </div>
+        <br>
+
+    {% endfor %}
+
+    
+
+{% endblock %}

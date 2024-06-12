@@ -1,0 +1,21 @@
+{%  extends "usuarios/main.html"  %}
+<!-- extension de la pagina main donde se encuentra el navbar -->
+
+<!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
+{% block container  %}
+
+<h1> Categorias </h1>
+{% for categoria in arregloCat %}
+    <section>
+    <!--aqui se redirije al template platos.html usando el nombre de la categoria como parametro de entrada, los url se redirigen al name= de los url-->
+    <h5> <a href="{% url 'platosCategoriaSeleccionada' categoria.nom_categoria %}" > {{categoria.nom_categoria}} </a></h5>
+    <img src="/media/{{categoria.foto_categoria}}" alt="imagen de la categoria" width="100" height="100"/>
+
+    <p>{{categoria.des_categoria}}</p>
+    </section>
+    <br>
+
+{% endfor %}
+    
+
+{% endblock %}
