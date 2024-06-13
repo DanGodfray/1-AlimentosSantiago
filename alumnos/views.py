@@ -14,8 +14,8 @@ from django.http import HttpResponse, JsonResponse
 # esta es la vista que se llama cuando se accede a la url y metodos asociados a entrara esos urls
 
 def index(request):
-    alumnos = Alumno.objects.all()
-    context ={"alumnos":alumnos}
+    #alumnos = Alumno.objects.all()
+    context ={"alumnos":obtenerListaAlumnos()}
     #retorna la vista index.html con los datos de la variable alumnos
     return render(request, 'alumnos/index.html', context)
 
@@ -28,57 +28,138 @@ def listadoSQL(request):
 
 def listaGeneros(request):
     #retorna una consulta sql de todos los generos
-    generos = Genero.objects.all()
-    context ={"generos":generos}
+    #generos = Genero.objects.all()
+    context ={"generos":obtenerListaGeneros()}
     return render(request, 'alumnos/listaGeneros.html', context)
 
 def crud(request):
     #retorna una consulta sql de todos los alumnos
-    alumnos = Alumno. objects.all()
-    context ={"alumnos":alumnos}
+    #alumnos = Alumno. objects.all()
+    context ={"alumnos":obtenerListaAlumnos()}
     return render(request, 'alumnos/alumnos_list.html', context)
 
+def obtenerListaGeneros(): #para uptimizar codigo se puede usar esta funcion en vez de la funcion listaGeneros=Genero.objects.all()
+    #retorna una consulta sql de todos los generos
+    generos = Genero.objects.all()
+    return generos
+
+def obtenerListaAlumnos(): #para uptimizar codigo se puede usar esta funcion en vez de la funcion crud=Alumno. objects.all()
+    #retorna una consulta sql de todos los alumnos
+    alumnos = Alumno. objects.all()
+    return alumnos
+
 def alumnosAdd(request):
-    #agrega alumnos a la base de datos
+    #agregan alumnos a la base de datos
     #si el metodo es diferente a POST se retorna la vista alumnos_add.html
-    if request.method is not 'POST':
+    
+    try:
+        if request.method != 'POST':
+        #if request.method is not 'POST': //no funciona de esta manera
         #si no se ha enviado el formulario se retorna la vista alumnos_add.html para agregar un alumno
+            
+            #se define previamente un metodo que retorna todos los generos disponibles que seran mostrados en el dropdown: obtenerGenerosDropdown() 
+            context ={"listaGeneros":obtenerListaGeneros()}
+            #se renderiza la vista alumnos_add.html con los datos de la variable listaGeneros
+            return render(request, 'alumnos/alumnos_add.html', context)
         
-        generos = Genero.objects.all()
-        context ={"listaGeneros":generos}
-        return render(request, 'alumnos/alumnos_add.html', context)
+        else:
+            
+            rut             =request.POST['rut']
+            nombre          =request.POST['nombre']
+            apellido_paterno=request.POST['paterno']
+            apellido_materno=request.POST['materno']
+            fecha_nacimiento=request.POST['fechNac']
+            genero          =request.POST['genero']
+            telefono        =request.POST['telefono']
+            email           =request.POST['email']
+            direccion       =request.POST['direccion']
+            activoTrue      ="1"
+            #el objeto genero se obtiene de la tabla Genero y se almacena en la variable objetoGenero, para obtener todos los generos disponibles
+            objetoGenero = Genero.objects.get(id_genero=genero)
+            
+            objetoAlumno = Alumno(rut=rut, 
+                                nombre=nombre, 
+                                apellido_paterno=apellido_paterno, 
+                                apellido_materno=apellido_materno, 
+                                fecha_nacimiento=fecha_nacimiento, 
+                                id_genero=objetoGenero, 
+                                telefono=telefono, 
+                                email=email, 
+                                direccion=direccion, 
+                                activo=activoTrue)
+            objetoAlumno.save()
+            context ={"mensaje":"Alumno agregado correctamente"}
+            #se renderiza el mensaje de error o exito en la vista alumnos_add.html
+            return render(request, 'alumnos/alumnos_add.html', context)
     
-    else:
-        rut=request.POST['rut']
-        nombre=request.POST['nombre']
-        apellido_paterno=request.POST['apellido_paterno']
-        apellido_materno=request.POST['apellido_materno']
-        fecha_nacimiento=request.POST['fecha_nacimiento']
-        genero=request.POST['genero']
-        telefono=request.POST['telefono']
-        email=request.POST['email']
-        direccion=request.POST['direccion']
-        activoTrue="1"
-        #el objeto genero se obtiene de la tabla genero y se almacena en la variable objetoGenero, para obtener todos los generos disponibles
+    except Exception as e:
+        #si ocurre un error se captura y se almacena en la variable e y se hace print en el terminal de python
+        print(e)
+        context ={"mensaje":"Error al agregar alumno", "listaGeneros":obtenerListaGeneros()}
+        #se renderiza el mensaje de error o exito en la vista alumnos_add.html
+        #se renderiza la vista alumnos_add.html con los datos de la lista listaGeneros
+        return render(request, 'alumnos/alumnos_add.html', context)
+
+def alumnos_del(request, pk):
+    context={}
+    try:
+        #se obtiene el objeto alumno con el rut especifico "pk" es el nombre explicito en el modelo correspondiente
+        alumno = Alumno.objects.get(rut=pk)
+        alumno.delete()
+        mensaje = "Alumno rut: %s, ha sido eliminado" % pk
+        #alumnos = Alumno.objects.all()
+        context ={"mensaje":mensaje, "alumnos":obtenerListaAlumnos()}
+        return render(request, 'alumnos/alumnos_list.html', context)
+        #return HttpResponse('Alumno eliminado: %s ' % pk)
+    except Exception as e:
+        mensaje = "Error al eliminar alumno: %s " % pk
+        context ={"mensaje":mensaje, "alumnos":obtenerListaAlumnos()}
+        return render(request, 'alumnos/alumnos_list.html', context)
+
+def alumnos_findEdit(request, pk):
+    
+    if pk != "":
+        alumno=Alumno.objects.get(rut=pk)
+        #generos = Genero.objects.all()
+        print(type(alumno.id_genero.genero))
+        
+        context={'alumno':alumno, 'listaGeneros':obtenerListaGeneros()}
+        if alumno:
+            return render(request, 'alumnos/alumnos_edit.html', context)
+        else:
+            context ={"mensaje":"Error al editar alumno"}
+            return render(request, 'alumnos/alumnos_list.html', context)
+
+def alumnosUpdate(request, pk):
+    if request.method == 'POST':
+        rut             =request.POST['rut']
+        nombre          =request.POST['nombre']
+        apellido_paterno=request.POST['paterno']
+        apellido_materno=request.POST['materno']
+        fecha_nacimiento=request.POST['fechNac']
+        genero          =request.POST['genero']
+        telefono        =request.POST['telefono']
+        email           =request.POST['email']
+        direccion       =request.POST['direccion']
+        activoTrue      ="1"
+        #el objeto genero se obtiene de la tabla Genero y se almacena en la variable objetoGenero, para obtener todos los generos disponibles
         objetoGenero = Genero.objects.get(id_genero=genero)
-        
         objetoAlumno = Alumno(rut=rut, 
-                              nombre=nombre, 
-                              apellido_paterno=apellido_paterno, 
-                              apellido_materno=apellido_materno, 
-                              fecha_nacimiento=fecha_nacimiento, 
-                              id_genero=objetoGenero, 
-                              telefono=telefono, 
-                              email=email, 
-                              direccion=direccion, 
-                              activo=activoTrue)
+                            nombre=nombre, 
+                            apellido_paterno=apellido_paterno, 
+                            apellido_materno=apellido_materno, 
+                            fecha_nacimiento=fecha_nacimiento, 
+                            id_genero=objetoGenero, 
+                            telefono=telefono, 
+                            email=email, 
+                            direccion=direccion, 
+                            activo=activoTrue)
         objetoAlumno.save()
-        context ={"mensaje":"Alumno agregado correctamente"}
-        return render(request, 'alumnos/alumnos_add.html', context)
-    
+        mensaje = "Alumno rut: %s, ha sido actualizado" % pk
+        context ={"mensaje":mensaje, "alumnos":obtenerListaAlumnos()}
+        return render(request, 'alumnos/alumnos_list.html', context)    
 
-
-#----metodos ejemplo
+#----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-metodos ejemplo
 # esta es una vista que recibe un parametro usuario e imprime el nombre del usuario
 
 def indexUser(request, user):  

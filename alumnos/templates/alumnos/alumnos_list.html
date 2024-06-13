@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My primera chamba</title>
 </head>
-<body>
+<body style="text-align: center">
 
     {% block container %}
-    <h1>Editar alumnos</h1>
+    <h1>Editar datos alumnos</h1>
     <br>
     <button type="button">
         <a href="{% url 'alumnosAdd' %}">Add alumno</a>
     </button>
-    <br>
+    <br><br>
     <div id="idMensajes">
         {% if mensaje %}
 
@@ -25,23 +25,23 @@
         {% endif %}
     </div>
     
-    <table>
+    <table style="text-align: center">
         {% if alumnos %}
-            
-                    <th>Rut</th>    
+            <tr>
+                    <th>Rut</th>  
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Eliminar</th>
                     <th>Editar</th>
-            
+            </tr>
             {% for alumno in alumnos %}
                 <tr>
                     <td>{{alumno.rut}}</td>
                     <td>{{alumno.nombre}}</td>
                     <td>{{alumno.apellido_paterno}}</td>
                     
-                    <td><a href="#">Eliminar</a></td>
-                    <td><a href="#">Modificar</a><td>
+                    <td><a href="{% url 'alumnos_del' pk=alumno.rut %}">Eliminar</a></td>
+                    <td><a href="{% url 'alumnos_findEdit' pk=alumno.rut %}">Modificar</a><td>
  
                 </tr>
             {% endfor %}
