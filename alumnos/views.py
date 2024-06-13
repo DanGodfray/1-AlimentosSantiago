@@ -33,27 +33,49 @@ def listaGeneros(request):
     return render(request, 'alumnos/listaGeneros.html', context)
 
 def crud(request):
-    #retorna una consulta sql de todos los generos
+    #retorna una consulta sql de todos los alumnos
     alumnos = Alumno. objects.all()
     context ={"alumnos":alumnos}
     return render(request, 'alumnos/alumnos_list.html', context)
 
 def alumnosAdd(request):
-    #retorna una consulta sql de todos los generos
+    #agrega alumnos a la base de datos
+    #si el metodo es diferente a POST se retorna la vista alumnos_add.html
     if request.method is not 'POST':
+        #si no se ha enviado el formulario se retorna la vista alumnos_add.html para agregar un alumno
         
         generos = Genero.objects.all()
-        context ={"generos":generos}
+        context ={"listaGeneros":generos}
         return render(request, 'alumnos/alumnos_add.html', context)
-    """
-    else
+    
+    else:
         rut=request.POST['rut']
         nombre=request.POST['nombre']
         apellido_paterno=request.POST['apellido_paterno']
         apellido_materno=request.POST['apellido_materno']
         fecha_nacimiento=request.POST['fecha_nacimiento']
-        id_genero=request.POST['id_genero']
-    """    
+        genero=request.POST['genero']
+        telefono=request.POST['telefono']
+        email=request.POST['email']
+        direccion=request.POST['direccion']
+        activoTrue="1"
+        #el objeto genero se obtiene de la tabla genero y se almacena en la variable objetoGenero, para obtener todos los generos disponibles
+        objetoGenero = Genero.objects.get(id_genero=genero)
+        
+        objetoAlumno = Alumno(rut=rut, 
+                              nombre=nombre, 
+                              apellido_paterno=apellido_paterno, 
+                              apellido_materno=apellido_materno, 
+                              fecha_nacimiento=fecha_nacimiento, 
+                              id_genero=objetoGenero, 
+                              telefono=telefono, 
+                              email=email, 
+                              direccion=direccion, 
+                              activo=activoTrue)
+        objetoAlumno.save()
+        context ={"mensaje":"Alumno agregado correctamente"}
+    
+
 
 #----metodos ejemplo
 # esta es una vista que recibe un parametro usuario e imprime el nombre del usuario

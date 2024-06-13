@@ -1,4 +1,6 @@
+{% extends "alumnos/index.html" %}
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +11,7 @@
 </head>
 <body>
 
+    {% block container %}
     <h1>Alumno ADD</h1>
     <br>
     <button type="button">
@@ -31,8 +34,8 @@
             
             <pre>Fecha Nacimiento   <input type="date" name="fechNac" ></pre>
 
-            <pre>Genero:            <select name="genero" >
-                {% for genero in generos %}
+            <pre>Genero:            <select name="genero" ><!--AQUI SE GENERA UN DROP DOWN LISTANDO TODOS LOS GENEROS DISPONIBLES-->
+                {% for genero in listaGeneros %}
                     <option value="{{genero.id_genero}}">{{genero.genero}}</option>
                 {% endfor %}
                 </select>
@@ -50,7 +53,8 @@
 
         <a href="{% url 'crud' %}">Volver</a>
         <br>
-        <div id="idMensajes">
+
+        <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
             {% if mensaje %}
                 {{mensaje}}
             {% endif %}
@@ -59,10 +63,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <script>
+    <script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
         $(document).ready(function(){
             $('#idMensajes').delay(3000).fadeOut("slow");
         }); 
     </script>
+
+    {% endblock %}
 </body>
 </html>
