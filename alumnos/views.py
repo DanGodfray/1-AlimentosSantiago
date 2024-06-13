@@ -74,6 +74,7 @@ def alumnosAdd(request):
                               activo=activoTrue)
         objetoAlumno.save()
         context ={"mensaje":"Alumno agregado correctamente"}
+        return render(request, 'alumnos/alumnos_add.html', context)
     
 
 
