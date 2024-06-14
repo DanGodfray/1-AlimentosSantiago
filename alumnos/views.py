@@ -35,7 +35,7 @@ def listaGeneros(request):
 def crud(request):
     #retorna una consulta sql de todos los alumnos
     #alumnos = Alumno. objects.all()
-    context ={"alumnos":obtenerListaAlumnos()}
+    context ={"listaAlumnos":obtenerListaAlumnos()}
     return render(request, 'alumnos/alumnos_list.html', context)
 
 def obtenerListaGeneros(): #para uptimizar codigo se puede usar esta funcion en vez de la funcion listaGeneros=Genero.objects.all()
@@ -120,17 +120,22 @@ def alumnos_findEdit(request, pk):
     
     if pk != "":
         alumno=Alumno.objects.get(rut=pk)
-        #generos = Genero.objects.all()
-        print(type(alumno.id_genero.genero))
         
-        context={'alumno':alumno, 'listaGeneros':obtenerListaGeneros()}
+        debug = type(alumno.id_genero.genero)
+        debug2 = alumno.id_genero.genero
+        print(f'esto es un debug de type: {debug}')
+        print(f'esto es un debug de contenido: {debug2}')
+        
+        context={'listaAlumnos':alumno, 'listaGeneros':obtenerListaGeneros()}
+        #la lista listaAlumnos se llena con el objeto alumno y la lista listaGeneros se llena con el metodo obtenerListaGeneros(), mediante la listaAlumnos se renderea en el template alumnos_edit.html
+        
         if alumno:
             return render(request, 'alumnos/alumnos_edit.html', context)
         else:
             context ={"mensaje":"Error al editar alumno"}
             return render(request, 'alumnos/alumnos_list.html', context)
 
-def alumnosUpdate(request, pk):
+def alumnosUpdate(request):
     if request.method == 'POST':
         rut             =request.POST['rut']
         nombre          =request.POST['nombre']
@@ -142,21 +147,42 @@ def alumnosUpdate(request, pk):
         email           =request.POST['email']
         direccion       =request.POST['direccion']
         activoTrue      ="1"
+        
         #el objeto genero se obtiene de la tabla Genero y se almacena en la variable objetoGenero, para obtener todos los generos disponibles
+        print(f'DEBUG1 POST el genero es: {genero}')
+        #el post arroja el id del genero, se debe buscar el objeto genero con el id correspondiente
+        
         objetoGenero = Genero.objects.get(id_genero=genero)
+        #se obtiene el objeto genero con el id correspondiente
+        
+        print(f'DEBUG2 objetoGenero el genero es: {objetoGenero}')
+        #este debug indica la totalidad del objeto genero el cual contiene el id y el genero
+        
         objetoAlumno = Alumno(rut=rut, 
-                            nombre=nombre, 
-                            apellido_paterno=apellido_paterno, 
-                            apellido_materno=apellido_materno, 
-                            fecha_nacimiento=fecha_nacimiento, 
-                            id_genero=objetoGenero, 
-                            telefono=telefono, 
-                            email=email, 
-                            direccion=direccion, 
-                            activo=activoTrue)
+                                nombre=nombre, 
+                                apellido_paterno=apellido_paterno, 
+                                apellido_materno=apellido_materno, 
+                                fecha_nacimiento=fecha_nacimiento, 
+                                id_genero=objetoGenero, 
+                                telefono=telefono, 
+                                email=email, 
+                                direccion=direccion, 
+                                activo=activoTrue)
         objetoAlumno.save()
-        mensaje = "Alumno rut: %s, ha sido actualizado" % pk
-        context ={"mensaje":mensaje, "alumnos":obtenerListaAlumnos()}
+        #se almacena el objeto alumno en la base de datos
+        
+        mensaje = "Alumno rut: %s, ha sido actualizado" % rut
+        #el mensaje de exito se almacena en la variable mensaje
+        
+        context ={"mensaje":mensaje, "listaAlumnos":objetoAlumno, "listaGeneros":obtenerListaGeneros()}
+        #se renderiza el mensaje de error o exito en la vista alumnos_add.html
+        
+        return render(request, 'alumnos/alumnos_edit.html', context)
+    else:
+        #si no se ha enviado el formulario se retorna la vista alumnos_add.html para agregar un alumno
+        context ={"alumnos":obtenerListaAlumnos()}
+        #se reinicia la vista alumnos_add.html con el metodo obtenerListaAlumnos() para obtener todos los alumnos
+        
         return render(request, 'alumnos/alumnos_list.html', context)    
 
 #----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-metodos ejemplo

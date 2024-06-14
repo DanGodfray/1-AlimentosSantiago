@@ -24,21 +24,23 @@
 
         {% endif %}
     </div>
-    
-    <table style="text-align: center">
-        {% if alumnos %}
+
+    <table style="text-align: center; border: 1px solid black;">
+        {% if listaAlumnos %}
             <tr>
-                    <th>Rut</th>  
+                    <th >Rut</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
+                    <th>Genero</th>
                     <th>Eliminar</th>
                     <th>Editar</th>
             </tr>
-            {% for alumno in alumnos %}
+            {% for alumno in listaAlumnos %}
                 <tr>
                     <td>{{alumno.rut}}</td>
                     <td>{{alumno.nombre}}</td>
                     <td>{{alumno.apellido_paterno}}</td>
+                    <td>{{alumno.id_genero.genero}}</td>
                     
                     <td><a href="{% url 'alumnos_del' pk=alumno.rut %}">Eliminar</a></td>
                     <td><a href="{% url 'alumnos_findEdit' pk=alumno.rut %}">Modificar</a><td>

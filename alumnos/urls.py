@@ -15,7 +15,7 @@ urlpatterns = [
    path('alumnosAdd', views.alumnosAdd, name='alumnosAdd'),
    path('alumnos_del/<str:pk>', views.alumnos_del, name='alumnos_del'),
    path('alumnos_findEdit/<str:pk>', views.alumnos_findEdit, name='alumnos_findEdit'),
-   path('alumnos_update/<str:pk>', views.alumnosUpdate, name='alumnosUpdate'),
+   path('alumnosUpdate', views.alumnosUpdate, name='alumnosUpdate'),
    
    #-----------------CRUD-------------------
    

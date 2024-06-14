@@ -1,0 +1,82 @@
+{% extends "alumnos/index.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>ALUMNO ADD</title>
+</head>
+<body>
+
+    {% block container %}
+    <h1>Alumno EDIT</h1>
+
+    <div style="text-align: center">    
+    {% if listaAlumnos %} 
+    <!--si la lista de alumnos no esta vacia se muestra el formulario de edicion-->   
+        <h2>Formulario de EDIT de alumnos</h2>
+        
+        <form action="{% url 'alumnosUpdate' %}" method="POST">
+            <!--token de seguridad obligatorio para el traslado de datos-->
+            {% csrf_token %}
+            <pre>Rut                <input type="text" name="rut" value="{{listaAlumnos.rut}}"></pre>
+
+            <pre>Nombre             <input type="text" name="nombre" value="{{listaAlumnos.nombre}}"></pre>
+
+            <pre>Apellido Paterno   <input type="text" name="paterno" value="{{listaAlumnos.apellido_paterno}}"></pre>
+
+            <pre>Apellido Materno   <input type="text" name="materno" value="{{listaAlumnos.apellido_materno}}"></pre>
+            
+            <pre>Fecha Nacimiento  <input type="date" name="fechNac" value="{{listaAlumnos.fecha_nacimiento|date:'Y-m-d'}}"></pre>
+
+            <pre >Genero:           <select name="genero" ><!--AQUI SE GENERA UN DROP DOWN LISTANDO TODOS LOS GENEROS DISPONIBLES-->
+                {% for genero in listaGeneros %}
+
+                    {% if genero.genero == listaAlumnos.id_genero.genero %}
+                        <option value="{{genero.id_genero}}" selected>{{genero.genero}}</option>
+                    {% else %}
+                        <option value="{{genero.id_genero}}">{{genero.genero}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select></pre>
+
+            <pre>Celular            <input type="text" name="telefono" value="{{listaAlumnos.telefono}}"></pre>
+
+            <pre>Email              <input type="mail" name="email" value="{{listaAlumnos.email}}"></pre>
+
+            <pre>Direccion          <input type="text" name="direccion" value="{{listaAlumnos.direccion}}"></pre>
+
+            <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+                {% if mensaje %}
+                    {{mensaje}}
+                {% endif %}
+            </div>  
+            <br>
+            
+            <input type="submit" name="opcion" value="Actualizar">
+
+        </form>
+    {% endif %}
+        <br>
+
+        <a href="{% url 'crud' %}">Volver</a>
+        <br>
+
+          
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
+        $(document).ready(function(){
+            $('#idMensajes').delay(3000).fadeOut("slow");
+        }); 
+    </script>
+
+    {% endblock %}
+</body>
+</html>
