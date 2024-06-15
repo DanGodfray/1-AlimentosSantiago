@@ -1,0 +1,65 @@
+
+
+{%  extends "paginas/main.html"  %}
+<!-- extension de la pagina main donde se encuentra el navbar -->
+
+<!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
+addsafa
+{% block container %}
+<h1> lista de platos </h1>
+
+<div class="col-md-9" style="height: auto;">
+<div class="row-cards">
+
+        {% for plato in platos %}
+        <!--
+        <h5> {{ plato.id_categoria.nom_categoria }} </h5>
+        <h2> {{ plato.nom_plato }} </h2>
+        <img src="/media/{{ plato.foto_plato }}" alt="imagen del plato" width="300"/>
+        <p> {{ plato.desc_plato}} </p>
+        <h5> ${{ plato.precio_plato|floatformat }} </h5>
+        <br>
+        -->
+
+        <!-- prueba de cartas-->
+
+    
+        
+            <!-- Producto 1 -->
+            <div class="column-card">
+                <div class="card" style="width: 300px">
+                    <a href="producto.html">
+                        <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light" data-mdb-ripple-color="light">
+                            <img src="/media/{{ plato.foto_plato }}" class="card-img-top w-50" alt="imagen del plato" alt="..." >
+                            <div class="mask">
+                                <div class="d-flex justify-content-start align-items-end w-50">
+                                    <h5><span class="badge bg-success ms-2">Oferta</span></h5>
+                                </div>
+                            </div>
+                            <div class="hover-overlay">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ plato.nom_plato }} </h4>
+                        <p class="card-text">{{ plato.desc_plato}}</p>
+                        <h6 class="price" hidden>{{ plato.precio_plato|floatformat }}</h6>
+                        <h6 class="mb-3">${{ plato.precio_plato|floatformat }}</h6>
+                        <button id="btn-oscuro2" onclick="addToCart(this)" class="btn btn-primary">Agregar al carro</button>
+                    </div>
+                </div>
+            </div>
+
+
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block carrito %}
+    <li class="nav-item">
+        <a class="nav-link" href="#">Carrito</a>
+    </li>
+{% endblock %}

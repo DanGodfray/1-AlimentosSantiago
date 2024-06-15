@@ -1,55 +1,64 @@
-{%  load static %}
-
+{% extends "alumnos/index.html" %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta chrarset="UTF-8">
-    <meta http=equiv="X-UA-Compatible" content"IE=edge">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My primera chamba</title>
 </head>
-<body>
+<body style="text-align: center">
 
-        <h1>Editar Dtos de Alumnos</h1><br>
-        <br>
+    {% block container %}
+    <h1>Editar datos alumnos</h1>
+    <br>
+    <button type="button">
+        <a href="{% url 'alumnosAdd' %}">Add alumno</a>
+    </button>
+    <br><br>
+    <div id="idMensajes">
+        {% if mensaje %}
 
-        <button type"button">
-            <a href="{% url 'alumnosAdd' %}"> Agregar </a>
-        </button>
+            {{mensaje}}
 
-        <div id="idMensajes">
-            {% if mensaje %}
-                {{mensaje}}
-            {% endif %}
-        </div>
+        {% endif %}
+    </div>
 
-        <tables>
-            {% if alummnos %}
-                <th>Rut</th>
-                <th>Nombre</th>
-                <th>Apellido P.</th>
-                <th>Eliminar</th>
-                <th>Modificar</th>
-                {% for x in alummnos%}
-                    <tr>
-                        <td>{{ x.rut }}
-                        <td>{{ x.nombre }}
-                        <td>{{ x.apellido_paterno }}
-                        <td> <a href="{% url 'alumnos_del'  pk=x.rut %}">Eliminar</a>
-                        <td> <a href="{% url 'alumnos_findEdit' pk=x.rut %}">Modificar</a>
-                    </tr>
-                {% endfor %}
-            {% endif %}
-        </table>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <table style="text-align: center; border: 1px solid black;">
+        {% if listaAlumnos %}
+            <tr>
+                    <th >Rut</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Genero</th>
+                    <th>Eliminar</th>
+                    <th>Editar</th>
+            </tr>
+            {% for alumno in listaAlumnos %}
+                <tr>
+                    <td>{{alumno.rut}}</td>
+                    <td>{{alumno.nombre}}</td>
+                    <td>{{alumno.apellido_paterno}}</td>
+                    <td>{{alumno.id_genero.genero}}</td>
+                    
+                    <td><a href="{% url 'alumnos_del' pk=alumno.rut %}">Eliminar</a></td>
+                    <td><a href="{% url 'alumnos_findEdit' pk=alumno.rut %}">Modificar</a><td>
+ 
+                </tr>
+            {% endfor %}
+        {% endif %}    
+        
+    </table>    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <script>
         $(document).ready(function(){
-            $("#idMensajes").delay(200).fadeOut("slow");
-        });
+            $('#idMensajes').delay(3000).fadeOut("slow");
+        }); 
     </script>
+
+    {% endblock %}
 </body>
 </html>
-
-
-        
-                

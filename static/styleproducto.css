@@ -1,0 +1,56 @@
+.contenido {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente las columnas */
+    align-items: center; /* Centra verticalmente las columnas */
+    padding: 20px;
+}
+
+.col-md-6 {
+    flex: 1;
+    max-width: 45%; /* Asegura que ambas columnas ocupen un espacio razonable */
+    margin: 0 1%; /* Reduce el espacio entre las columnas */
+    text-align: center; /* Alinea el contenido al centro */
+}
+
+.imagen img {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px; /* Establece una altura máxima para la imagen */
+}
+
+.detalles {
+    text-align: left; /* Ajusta el texto a la izquierda para una mejor lectura */
+}
+
+.detalles h2,
+.detalles h3 {
+    text-align: center;
+}
+
+/* Botones */
+#btn-oscuro {
+    background-color: #a370f7;
+    color: white;
+    border-color: #c29ffa;
+    border-radius: 50px;
+    margin: 5px; /* Añade espacio entre botones */
+}
+
+#btn-oscuro:hover {
+    background-color: #8540f5;
+    color: white;
+}
+
+#btn-claro {
+    background-color: #f7f7f7;
+    color: #a370f7;
+    border-color: #c29ffa;
+    border-radius: 50px;
+    margin: 5px; /* Añade espacio entre botones */
+}
+
+#btn-claro:hover {
+    background-color: #e2d9f3;
+    color: #a370f7;
+    border-color: #c29ffa;
+}
