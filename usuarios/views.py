@@ -23,3 +23,14 @@ def perfilProveedores(request):
     context = {"listaPlatos":plato, "listaCategorias":categoria, "listaProveedores":proveedor}
     return render(request, 'usuarios/proveedor.html', context)
 
+
+def platosCategoriaSeleccionada(request,cat):  
+    #nombre de la categoria como parametro de entrada
+    categoria = Categoria.objects.get(nom_categoria=cat)
+    #selecciona los platos que pertenecen a la categoria seleccionada
+    categoria = categoria.id_categoria
+    #platos de la categoria seleccionada comparandola con el id de la categoria
+    plato = Plato.objects.filter(id_categoria=categoria)
+    
+    context = {"platos":plato}
+    return render(request, 'ecommerce/platos.html', context)
