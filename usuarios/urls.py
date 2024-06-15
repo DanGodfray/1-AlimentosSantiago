@@ -12,4 +12,9 @@ urlpatterns = [
     path('main/', views.main, name='main'),
     
     path('proveedor/', views.perfilProveedores, name='proveedor'),
+    
+    path('proveedor/<str:prov>', views.listarPlatosPorProv, name='listarPlatosPorProv'),
+    
+    path('proveedor/', views.pausarPlato, name='pausarPlato'),
+    
 ]

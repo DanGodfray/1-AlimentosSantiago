@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Categoria, Plato
 from django.core.paginator import Paginator
 from django.contrib import messages
-
+from usuarios.models import Proveedor
 
 banderaOferta = False
 
@@ -31,7 +31,12 @@ def listarOfertas(request):
 
 def listarPlatos(request):
     plato = Plato.objects.all()
+    
     context = {"platos":plato}
+    #debug para revisar el nombre de los proveedores en el objeto plato
+    for plato in context['platos']:
+        print(f'nombre proveedor: {plato.id_proveedor.nombre_proveedor}')
+    
     return render(request, 'ecommerce/platos.html', context)
     
 def platosCategoriaSeleccionada(request,cat):  

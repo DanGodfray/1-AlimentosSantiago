@@ -26,6 +26,8 @@ class Plato(models.Model):
     foto_plato = models.ImageField(upload_to='img/plato', blank=True, null=True)
     
     id_proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, db_column='idProveedor', default=1)
+    
+    fecha_publicacion = models.DateField(default=datetime.date.today)
     #banderas de actividad
     descuento_activo = models.BooleanField(default=True)
     plato_activo = models.BooleanField(default=True)

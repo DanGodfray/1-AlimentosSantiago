@@ -1,5 +1,4 @@
 from django.db import models
-#from ecommerce.models import Plato, Categoria
 import datetime
 
 
@@ -7,7 +6,7 @@ import datetime
 # Create your models here.
 
 class Proveedor(models.Model):
-    id_proveedor = models.AutoField(primary_key=True)
+    id_proveedor = models.AutoField(db_column='idProveedor',primary_key=True)
     nombre_proveedor = models.CharField(max_length=100, blank=False, null=False)
     
    #ventas = models.ForeignKey('Venta', on_delete=models.CASCADE, db_column='ventas_id_venta')

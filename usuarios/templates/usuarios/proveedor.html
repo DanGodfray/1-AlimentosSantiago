@@ -14,27 +14,55 @@
     <table class="table">
         <thead>
             <tr>
-                <th>ID Plato</th>
-                <th>Plato</th>
+                <th>Categoria</th>
+                <th>Publicacion </th>
+                <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio</th>
-                <th>Precio oferta</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
+                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
             {% for plato in listaPlatos %}
             <tr>
-                <td><p>{{ plato.id_plato }}</p></td>
+
+                <td><p>{{ plato.id_categoria.nom_categoria }}</p><img src="{{ plato.foto_plato.url }}" alt="{{ plato.foto_plato.name }}" width="100"></td>
+                <td><p>ID:{{ plato.id_plato }}</p><p>{{ plato.fecha_publicacion }}</p></td>
                 <td><p>{{ plato.nom_plato }}</p></td>
                 <td><p>{{ plato.descripcion_plato }}</p></td>
-                <td><p>${{ plato.precio_plato|floatformat }}</p></td>
-                <td><p>${{ plato.oferta_plato|floatformat }}</p></td>
-                <td><img src="{{ plato.foto_plato.url }}" alt="{{ plato.foto_plato.name }}" width="100"></td>
-                <td>
-                    <a href="% url 'editar_publicacion' publicacion.id %}" class="btn btn-primary">Editar</a>
-                    <a href="% url 'eliminar_publicacion' publicacion.id %}" class="btn btn-danger">Eliminar</a>
+                <td><b><p>${{ plato.precio_plato|floatformat }}</p></b><p>${{ plato.oferta_plato|floatformat }}</p></td>
+                <td >
+                    
+                    {% if plato.plato_activo %} 
+                    <p>Activo<p>
+                    {% else %}
+                    <p>Pausado<p>
+                    {% endif %}
+
+                    {% if plato.descuento_activo  %} 
+                    <p style="color: green">Oferta activa<p>
+                    {% else %}
+                    <p>Normal<p>
+                    {% endif %}
+
+                </td>
+                
+                <td >
+                    
+                    <td>
+                        <a href="{% url 'pausarPlato'  %}" class="btn btn-secondary" style="display: block; width: 80px; margin-bottom: 2px;" action="POST" >
+                            {% if plato.plato_activo %}
+                                Pausar
+                            {% else %}
+                                Activar
+                            {% endif %}
+                        </a>
+
+                        <a href="% url 'editar_publicacion' publicacion.id %}" class="btn btn-primary" style="display: block; width: 80px; margin-bottom: 2px;">Editar</a>
+
+                        <a href="% url 'eliminar_publicacion' publicacion.id %}" class="btn btn-danger" style="display: block; width: 80px; margin-right: 2px;">Eliminar</a>
+                    </td>
+                    
                 </td>
             </tr>
             {% empty %}
@@ -45,42 +73,6 @@
         </tbody>
     </table>
     <br>
-
-    <h2>Publicaciones v2 PROVEEDOR</h2>
-    <a href="{% url 'registroPlato' %}" class="btn btn-primary">Crear Publicación</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID Publicacion</th>
-                <th>Plato</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Precio oferta</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for prov in listaProveedor %}
-            <tr>
-                <td><p>{{ prov.id_publicacion.nom_plato }}</p></td>
-                <td><p>{{ plato.nom_plato }}</p></td>
-                <td><p>{{ plato.descripcion_plato }}</p></td>
-                <td><img src="{{ prov.foto_plato.url }}" alt="{{ prov.foto_plato.name }}" width="100"></td>
-                <td><p>${{ plato.precio_plato|floatformat }}</p></td>
-                <td><p>${{ plato.oferta_plato|floatformat }}</p></td>
-                <td>
-                    <a href="% url 'editar_publicacion' publicacion.id %}" class="btn btn-primary">Editar</a>
-                    <a href="% url 'eliminar_publicacion' publicacion.id %}" class="btn btn-danger">Eliminar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No hay publicaciones disponibles.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
 </div>
 
