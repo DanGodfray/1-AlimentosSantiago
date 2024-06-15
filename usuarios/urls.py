@@ -17,4 +17,6 @@ urlpatterns = [
     
     path('proveedor/', views.pausarPlato, name='pausarPlato'),
     
-]
+    path('proveedores/publicaciones/', views.registrarPlato , name='registroPlato'),
+    
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

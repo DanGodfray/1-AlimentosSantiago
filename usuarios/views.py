@@ -60,3 +60,29 @@ def pausarPlato(request):
     
     #context = {"listaPlatos": plato, "banderaPlatoActivo": banderaPlatoActivo}
     return render(request, 'usuarios/proveedor.html', context)
+
+def registrarPlato(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        descripcion = request.POST.get('descripcion')
+        precio = request.POST.get('precio')
+        oferta = request.POST.get('oferta')
+        categoria = request.POST.get('categoria')
+        foto = request.FILES.get('foto')
+        
+        #se obtiene el id de la categoria seleccionada
+        categoria = Categoria.objects.get(nom_categoria=categoria)
+        #se crea un nuevo plato
+        plato = Plato(id_categoria=categoria, 
+                      nom_plato=nombre, 
+                      descripcion_plato=descripcion, 
+                      precio_plato=precio, 
+                      oferta_plato=oferta, 
+                      foto_plato=foto)
+        plato.save()
+        messages.success(request, 'Plato registrado correctamente')
+        return redirect('registroPlato')
+    else:
+        categoria = Categoria.objects.all()
+        context = {"categorias":categoria}
+        return render(request, 'ecommerce/publicaciones.html', context)

@@ -34,13 +34,13 @@
                 <td >
                     
                     {% if plato.plato_activo %} 
-                    <p>Activo<p>
+                    <p style="color: green">Activo<p>
                     {% else %}
-                    <p>Pausado<p>
+                    <p style="color: red">Pausado<p>
                     {% endif %}
 
                     {% if plato.descuento_activo  %} 
-                    <p style="color: green">Oferta activa<p>
+                    <p style="color: darkgreen">Oferta activa<p>
                     {% else %}
                     <p>Normal<p>
                     {% endif %}

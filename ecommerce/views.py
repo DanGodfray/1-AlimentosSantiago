@@ -29,6 +29,7 @@ def listarOfertas(request):
     context = {"platos":plato, "banderaOferta":banderaOferta}
     return render(request, 'ecommerce/platos.html', context)
 
+#view para probar el listado de platos sin parametros
 def listarPlatos(request):
     plato = Plato.objects.all()
     

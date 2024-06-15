@@ -21,7 +21,7 @@ urlpatterns = [
     path('catalogos/categoria/<str:cat>', views.platosCategoriaSeleccionada , name='platosCategoriaSeleccionada'),
     #-------------------------FIN URLS DE CATALOGOS-------------------------
     
-    path('proveedores/publicaciones/', views.registrarPlato , name='registroPlato'),
+
     
     
     
