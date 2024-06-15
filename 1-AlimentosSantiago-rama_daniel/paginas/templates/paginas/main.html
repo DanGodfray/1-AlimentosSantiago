@@ -488,7 +488,7 @@ productsList.forEach(container => {
 
             // Obtener el precio del producto y convertirlo a un número
             const priceText = product.querySelector('.precio-item').textContent;
-            const price = parseFloat(priceText.replace('$', '').replace('.', '').replace(',', '.'));
+            const price = parseFloat(priceText.replace('$', ' ').replace('', '').replace('.', ','));
 
             const infoProduct = {
                 quantity: 1,
