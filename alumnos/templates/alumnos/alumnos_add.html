@@ -1,0 +1,51 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta chrarset="UTF-8">
+    <meta http-equiv"X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button type="button">
+
+        <a href="{% url 'alumnosAdd' %}"> Agregar <a/>
+    </button>
+   
+    
+
+    <div style="text-align: center;">
+        <h2>Formulario CRUD para Alumnos</h2><br>
+        <form action="alumnosAdd" method="POST">
+            {% csrf_token %}
+
+            <pre>Rut:           <input type="text" name="rut"></pre>
+            <pre>Nombre:        <input type="text" name="nombre"></pre>
+            <pre>Apellido P.:   <input type="text" name="paterno"></pre>
+            <pre>Apellido M.:   <input type="text" name="materno"></pre>
+            <pre>Fecha Nac.:    <input type="date" name="fechNac"></pre>
+            <pre>Género:        <select name="genero">
+                    {% for genero in generos%}
+                        <option value="{{genero.id_genero}}" >{{genero.genero}}</option>
+                    {% endfor %}
+            </select></pre>
+            <pre>Celular:       <input type="text" name="telefono"></pre>
+            <pre>Email:         <input type="mail" name="email"></pre>
+            <pre>Dirección:     <input type="text" name="direccion"></pre>
+
+            <input type="submit" name="opcion" value="Agregar">
+
+        </form> <br><br>
+        <a href="{% url 'crud' %}">Volver</a>
+        <br>
+        <div id="idMensajes">
+            {% if mensaje %}
+            {{mensaje}}
+            {% endif%}
+        </div>
+    </div>
+</body>
+</html>

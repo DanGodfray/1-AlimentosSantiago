@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My primera chamba</title>
+</head>
+<body>
+
+    <h1>Esto es un H1</h1>
+    <br>
+    {% for alumno in alumnos %} <!--  se recorre la lista de alumnos -->
+
+    <!--  si una etiqueta %% no existe va a imprimir una , indicando nula impresion -->
+    {{alumno.rut}}, {{alumno.nombre}},{{alumno.apellido_paterno}}, {{alumno.apellido_materno}} , {{alumno.id_genero.genero}}
+   
+    <br>
+
+    {% endfor %}
+
+</body>
+</html>
