@@ -10,6 +10,9 @@ from django.shortcuts import get_object_or_404
 #se debe importar el objeto al cual se le va a hacer referencia en la vista y se le almacena los datos captados en una variable, esto es para captura de datos en el url mismo
 from django.http import HttpResponse, JsonResponse
 
+from .forms import GeneroForm
+
+
 # Create your views here.
 # esta es la vista que se llama cuando se accede a la url y metodos asociados a entrara esos urls
 
@@ -184,6 +187,102 @@ def alumnosUpdate(request):
         #se reinicia la vista alumnos_add.html con el metodo obtenerListaAlumnos() para obtener todos los alumnos
         
         return render(request, 'alumnos/alumnos_list.html', context)    
+
+#---crud del form----
+
+def crud_generos(request):
+    #retorna una consulta sql de todos los generos
+    generos = Genero.objects.all()
+    context ={"listaGeneros":generos}
+    
+    print(f'enviando datos: {generos}')
+    
+    return render(request, 'alumnos/generos_list.html', context)
+
+def generosAdd(request):
+    print(f'entro al controlador generosAdd')
+    context={}
+    
+    limpiarTexto = GeneroForm()
+    
+    if request.method == 'POST':
+        print('debug: se valida que el controlador es un POST')
+        
+        form = GeneroForm(request.POST)
+        
+        #variable que valida si el genero ya existe en la base de datos para no repetirla
+        validaExistencia = Genero.objects.filter(genero=request.POST['genero']).exists()
+        
+        if form.is_valid() and validaExistencia == False:
+            print('debug: se valida que el formulario es is_valid')
+            
+            form.save()
+            
+            context ={"mensaje":"Datos guardados correctamente","form":limpiarTexto}
+            return render(request, 'alumnos/generos_add.html', context)
+        else:
+            print('debug: se valida que el formulario no es is_valid')
+            context ={"mensaje":"Error al guardar datos ","form":form}
+            return render(request, 'alumnos/generos_add.html', context)
+        
+    else:
+        context={"form":limpiarTexto}       
+        return render(request, 'alumnos/generos_add.html', context) 
+
+def generos_del(request, pk):
+    mensajes=[]
+    errores=[]
+    context=[]
+    try:
+        #se obtiene el objeto alumno con el rut especifico "pk" es el nombre explicito en el modelo correspondiente
+        genero = Genero.objects.get(id_genero=pk)
+        context={}
+        if genero:
+            
+            genero.delete()
+            mensajes.append("Genero ha sido eliminado")
+            #alumnos = Alumno.objects.all()
+            context ={"listaGeneros":obtenerListaGeneros(), "mensaje":mensajes, 'errores':errores}
+            return render(request, 'alumnos/generos_list.html', context)
+        
+    except:
+        print('error: id no existe ')
+        mensaje = "Error al eliminar genero: " 
+        context ={"mensaje":mensaje, "listaGeneros":obtenerListaGeneros()}
+        return render(request, 'alumnos/generos_list.html', context)
+
+def generos_findEdit(request, pk):
+    try:
+        genero=Genero.objects.get(id_genero=pk)
+        context={}
+        if genero:
+            print(f'edit encuentra genero {genero}')
+            
+            #se debe validar si el metodo es post o no
+            if request.method == 'POST':
+                print('debug: es post')
+                form = GeneroForm(request.POST, instance=genero)
+                form.save()
+                mensaje="Genero ha sido actualizado"
+                print(mensaje)
+                context={'listaGeneros':genero, 'listaForm': form,'mensaje':mensaje}
+                return render(request, 'alumnos/generos_edit.html', context)
+            else:
+                #si no es post
+                print('debug: no es post')
+                form = GeneroForm(instance=genero)
+                mensaje="Mensaje de error"
+                context ={'listaGeneros':genero, 'listaForm': form,'mensaje':mensaje}
+                return render(request, 'alumnos/generos_edit.html', context)
+        
+    except:
+        print('error: id no existe ')
+        form = GeneroForm(instance=genero)
+        mensaje = "Error al editar genero"
+        context ={"listaGeneros": obtenerListaGeneros(), "mensaje":mensaje, 'listaForm': form}
+        return render(request, 'alumnos/generos_list.html', context)
+
+#---fin del crud del form----
 
 #----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-metodos ejemplo
 # esta es una vista que recibe un parametro usuario e imprime el nombre del usuario

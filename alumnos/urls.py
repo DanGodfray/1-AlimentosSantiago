@@ -17,6 +17,15 @@ urlpatterns = [
    path('alumnos_findEdit/<str:pk>', views.alumnos_findEdit, name='alumnos_findEdit'),
    path('alumnosUpdate', views.alumnosUpdate, name='alumnosUpdate'),
    
+   #---crud del form----
+   
+   path('crud_generos', views.crud_generos, name='crud_generos'),
+   path('generosAdd', views.generosAdd, name='generosAdd'),
+   path('generos_del/<str:pk>', views.generos_del, name='generos_del'),
+   path('generos_edit/<str:pk>', views.generos_findEdit, name='generos_edit'),
+   
+   #---fin del crud del form----
+   
    #-----------------CRUD-------------------
    
    # esta es una vista que recibe un parametro usuario, que se pasa por la url de index
