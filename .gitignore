@@ -1,1 +1,13 @@
-/alumnos
+/.venv
+/venv
+/myvenv
+/myvenv/
+/paginas/
+/.paginas
+paginas/
+/mysite
+
+db.sqlite3
+.db.sqlite3
+/.db.sqlite3
+

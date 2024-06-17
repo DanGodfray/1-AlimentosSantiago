@@ -1,0 +1,80 @@
+{%  extends "usuarios/main.html"  %}
+
+<!-- extension de la pagina main donde se encuentra el navbar -->
+
+<!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
+{% block container  %}
+<h1> Menu proveedor</h1>
+<p> aqui deberian mostrarse las publicaciones </p>
+
+<!-- CRUD for publicaciones -->
+<div class="container">
+    <h2>Publicaciones</h2>
+    <a href="{% url 'registroPlato' %}" class="btn btn-primary">Crear Publicación</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Publicacion </th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plato in listaPlatos %}
+            <tr>
+
+                <td><p>{{ plato.id_categoria.nom_categoria }}</p><img src="{{ plato.foto_plato.url }}" alt="{{ plato.foto_plato.name }}" width="100"></td>
+                <td><p>ID:{{ plato.id_plato }}</p><p>{{ plato.fecha_publicacion }}</p></td>
+                <td><p>{{ plato.nom_plato }}</p></td>
+                <td><p>{{ plato.descripcion_plato }}</p></td>
+                <td><b><p>${{ plato.precio_plato|floatformat }}</p></b><p>${{ plato.oferta_plato|floatformat }}</p></td>
+                <td >
+                    
+                    {% if plato.plato_activo %} 
+                    <p style="color: green">Activo<p>
+                    {% else %}
+                    <p style="color: red">Pausado<p>
+                    {% endif %}
+
+                    {% if plato.descuento_activo  %} 
+                    <p style="color: darkgreen">Oferta activa<p>
+                    {% else %}
+                    <p>Normal<p>
+                    {% endif %}
+
+                </td>
+                
+                <td >
+                    
+                    <td>
+                        <a href="{% url 'pausarPlato'  %}" class="btn btn-secondary" style="display: block; width: 80px; margin-bottom: 2px;" action="POST" >
+                            {% if plato.plato_activo %}
+                                Pausar
+                            {% else %}
+                                Activar
+                            {% endif %}
+                        </a>
+
+                        <a href="% url 'editar_publicacion' publicacion.id %}" class="btn btn-primary" style="display: block; width: 80px; margin-bottom: 2px;">Editar</a>
+
+                        <a href="% url 'eliminar_publicacion' publicacion.id %}" class="btn btn-danger" style="display: block; width: 80px; margin-right: 2px;">Eliminar</a>
+                    </td>
+                    
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No hay publicaciones disponibles.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+</div>
+
+    
+{% endblock %}
