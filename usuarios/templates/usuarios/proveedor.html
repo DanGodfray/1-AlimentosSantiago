@@ -10,8 +10,8 @@
 
 <!-- CRUD for publicaciones -->
 <div class="container">
-    <h2>Publicaciones</h2>
-    <a href="{% url 'registroPlato' %}" class="btn btn-primary">Crear Publicación</a>
+    <h2>Gestion de publicaciones</h2>
+    <a href="{% url 'registrarPlato' %}" class="btn btn-primary">Crear Publicación</a>
     <table class="table">
         <thead>
             <tr>
@@ -61,21 +61,35 @@
 
                         <a href="% url 'editar_publicacion' publicacion.id %}" class="btn btn-primary" style="display: block; width: 80px; margin-bottom: 2px;">Editar</a>
 
-                        <a href="% url 'eliminar_publicacion' publicacion.id %}" class="btn btn-danger" style="display: block; width: 80px; margin-right: 2px;">Eliminar</a>
+                        <a href="{% url 'eliminarPlato' plato.id_plato %}" class="btn btn-danger" style="display: block; width: 80px; margin-right: 2px;">Eliminar</a>
                     </td>
                     
                 </td>
             </tr>
+            
             {% empty %}
             <tr>
                 <td colspan="4">No hay publicaciones disponibles.</td>
             </tr>
             {% endfor %}
+
+            <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+                {% if mensaje %}
+                    {{mensaje}}
+                {% endif %}
+            </div>  
         </tbody>
     </table>
     <br>
 
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
+    $(document).ready(function(){
+        $('#idMensajes').delay(3000).fadeOut("slow");
+    }); 
+</script>
     
 {% endblock %}

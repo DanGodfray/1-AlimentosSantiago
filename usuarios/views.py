@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from ecommerce.models import Categoria, Plato
 from .models import Proveedor, Venta
 from django.core.paginator import Paginator
@@ -23,6 +23,16 @@ def perfilProveedores(request):
     plato = Plato.objects.all()
     categoria = Categoria.objects.all()
     proveedor = Proveedor.objects.all()
+    
+    for p in plato:
+        print(f'p.foto_plato: {p.foto_plato}')
+        print(f'p: {p}')
+        
+        #si no se ha seleccionado una foto se asigna una por defecto
+        if not p.foto_plato:
+            p.foto_plato = 'img/Ui-12-1024.webp'
+            
+    
     context = {"listaPlatos":plato, "listaCategorias":categoria, "listaProveedores":proveedor}
     return render(request, 'usuarios/proveedor.html', context)
 
@@ -63,11 +73,13 @@ def pausarPlato(request):
     return render(request, 'usuarios/proveedor.html', context)
 
 def registrarPlato(request):
-
+    print("entro a registrar plato antes del try")
     try:
+        print("entro al try de registrar")
+        
         if request.method != 'POST':
             
-            print("no es post")
+            print("entro al if no es post")
             
             plato = Plato.objects.all()
             categoria = Categoria.objects.all()
@@ -77,6 +89,7 @@ def registrarPlato(request):
             context = {"listaPlatos": plato ,"listaCategorias":categoria, "listaProveedores":proveedor}
             
             print("se rednderio default")
+            
             return render(request, 'usuarios/plato_add.html', context)
             
         else:    
@@ -86,22 +99,31 @@ def registrarPlato(request):
             nombre = request.POST.get('nombre')
             descripcion = request.POST.get('descripcion')
             precio = request.POST.get('precio')
-            oferta = request.POST.get('oferta') 
+            oferta = request.POST.get('oferta')
             foto = request.FILES.get('foto')
             proveedor = request.POST.get('proveedor')
             #se registra la fecha de registro del plato
             fecha = date.today()
-            descuento = request.POST.get('descuento')
+            #se obtiene el estado del descuento
+            descuento = request.POST.get('descuento_activo')
+            if descuento == 'on':
+                descuento = True
+            else:
+                descuento = False
+            #se obtiene el estado del plato
             plato_activo = request.POST.get('plato_activo')
-            proveedor = request.POST.get('proveedor')
+            if plato_activo == 'on':
+                plato_activo = True
+            else:
+                plato_activo = False
             
-            objetoProveedor = Proveedor.objects.get(id_proveedor=proveedor)
+            objetoProveedor = Proveedor.objects.get(nombre_proveedor=proveedor)
             
             #se obtiene el id de la categoria seleccionada
             objetoCategoria = Categoria.objects.get(nom_categoria=categoria)
             
             #se crea un nuevo plato
-            objetoPlato = Plato(id_categoria=objetoCategoria, 
+            objetoPublicacion = Plato(id_categoria=objetoCategoria, 
                         nom_plato=nombre, 
                         descripcion_plato=descripcion, 
                         precio_plato=precio, 
@@ -110,18 +132,50 @@ def registrarPlato(request):
                         fecha_publicacion=fecha,
                         descuento_activo=descuento,
                         plato_activo=plato_activo,
-                        proveedor=objetoProveedor)
+                        id_proveedor=objetoProveedor)
             
-            objetoPlato.save()
+            objetoPublicacion.save()
             context = {"mensaje":"Plato registrado correctamente"}
-            messages.success(request, 'Plato registrado correctamente')
+            #messages.success(request, 'Plato registrado correctamente')
             return render(request, 'usuarios/plato_add.html', context)
+        
+    except Exception as e:
+        print(e)
+        
+        plato = Plato.objects.all()
+        categoria = Categoria.objects.all()
+        proveedor = Proveedor.objects.all()
+        
+        context = {"mensaje":"Error al registrar el plato", "listaPlatos": plato ,"listaCategorias":categoria, "listaProveedores":proveedor}
+        messages.error(request, 'Error al registrar el plato')
+        return render(request, 'usuarios/plato_add.html', context)
+        
+    
+def eliminarPlato(request, pkplato):
+    context={}
+    try:
+        plato = Plato.objects.get(id_plato=pkplato)
+        plato.delete()
+        
+        print(f'plato eliminado: {plato}')
+        
+        plato = Plato.objects.all()
+        categoria = Categoria.objects.all()
+        proveedor = Proveedor.objects.all()
+        context = {"mensaje":"Plato eliminado correctamente", "listaPlatos":plato, "listaCategorias":categoria, "listaProveedores":proveedor}
+        messages.success(request, 'Plato eliminado correctamente')
+        redirect('proveedor', context)
+        return render(request, 'usuarios/proveedor.html', context)
+        
+        
         
     except Exception as e:
         print(e)
         plato = Plato.objects.all()
         categoria = Categoria.objects.all()
         proveedor = Proveedor.objects.all()
-        context = {"mensaje":"Error al registrar el plato", "listaPlatos": plato ,"listaCategorias":categoria, "listaProveedores":proveedor}
-        messages.error(request, 'Error al registrar el plato')
-        return render(request, 'usuarios/plato_add.html', context)
+        context = {"listaPlatos":plato, "listaCategorias":categoria, "listaProveedores":proveedor}
+        messages.error(request, 'Error al eliminar el plato')
+        redirect('proveedor')
+        return render(request, 'usuarios/proveedor.html', context)
+        redirect('proveedor')

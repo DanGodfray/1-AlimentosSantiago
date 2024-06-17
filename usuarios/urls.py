@@ -15,8 +15,10 @@ urlpatterns = [
     
     path('proveedor/<str:prov>', views.listarPlatosPorProv, name='listarPlatosPorProv'),
     
-    path('proveedor/', views.pausarPlato, name='pausarPlato'),
+    path('registrarPlato', views.registrarPlato , name='registrarPlato'),
     
-    path('proveedores/publicaciones/', views.registrarPlato , name='registroPlato'),
+    path('proveedor/eliminar-publicacion/<str:pkplato>', views.eliminarPlato , name='eliminarPlato'),
+    
+    path('proveedor/', views.pausarPlato, name='pausarPlato'),
     
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

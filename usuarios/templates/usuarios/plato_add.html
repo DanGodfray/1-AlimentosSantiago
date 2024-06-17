@@ -1,33 +1,14 @@
 {%  extends "usuarios/main.html"  %}
 {% load static %}
 
-{% block extra_head %}
-<style>
-    #otracat{
-        display: none;
-    }
-    #otracat2{
-        display: none;
-    }
-    #categoria {
-        opacity: 1; /* Default opacity */
-    }
-    #categoria:disabled {
-        opacity: 0.5; /* Reduced opacity when disabled */
-        pointer-events: none; /* Disable pointer events */
-    }
-    .hidden {
-        display: none; /* Hidden style */
-    }
-</style>
-{% endblock %}
+
 
 {% block container %}
-<h1>Publicar </h1>
+<h1>Crear publicacion</h1>
 
 <div style="text-align: center">    
     <h2>Formulario de CRUD de plato</h2><br>
-    <form action="registroPlato" method="POST">
+    <form enctype="multipart/form-data" action="registrarPlato" method="POST">
         <!--token de seguridad obligatorio para el traslado de datos-->
         {% csrf_token %}
         
@@ -43,15 +24,17 @@
             {% endif %}
         {% endfor %}
         </select>
-
+        
         <label for="categoria">Otra categoria:</label>
-        <input type="checkbox" id="categoria-checkbox" name="categoria">
+        <input type="checkbox" id="categoria-checkbox" name="categoriaCheck">
         <br>
         
         <label id="otracat2" for="otracat">Nombre Categoria:</label>
-        <input type="text" id="otracat" name="categoria" required>
+        {% for categoria in listaCategorias  %}
+        <input type="text" id="otracat" name="categoria" value="{{categoria.nom_categoria}}" required>
+        {% endfor %}
         <br>
-        
+
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre"  >
         <br>
@@ -81,30 +64,32 @@
         
         <label id="proveedor" for="proveedor">Proveedor:</label>
         <select id="proveedor" name="proveedor" value="" required>
-    
             {% for proveedor in listaProveedores %}
     
-                {% if proveedor.nombre_proveedor == listaPlatos.id_plato.nombre_plato %}
-                    <option  value="{{proveedor.nombre_proveedor}}" selected>{{proveedor.nombre_proveedor}}</option>
-                {% else %}
                     <option value="{{proveedor.nombre_proveedor}}">{{proveedor.nombre_proveedor}}</option>
-                {% endif %}
+                
             {% endfor %}
-            <br>
         </select>
 
+        <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+            {% if mensaje %}
+                {{mensaje}}
+            {% endif %}
+        </div>  
+
         <br>
-        <input type="submit" name="opcion">Publicar</input>
+        <br>
+        <input type="submit" name="opcion" value="Publicar">
         <br>
         <br>
         <button type="submit" name="opcion">Publicar</button>
         <br>
     </form>
     <br>
-    <input type="submit" name="opcion">Publicar</input>
+    <input type="submit" name="opcion" value="Publicar">
     <br>
     <br>
-    <button type="submit" name="opcion">Publicar</button>
+    <button type="submit" name="opcion" >Publicar</button>
     <br>
 
     <a href="{% url 'proveedor' %}">Volver</a>
@@ -146,4 +131,25 @@
     }); 
 </script>
 
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    #otracat{
+        display: none;
+    }
+    #otracat2{
+        display: none;
+    }
+    #categoria {
+        opacity: 1; /* Default opacity */
+    }
+    #categoria:disabled {
+        opacity: 0.5; /* Reduced opacity when disabled */
+        pointer-events: none; /* Disable pointer events */
+    }
+    .hidden {
+        display: none; /* Hidden style */
+    }
+</style>
 {% endblock %}
