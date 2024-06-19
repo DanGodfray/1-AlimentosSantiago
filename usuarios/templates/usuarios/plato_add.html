@@ -6,95 +6,139 @@
 {% block container %}
 <h1>Crear publicacion</h1>
 
-<div style="text-align: center">    
-    <h2>Formulario de CRUD de plato</h2><br>
-    <form enctype="multipart/form-data" action="registrarPlato" method="POST">
-        <!--token de seguridad obligatorio para el traslado de datos-->
-        {% csrf_token %}
-        
-        <label id="categoria2" for="categoria">Categoría:</label>
-        <select id="categoria" name="categoria" value="" required>
+<div style="text-align: center" class="col-md-12">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <h2>Crear publicacion</h2><br>
+        <form enctype="multipart/form-data" action="registrarPlato" method="POST" style="border-radius: 10px;border: 1px solid grey; padding: 10px; col-md-12">
+            <!--token de seguridad obligatorio para el traslado de datos-->
+            {% csrf_token %}
+            
+            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <label id="categoria2" for="categoria" style="margin-bottom: 10px;">Categoría:</label>
+                        </td>
+                        <td>
+                            <select id="categoria" name="categoria" value="" required class="form-control" style="margin-bottom: 10px;">
+                                {% for categoria in listaCategorias %}
+                                    {% if categoria.nom_categoria == listaPlatos.id_plato.nom_plato %}
+                                        <option  value="{{categoria.nom_categoria}}" selected>{{categoria.nom_categoria}}</option>
+                                    {% else %}
+                                        <option value="{{categoria.nom_categoria}}">{{categoria.nom_categoria}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="categoria" style="margin-bottom: 10px;">Otra categoria:</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="categoria-checkbox" name="categoriaCheck" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="otracat2" for="otracat" style="margin-bottom: 10px;">Nombre Categoria:</label>
+                        </td>
+                        <td>
+                            {% for categoria in listaCategorias  %}
+                                <input type="text" id="otracat" name="categoria" value="{{categoria.nom_categoria}}" required class="form-control" style="margin-bottom: 10px;">
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="nombre" style="margin-bottom: 10px;">Nombre:</label>
+                        </td>
+                        <td>
+                            <input type="text" name="nombre" class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="descripcion" style="margin-bottom: 10px;">Descripción:</label>
+                        </td>
+                        <td>
+                            <textarea name="descripcion" class="form-control" style="margin-bottom: 10px;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="precio" style="margin-bottom: 10px;">Precio:</label>
+                        </td>
+                        <td>
+                            <input type="number" name="precio" id="precio" required class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="oferta" style="margin-bottom: 10px;">Precio Oferta:</label>
+                        </td>
+                        <td>
+                            <input type="number" name="oferta" id="oferta" class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="foto" style="margin-bottom: 10px;">Imagen:</label>
+                        </td>
+                        <td>
+                            <input type="file" name="foto" id="imagen" required class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="descuento_activo" style="margin-bottom: 10px;">Oferta</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="descuento_activo" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="disponible" style="margin-bottom: 10px;">Activo:</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="plato_activo" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="proveedor" for="proveedor" style="margin-bottom: 10px;">Proveedor:</label>
+                        </td>
+                        <td>
+                            <select id="proveedor" name="proveedor" value="" required class="form-control" style="margin-bottom: 10px;">
+                                {% for proveedor in listaProveedores %}
+                                    <option value="{{proveedor.nombre_proveedor}}">{{proveedor.nombre_proveedor}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div id="idMensajes" style="margin-bottom: 10px;"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+                                {% if mensaje %}
+                                    {{mensaje}}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" name="opcion" class="btn btn-secondary" style="margin-bottom: 10px;">Publicar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-        {% for categoria in listaCategorias %}
+        </form>
 
-            {% if categoria.nom_categoria == listaPlatos.id_plato.nom_plato %}
-                <option  value="{{categoria.nom_categoria}}" selected>{{categoria.nom_categoria}}</option>
-            {% else %}
-                <option value="{{categoria.nom_categoria}}">{{categoria.nom_categoria}}</option>
-            {% endif %}
-        {% endfor %}
-        </select>
-        
-        <label for="categoria">Otra categoria:</label>
-        <input type="checkbox" id="categoria-checkbox" name="categoriaCheck">
-        <br>
-        
-        <label id="otracat2" for="otracat">Nombre Categoria:</label>
-        {% for categoria in listaCategorias  %}
-        <input type="text" id="otracat" name="categoria" value="{{categoria.nom_categoria}}" required>
-        {% endfor %}
-        <br>
+        <a href="{% url 'proveedor' %}" class="btn btn-link">Volver</a>
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre"  >
-        <br>
-
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion"></textarea>
-        <br>
-
-        <label for="precio">Precio:</label>
-        <input type="number" name="precio" id="precio" required>
-        <br>
-
-        <label for="oferta">Precio Oferta:</label>
-        <input type="number" name="oferta" id="oferta">
-        <br>
-
-        <label for="foto">Imagen:</label>
-        <input type="file" name="imagen" id="imagen" required>
-        <br>
-
-        <label for="descuento_activo">Oferta</label>
-        <input type="checkbox" name="descuento_activo">
-
-        <label for="disponible">Activo:</label>
-        <input type="checkbox" name="plato_activo">
-        <br>
-        
-        <label id="proveedor" for="proveedor">Proveedor:</label>
-        <select id="proveedor" name="proveedor" value="" required>
-            {% for proveedor in listaProveedores %}
-    
-                    <option value="{{proveedor.nombre_proveedor}}">{{proveedor.nombre_proveedor}}</option>
-                
-            {% endfor %}
-        </select>
-
-        <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
-            {% if mensaje %}
-                {{mensaje}}
-            {% endif %}
-        </div>  
-
-        <br>
-        <br>
-        <input type="submit" name="opcion" value="Publicar">
-        <br>
-        <br>
-        <button type="submit" name="opcion">Publicar</button>
-        <br>
-    </form>
-    <br>
-    <input type="submit" name="opcion" value="Publicar">
-    <br>
-    <br>
-    <button type="submit" name="opcion" >Publicar</button>
-    <br>
-
-    <a href="{% url 'proveedor' %}">Volver</a>
-    <br>
-
+    </div>
 </div>
 
 <script>

@@ -5,6 +5,7 @@ from .models import Proveedor, Venta
 from django.core.paginator import Paginator
 from django.contrib import messages
 from datetime import date
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 
@@ -23,6 +24,7 @@ def perfilProveedores(request):
     plato = Plato.objects.all()
     categoria = Categoria.objects.all()
     proveedor = Proveedor.objects.all()
+    
     
     for p in plato:
         print(f'p.foto_plato: {p.foto_plato}')
@@ -122,17 +124,26 @@ def registrarPlato(request):
             #se obtiene el id de la categoria seleccionada
             objetoCategoria = Categoria.objects.get(nom_categoria=categoria)
             
-            #se crea un nuevo plato
-            objetoPublicacion = Plato(id_categoria=objetoCategoria, 
-                        nom_plato=nombre, 
-                        descripcion_plato=descripcion, 
-                        precio_plato=precio, 
-                        oferta_plato=oferta, 
-                        foto_plato=foto,
-                        fecha_publicacion=fecha,
-                        descuento_activo=descuento,
-                        plato_activo=plato_activo,
-                        id_proveedor=objetoProveedor)
+            if foto:
+                fs = FileSystemStorage()
+                filename = fs.save(foto.name, foto)
+                uploaded_file_url = fs.url(filename)
+            else:
+                uploaded_file_url = None
+            
+            #se crea el objeto plato
+            objetoPublicacion = Plato(
+                id_categoria=objetoCategoria,
+                nom_plato=nombre,
+                descripcion_plato=descripcion,
+                precio_plato=precio,
+                oferta_plato=oferta,
+                foto_plato=foto if uploaded_file_url else None,
+                fecha_publicacion=fecha,
+                descuento_activo=descuento,
+                plato_activo=plato_activo,
+                id_proveedor=objetoProveedor
+            )
             
             objetoPublicacion.save()
             context = {"mensaje":"Plato registrado correctamente"}
@@ -166,9 +177,7 @@ def eliminarPlato(request, pkplato):
         messages.success(request, 'Plato eliminado correctamente')
         redirect('proveedor', context)
         return render(request, 'usuarios/proveedor.html', context)
-        
-        
-        
+          
     except Exception as e:
         print(e)
         plato = Plato.objects.all()
