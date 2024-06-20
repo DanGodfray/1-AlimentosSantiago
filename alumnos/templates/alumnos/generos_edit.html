@@ -16,19 +16,28 @@
     <h1>GENERO EDIT</h1>
 
     <div style="text-align: center">    
-    {% if genero %} 
+        
+    {% if listaGeneros %} 
     <!--si la lista de alumnos no esta vacia se muestra el formulario de edicion-->   
         <h2>Formulario de EDIT de generos</h2>
         
         <form action="" method="POST">
             
             {% csrf_token %}
-            {{form.as_table}}
+
+            {{ listaForm.as_table }}
 
             <input type="submit" name="opcion" value="Actualizar">
 
         </form><br>
     {% endif %}
+    <div id="idMensajes">
+        {% if mensaje %}
+
+            {{mensaje}}
+
+        {% endif %}
+    </div>
         <br>
 
         <a href="{% url 'crud_generos' %}">Volver</a>
