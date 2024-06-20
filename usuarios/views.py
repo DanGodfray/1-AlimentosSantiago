@@ -20,88 +20,68 @@ def main(request):
     context={} 
     return render(request, 'usuarios/main.html')
 
-def perfilProveedores(request):
-    
+#metodo para listar todos los platos en el perfil del proveedor, y almacena un mensaje
+def perfilProveedores(request, mensaje=None):
     plato = Plato.objects.all()
-    categoria = Categoria.objects.all()
-    proveedor = Proveedor.objects.all()
-    
-    
+    categorias = Categoria.objects.all()
+    proveedores = Proveedor.objects.all()
+
     for p in plato:
-        print(f'p.foto_plato: {p.foto_plato}')
-        print(f'p: {p}')
-        
-        #si no se ha seleccionado una foto se asigna una por defecto
         if not p.foto_plato:
             p.foto_plato = 'img/Ui-12-1024.webp'
-            
+
+    if mensaje is not None:
+        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, }
+        return render(request, 'usuarios/proveedor.html', context)
+    else:
+        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores}
+        return render(request, 'usuarios/proveedor.html', context)
     
-    context = {"listaPlatos":plato, "listaCategorias":categoria, "listaProveedores":proveedor}
+
+#metodo para listar los platos por proveedor en el perfil del proveedor
+def listarPlatosPorProv(request, prov):
+    proveedor = get_object_or_404(Proveedor, nombre_proveedor=prov.replace("-", " "))
+    plato = Plato.objects.filter(id_proveedor=proveedor.id_proveedor)
+    
+    for p in plato:
+        if not p.foto_plato:
+            p.foto_plato = 'img/Ui-12-1024.webp'
+    
+    context = {"listaPlatos": plato, "listarProveedor": proveedor, "banderaProv": prov}
     return render(request, 'usuarios/proveedor.html', context)
 
-
-def listarPlatosPorProv(request,prov):  
-    replace = prov.replace("-"," ") #se reemplaza el guion por un espacio 
-    
-    #nombre de la categoria como parametro de entrada
-    proveedor = Proveedor.objects.get(nombre_proveedor=prov)
-    proveedor = proveedor.id_proveedor
-    
-    #provedor -> plato -> categoria
-    banderaProv = prov
-    #platos de la categoria seleccionada comparandola con el id de la categoria
-    plato = Plato.objects.filter(id_proveedor=proveedor)
-    
-    #si proveedor = true -> plato = true -> categoria = true
-    context = {"listaPlatos":plato, "listarProveedor":proveedor, "banderaProv":banderaProv}
-    return render(request, 'usuarios/proveedor.html', context)
-
-
-#metodo incompleto
 def pausarPlato(request, pk):
     plato = get_object_or_404(Plato, id_plato=pk)
     
     if request.method == 'POST':
-        # Toggle the plato_activo field
         plato.plato_activo = not plato.plato_activo
         plato.save()
-        # Redirect back to the page listing the publications
-        return redirect('proveedor')  # Replace with the actual name of your view
-
+        messages.success(request, f"Plato {'activado' if plato.plato_activo else 'pausado'} correctamente.")
+        mensaje = {'mensaje':f'El plato {plato.nom_plato} ha sido {"activado" if plato.plato_activo else "pausado"} correctamente.'}
+        
+        perfilProveedores(request, mensaje)
+        #return redirect('proveedor')
+    
     return render(request, 'usuarios/proveedor.html', {'plato': plato})
 
-def platoEsPost(r):
-    print("entro a esPost") 
-    categoria = r.POST.get('categoria')
-    nombre = r.POST.get('nombre')
-    descripcion = r.POST.get('descripcion')
-    precio = r.POST.get('precio')
-    oferta = r.POST.get('oferta')
-    foto = r.FILES.get('foto')
-    proveedor = r.POST.get('proveedor')
-    
-    #se registra la fecha de registro del plato
+#metodo que rellena la tabla plato con los datos ingresados por el proveedor
+def platoEsPost(request, plato=None):
+    categoria = request.POST.get('categoria')
+    nombre = request.POST.get('nombre')
+    descripcion = request.POST.get('descripcion')
+    precio = request.POST.get('precio')
+    oferta = request.POST.get('oferta')
+    foto = request.FILES.get('foto')
+    proveedor = request.POST.get('proveedor')
     fecha = date.today()
+
+    descuento = request.POST.get('descuento_activo') == 'on'
+    plato_activo = request.POST.get('plato_activo') == 'on'
+
+    objetoProveedor = get_object_or_404(Proveedor, nombre_proveedor=proveedor)
+    objetoCategoria = get_object_or_404(Categoria, nom_categoria=categoria)
     
-    #se obtiene el estado del descuento
-    descuento = r.POST.get('descuento_activo')
-    if descuento == 'on':
-        descuento = True
-    else:
-        descuento = False
-    
-    #se obtiene el estado del plato
-    plato_activo = r.POST.get('plato_activo')
-    if plato_activo == 'on':
-        plato_activo = True
-    else:
-        plato_activo = False
-    
-    objetoProveedor = Proveedor.objects.get(nombre_proveedor=proveedor)
-    
-    #se obtiene el id de la categoria seleccionada
-    objetoCategoria = Categoria.objects.get(nom_categoria=categoria)
-    
+    #muestra la imagen ya subida por el proveedor
     if foto:
         fs = FileSystemStorage()
         filename = fs.save(foto.name, foto)
@@ -109,125 +89,74 @@ def platoEsPost(r):
     else:
         uploaded_file_url = None
     
-    #se crea el objeto plato
-    objetoPublicacion = Plato(
-        id_categoria=objetoCategoria,
-        nom_plato=nombre,
-        descripcion_plato=descripcion,
-        precio_plato=precio,
-        oferta_plato=oferta,
-        foto_plato=foto if uploaded_file_url else None,
-        fecha_publicacion=fecha,
-        descuento_activo=descuento,
-        plato_activo=plato_activo,
-        id_proveedor=objetoProveedor
-    )
-    
-    objetoPublicacion.save()
-    context = {"mensaje":"Plato registrado correctamente"}
-    #messages.success(request, 'Plato registrado correctamente')
-    return render(r, 'usuarios/plato_add.html', context)
+    if plato is None:
+        # Create new Plato
+        plato = Plato(
+            id_categoria=objetoCategoria,
+            nom_plato=nombre,
+            descripcion_plato=descripcion,
+            precio_plato=precio,
+            oferta_plato=oferta,
+            foto_plato=foto if uploaded_file_url else None,
+            fecha_publicacion=fecha,
+            descuento_activo=descuento,
+            plato_activo=plato_activo,
+            id_proveedor=objetoProveedor
+        )
+        plato.save()
+        messages.success(request, "Plato registrado correctamente.")
+        
+        return redirect('registrarPlato')
+    else:
+        # Update existing Plato
+        plato.id_categoria = objetoCategoria
+        plato.nom_plato = nombre
+        plato.descripcion_plato = descripcion
+        plato.precio_plato = precio
+        plato.oferta_plato = oferta
+        if uploaded_file_url:
+            plato.foto_plato = foto
+        plato.fecha_publicacion = fecha
+        plato.descuento_activo = descuento
+        plato.plato_activo = plato_activo
+        plato.id_proveedor = objetoProveedor
+        plato.save()
+        messages.success(request, "Plato editado correctamente.")
+        mensaje = {'mensaje': 'Plato editado correctamente.'}
+        return redirect('proveedor')
+
+        
 
 def registrarPlato(request):
-    print("entro a registrar plato antes del try")
-    try:
-        print("entro al try de registrar")
-        
-        if request.method != 'POST':
-            
-            print("entro al if no es post")
-            
-            plato = Plato.objects.all()
-            categoria = Categoria.objects.all()
-            proveedor = Proveedor.objects.all()
- 
-            #se obtienen los datos del formulario si selecciona otra categoria   
-            context = {"listaPlatos": plato ,"listaCategorias":categoria, "listaProveedores":proveedor}
-            
-            print("se renderio default")
-            
-            return render(request, 'usuarios/plato_add.html', context)
-            
-        else:    
-            print("es post")    
-            
-            platoEsPost(request)
-        
-    except Exception as e:
-        print(e)
-        
-        plato = Plato.objects.all()
-        categoria = Categoria.objects.all()
-        proveedor = Proveedor.objects.all()
-        
-        context = {"mensaje":"Error al registrar el plato", "listaPlatos": plato ,"listaCategorias":categoria, "listaProveedores":proveedor}
-        messages.error(request, 'Error al registrar el plato')
-        return render(request, 'usuarios/plato_add.html', context)
-        
-    
-def eliminarPlato(request, pkplato):
-    context={}
-    try:
-        plato = Plato.objects.get(id_plato=pkplato)
-        plato.delete()
-        
-        print(f'plato eliminado: {plato}')
-        
-        plato = Plato.objects.all()
-        categoria = Categoria.objects.all()
-        proveedor = Proveedor.objects.all()
-        context = {"mensaje":"Plato eliminado correctamente", "listaPlatos":plato, "listaCategorias":categoria, "listaProveedores":proveedor}
-        messages.success(request, 'Plato eliminado correctamente')
-        redirect('proveedor', context)
-        return render(request, 'usuarios/proveedor.html', context)
-          
-    except Exception as e:
-        print(e)
-        plato = Plato.objects.all()
-        categoria = Categoria.objects.all()
-        proveedor = Proveedor.objects.all()
-        context = {"listaPlatos":plato, "listaCategorias":categoria, "listaProveedores":proveedor}
-        messages.error(request, 'Error al eliminar el plato')
-        redirect('proveedor')
-        return render(request, 'usuarios/proveedor.html', context)
-        
-def editarPlato(request, pkplato):
-    
-    print(f'pkplato: {pkplato}')
-     
-    if pkplato != "":
-        
-        plato = get_object_or_404(Plato, id_plato=pkplato)
-        print(f'plato obj: {plato}')
-        
-        extraidoPlato = Plato.objects.get(id_plato=pkplato)
-        print(f'extraidoPlato: {extraidoPlato}')
-        
-        categoria = Categoria.objects.all()
-        print(f'categoria obj: {categoria}')
-        
-        proveedor = Proveedor.objects.all()
-        print(f'proveedor obj: {proveedor}')
-        #alumno=Alumno.objects.get(rut=pk)
-        
-
-        debug = {plato, categoria, proveedor}
-        print(f'esto es un debug de contenido: {debug}')
-        
-        
-        context={'listaPlatos':plato ,'listaCategorias':categoria, 'listaProveedores':proveedor}
-        #context={'listaAlumnos':alumno, 'listaGeneros':obtenerListaGeneros()}
-        #la lista listaAlumnos se llena con el objeto alumno y la lista listaGeneros se llena con el metodo obtenerListaGeneros(), mediante la listaAlumnos se renderea en el template alumnos_edit.html
-        
-        if plato:
-            return render(request, 'usuarios/plato_edit.html', context)
-        else:
-            context ={"mensaje":"Error al editar plato"}
-            return render(request, '/proveedor.html', context)
-    
     if request.method == 'POST':
-        platoEsPost(request)
-        # Redirect back to the page listing the publications
-        return redirect('proveedor')  # Replace with the actual name of your view
+        
+        print('REGISTRARPLATO: ESTO ES UN POST')
+        
+        return platoEsPost(request)
+    else:
+        print('REGISTRARPLATO: ESTO NO ES UN POST')
+        
+        plato = Plato.objects.all()
+        categorias = Categoria.objects.all()
+        proveedores = Proveedor.objects.all()
+        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores}
+        return render(request, 'usuarios/plato_add.html', context)
 
-    return render(request, 'usuarios/proveedor.html', {'plato': plato})
+def eliminarPlato(request, pkplato):
+    try:
+        plato = get_object_or_404(Plato, id_plato=pkplato)
+        plato.delete()
+        messages.success(request, 'Plato eliminado correctamente')
+    except Exception as e:
+        messages.error(request, f"Error al eliminar el plato: {e}")
+    return redirect('proveedor')
+
+def editarPlato(request, pkplato):
+    plato = get_object_or_404(Plato, id_plato=pkplato)
+    if request.method == 'POST':
+        return platoEsPost(request, plato)
+    else:
+        categorias = Categoria.objects.all()
+        proveedores = Proveedor.objects.all()
+        context = {'listaPlatos': plato, 'listaCategorias': categorias, 'listaProveedores': proveedores}
+        return render(request, 'usuarios/plato_edit.html', context)

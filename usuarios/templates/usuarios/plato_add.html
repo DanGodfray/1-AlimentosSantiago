@@ -11,7 +11,7 @@
     <div style="display: flex; flex-direction: column; align-items: center;">
         <h2>Crear publicacion</h2><br>
         
-        <form enctype="multipart/form-data" action="registrarPlato" method="POST" style="border-radius: 10px;border: 1px solid grey; padding: 10px; col-md-12">
+        <form enctype="multipart/form-data" action="{% url 'registrarPlato' %}" method="POST" style="border-radius: 10px;border: 1px solid grey; padding: 10px; col-md-12">
             <!--token de seguridad obligatorio para el traslado de datos-->
             {% csrf_token %}
             
@@ -31,24 +31,6 @@
                                     {% endif %}
                                 {% endfor %}
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="categoria" style="margin-bottom: 10px;">Otra categoria:</label>
-                        </td>
-                        <td>
-                            <input type="checkbox" id="categoria-checkbox" name="categoriaCheck" style="margin-bottom: 10px;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label id="otracat2" for="otracat" style="margin-bottom: 10px;">Nombre Categoria:</label>
-                        </td>
-                        <td>
-                            {% for categoria in listaCategorias  %}
-                                <input type="text" id="otracat" name="categoria" value="{{categoria.nom_categoria}}" required class="form-control" style="margin-bottom: 10px;">
-                            {% endfor %}
                         </td>
                     </tr>
                     <tr>
@@ -88,8 +70,10 @@
                             <label for="foto" style="margin-bottom: 10px;">Imagen:</label>
                         </td>
                         <td>
-                            <input type="file" name="foto" id="imagen" required class="form-control" style="margin-bottom: 10px;">
+                            <input type="file" name="foto" id="imagen" class="form-control" style="margin-bottom: 10px;">
                         </td>
+
+                        
                     </tr>
                     <tr>
                         <td>

@@ -15,11 +15,11 @@ urlpatterns = [
     
     path('proveedor/<str:prov>', views.listarPlatosPorProv, name='listarPlatosPorProv'),
     
-    path('registrarPlato', views.registrarPlato , name='registrarPlato'),
+    path('proveedor/registrar-plato/', views.registrarPlato , name='registrarPlato'),
     
-    path('proveedor/eliminar-publicacion/<str:pkplato>', views.eliminarPlato , name='eliminarPlato'),
+    path('proveedor/eliminar-publicacion/<str:pkplato>/', views.eliminarPlato , name='eliminarPlato'),
     
-    path('proveedor/estado-plato/<str:pk>', views.pausarPlato, name='pausarPlato'),
+    path('proveedor/estado-plato/<str:pk>/', views.pausarPlato, name='pausarPlato'),
     
     path('proveedor/editar-publicacion/<str:pkplato>', views.editarPlato , name='editarPlato'),
     

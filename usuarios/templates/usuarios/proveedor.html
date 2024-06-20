@@ -5,13 +5,20 @@
 
 <!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
 {% block container  %}
-<h1> Menu proveedor</h1>
-<p> aqui deberian mostrarse las publicaciones </p>
+<br>
+<br>
 
 <!-- CRUD for publicaciones -->
 <div class="container">
     <h2>Gestion de publicaciones</h2>
     <a href="{% url 'registrarPlato' %}" class="btn btn-primary">Crear Publicación</a>
+
+    <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+        {% if mensaje %}
+            {{mensaje}}
+        {% endif %}
+    </div>  
+
     <table class="table">
         <thead>
             <tr>
