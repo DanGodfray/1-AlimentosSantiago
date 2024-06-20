@@ -4,11 +4,13 @@
 
 
 {% block container %}
-<h1>Crear publicacion</h1>
+<br>
+<br>
 
 <div style="text-align: center" class="col-md-12">
     <div style="display: flex; flex-direction: column; align-items: center;">
         <h2>Crear publicacion</h2><br>
+        
         <form enctype="multipart/form-data" action="registrarPlato" method="POST" style="border-radius: 10px;border: 1px solid grey; padding: 10px; col-md-12">
             <!--token de seguridad obligatorio para el traslado de datos-->
             {% csrf_token %}
@@ -135,6 +137,12 @@
             </div>
 
         </form>
+
+        {% if mensaje %}
+            <div id="idMensajes" style="margin-bottom: 10px;"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+                {{mensaje}}
+            </div>
+        {% endif %}
 
         <a href="{% url 'proveedor' %}" class="btn btn-link">Volver</a>
 

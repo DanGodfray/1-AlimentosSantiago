@@ -19,6 +19,8 @@ urlpatterns = [
     
     path('proveedor/eliminar-publicacion/<str:pkplato>', views.eliminarPlato , name='eliminarPlato'),
     
-    path('proveedor/', views.pausarPlato, name='pausarPlato'),
+    path('proveedor/estado-plato/<str:pk>', views.pausarPlato, name='pausarPlato'),
+    
+    path('proveedor/editar-publicacion/<str:pkplato>', views.editarPlato , name='editarPlato'),
     
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
