@@ -1,0 +1,59 @@
+{% extends "alumnos/index.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>GENERO EDIT</title>
+</head>
+<body>
+
+    {% block container %}
+    <h1>GENERO EDIT</h1>
+
+    <div style="text-align: center">    
+        
+    {% if listaGeneros %} 
+    <!--si la lista de alumnos no esta vacia se muestra el formulario de edicion-->   
+        <h2>Formulario de EDIT de generos</h2>
+        
+        <form action="" method="POST">
+            
+            {% csrf_token %}
+
+            {{ listaForm.as_table }}
+
+            <input type="submit" name="opcion" value="Actualizar">
+
+        </form><br>
+    {% endif %}
+    <div id="idMensajes">
+        {% if mensaje %}
+
+            {{mensaje}}
+
+        {% endif %}
+    </div>
+        <br>
+
+        <a href="{% url 'crud_generos' %}">Volver</a>
+        <br>
+
+          
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
+        $(document).ready(function(){
+            $('#idMensajes').delay(3000).fadeOut("slow");
+        }); 
+    </script>
+
+    {% endblock %}
+</body>
+</html>
