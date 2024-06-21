@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from ecommerce.models import Categoria, Plato
-from .models import Proveedor, Venta
+from .models import Proveedor
 from django.core.paginator import Paginator
 from django.contrib import messages
 from datetime import date
@@ -34,7 +34,7 @@ def perfilProveedores(request, mensaje=None):
         context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, }
         return render(request, 'usuarios/proveedor.html', context)
     else:
-        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores}
+        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores }
         return render(request, 'usuarios/proveedor.html', context)
     
 
@@ -59,8 +59,7 @@ def pausarPlato(request, pk):
         messages.success(request, f"Plato {'activado' if plato.plato_activo else 'pausado'} correctamente.")
         mensaje = {'mensaje':f'El plato {plato.nom_plato} ha sido {"activado" if plato.plato_activo else "pausado"} correctamente.'}
         
-        perfilProveedores(request, mensaje)
-        #return redirect('proveedor')
+        return perfilProveedores(request, mensaje)
     
     return render(request, 'usuarios/proveedor.html', {'plato': plato})
 

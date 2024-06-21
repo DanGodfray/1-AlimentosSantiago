@@ -15,7 +15,7 @@
 
     <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
         {% if mensaje %}
-            {{mensaje}}
+            {{mensaje.mensaje}}
         {% endif %}
     </div>  
 
@@ -82,12 +82,6 @@
                 <td colspan="4">No hay publicaciones disponibles.</td>
             </tr>
             {% endfor %}
-
-            <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
-                {% if mensaje %}
-                    {{mensaje}}
-                {% endif %}
-            </div>  
         </tbody>
     </table>
     <br>
