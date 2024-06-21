@@ -1,0 +1,45 @@
+{% extends "usuarios/main.html" %}
+
+{% block container %}
+
+    {% if banderaOferta %}
+    <h1>Ofertas</h1>
+    {% else %}
+    <h1>Platos</h1>
+    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+
+            {% for plato in platos %}
+            {% if plato.plato_activo == True %}
+            <!-- Product card -->
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="container-items">
+                    <div class="item" style="width: 19rem; height: 38rem;">
+                        <div class="item-image">
+                            <figure>
+                                <img src="/media/{{ plato.foto_plato }}" alt="imagen del plato">
+                            </figure>
+                        </div>
+                        <div class="item-description">
+                            <h3>{{ plato.nom_plato }}</h3>
+                            <h6 style="margin: 0;">{{ plato.id_proveedor.nombre_proveedor }}</h6>
+                            <span id="info">{{ plato.descripcion_plato}}</span>
+                            {% if banderaOferta %}
+                            <p class="precio-item">{{ plato.precio_plato|floatformat }}</p>
+                            <h5>${{ plato.oferta_plato|floatformat }}</h5>
+                            {% else %}
+                            <p class="precio-item">{{ plato.precio_plato|floatformat }}</p>
+                            {% endif %}
+                            <a href=""></a>
+                            <button class="btn-add-cart">Añadir al carro</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock %}

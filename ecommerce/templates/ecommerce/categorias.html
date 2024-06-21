@@ -1,0 +1,34 @@
+{%  extends "usuarios/main.html"  %}
+<!-- extension de la pagina main donde se encuentra el navbar -->
+
+<!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
+{% block container  %}
+
+<h1> Categorias </h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Product card -->
+            {% for categoria in arregloCat %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="container-items">
+                    <div class="item" style="width: 19rem; height: 32rem;">
+                        <div class="item-image">
+                            <figure>
+                                <img src="/media/{{ categoria.foto_categoria }}" alt="imagen del plato">
+                            </figure>
+                        </div>
+                        <div class="item-description">
+                            <h3>{{ categoria.nom_categoria }}</h3>
+                            <span id="info">{{ categoria.des_categoria}}</span><br>
+                            <button class="btn-add-cart"><a href="{% url 'platosCategoriaSeleccionada' categoria.nom_categoria %}"> Ir a la categoria </a> </button>  
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            {%endfor%}
+         </div>
+    </div>
+
+
+{% endblock %}

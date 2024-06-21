@@ -1,0 +1,27 @@
+{%  extends "usuarios/main.html"  %}
+
+<!-- extension de la pagina main donde se encuentra el navbar -->
+
+<!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
+{% block container  %}
+<h1> Catalogos</h1>
+<p> aqui deberian mostrarse los catalogos </p>
+
+
+<!--
+<p>listado de platos<a href="% url 'platos' %}"> aqui</a></p>
+-->
+
+<h3> Categorias </h3>
+<p>listado de categoria<a href="{% url 'categorias' %}"> aqui</a></p>
+<br>    
+
+<h3> Ofertas </h3>
+    <p>listado de platos<a href="{% url 'platos-ofertas' %}"> aqui</a></p>
+<br>    
+    
+<h3> Todos los platos disponibles </h3>
+<p>listado de platos<a href="{% url 'platos'  %}"> aqui</a></p>
+<br>  
+    
+{% endblock %}
