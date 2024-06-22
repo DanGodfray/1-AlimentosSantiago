@@ -1,0 +1,43 @@
+{% extends 'cliente/main.html' %}
+
+{% block nav %}
+
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'catalogos' %}">Catalogo</a>
+</li>
+
+{% endblock %}
+
+{% block container %}
+<br>
+<br>
+<h1>Perfil cliente</h1>
+
+<p>Hace hambre?</p>
+
+<h3> Encuentra algo rico </h3>
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="height: 300px; width: 300px;">
+    <div class="carousel-inner">
+        {% for plato in listaPlatos %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ plato.foto_plato.url }}" class="d-block w-100" alt="Image {{ forloop.counter }}" style="max-height: 300px; width: auto;">
+            </div>
+        {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<a href="{% url 'catalogos' %}" class="btn btn-primary">Ver catálogos</a>
+
+{% endblock%}
+
+
+    

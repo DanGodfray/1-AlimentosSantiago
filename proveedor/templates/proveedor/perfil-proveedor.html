@@ -1,0 +1,25 @@
+{% extends 'cliente/main.html' %}
+
+{% block container %}
+    <!-- Add your profile content here -->
+    <br>
+    <br>
+    <h1>Perfil de proveedor</h1>
+    
+    <div class="container">
+        <a href="{% url 'publicaciones' %}" class="btn btn-primary">Publicaciones</a>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="#" alt="Foto de perfil" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <h2>{{ proveedor.nombre }}</h2>
+                <p><strong>Correo:</strong> {{ proveedor.correo }}</p>
+                <p><strong>Telefono:</strong> {{ proveedor.telefono }}</p>
+                <p><strong>Dirección:</strong> {{ proveedor.direccion }}</p>
+                <p><strong>Descripción:</strong> {{ proveedor.descripcion }}</p>
+            </div>
+
+        
+    </div>
+{% endblock %}

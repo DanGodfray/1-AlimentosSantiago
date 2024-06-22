@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Categoria, Plato
 from django.core.paginator import Paginator
 from django.contrib import messages
-from usuarios.models import Proveedor
+from proveedor.models import Proveedor
 
 
 

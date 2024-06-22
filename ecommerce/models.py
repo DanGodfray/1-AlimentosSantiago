@@ -1,7 +1,10 @@
 from django.db import models
 import datetime
 
-from usuarios.models import Cliente, Proveedor, Repartidor
+from proveedor.models import Proveedor
+from repartidor.models import Repartidor
+from cliente.models import Cliente
+
 
 class Categoria(models.Model):
     id_categoria = models.AutoField(db_column='idCategoria' ,primary_key=True)
@@ -17,7 +20,7 @@ class Categoria(models.Model):
 class Plato(models.Model):
     id_plato = models.AutoField(primary_key=True, blank=False, null=False)
     #se referencia id_categoria de la tabla categoria como fk para seleccionar categoria al momento de poblar la tabla plato
-    id_categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE, db_column='idCategoria',default=1)
+    id_categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE, db_column='idCategoria')
     nom_plato = models.CharField(max_length=100, blank=False, null=False)
     descripcion_plato = models.CharField(max_length=200, blank=True, null=True)
     precio_plato = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
@@ -33,19 +36,6 @@ class Plato(models.Model):
 
     def _str_(self):
         return self.nom_plato
-
-# Creación de la tabla Entregas
-class Entregas(models.Model):
-    id_entrega = models.AutoField(primary_key=True)
-    estado_entrega = models.CharField(max_length=100, blank=False, null=False)
-    comentario_entrega = models.CharField(max_length=100,blank=True, null=True)
-    fecha_entrega = models.DateField(blank=False, null=False)
-    hora_entrega = models.TimeField(blank=False, null=False)
-    
-    id_repartidor = models.ForeignKey(Repartidor, on_delete=models.CASCADE, db_column='id_repatidor')
-
-    def __str__(self):
-        return f"Entrega {self.id_entrega}"
 
 # Creación de la tabla Pedido
 class Pedido(models.Model):
@@ -66,7 +56,21 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f"Pedido {self.id_pedido}"
+    
+# Creación de la tabla Entregas
+class Entrega(models.Model):
+    id_entrega = models.AutoField(primary_key=True)
+    estado_entrega = models.CharField(max_length=100, blank=False, null=False)
+    comentario_entrega = models.CharField(max_length=100,blank=True, null=True)
+    fecha_entrega = models.DateField(blank=False, null=False)
+    hora_entrega = models.TimeField(blank=False, null=False)
+    
+    id_repartidor = models.ForeignKey(Repartidor, on_delete=models.CASCADE, db_column='id_repatidor')
 
+    def __str__(self):
+        return f"Entrega {self.id_entrega}"
+
+# Creación de la tabla Agenda
 class Agenda(models.Model):
     id_agenda = models.AutoField(primary_key=True)
     fecha_agendada= models.DateField(blank=False, null=False)
