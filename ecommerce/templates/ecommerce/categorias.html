@@ -4,31 +4,39 @@
 
 <!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
 {% block content  %}
-<h1> Categorias </h1>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <!-- Product card -->
-            {% for categoria in arregloCat %}
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="container-items">
-                    <div class="item" style="width: 19rem; height: 32rem;">
-                        <div class="item-image">
-                            <figure>
-                                <img src="/media/{{ categoria.foto_categoria }}" alt="imagen del plato">
-                            </figure>
-                        </div>
-                        <div class="item-description">
-                            <h3>{{ categoria.nom_categoria }}</h3>
-                            <span id="info">{{ categoria.des_categoria}}</span><br>
-                            <button class="btn-add-cart"><a href="{% url 'platosCategoriaSeleccionada' categoria.nom_categoria %}"> Ir a la categoria </a> </button>  
-                        </div>
-                    </div>
-                </div>    
-            </div>
-            {%endfor%}
-         </div>
+<header class="bg-danger py-4">
+    <div class="container px-2 px-lg-2 my-2">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Todas las categorias</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Por si te apetece algo en particular</p>
+        </div>
     </div>
+</header>
+
+<div class="container px-4 px-lg-5 mt-5">
+    <div class="row gx-4 gx-lg-6 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        {% for categoria in arregloCat %}
+        <div class="col mb-4">
+            <a class="" href="{% url 'platosCategoriaSeleccionada' categoria.nom_categoria %}" style="text-decoration: none; color: inherit;">
+            <div class="card h-100 item d-flex flex-column">
+                <div class="item-image text-center">
+                    <figure>
+                        <img class="card-img-top" src="/media/{{categoria.foto_categoria}}" alt="..." />
+                    </figure>
+                    <h6 style="margin: 0;text-align: center;">{{ plato.id_proveedor.nombre_proveedor }}</h6>
+                    <h4 class="fw-bolder">{{ categoria.nom_categoria }}</h4>
+
+                    <div class="card-body p-2 flex-grow-1">
+                        <p id="info" style="text-align: justify;">{{ categoria.des_categoria}}</p>
+                    </div> 
+                     
+                </div>
+            </div>
+            </a>  
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 
 {% endblock %}
