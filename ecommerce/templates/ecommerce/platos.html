@@ -1,39 +1,75 @@
-{% extends "cliente/main.html" %}
+{% extends "cliente/base.html" %}
 
-{% block container %}
-<br>
-<br>
-    {% if banderaOferta %}
-    <h1>Ofertas</h1>
-    {% else %}
-    <h1>Platos</h1>
+{% block content %}
+    {% if banderaOferta %}<!-- filtrar por ofertas -->
+    <header class="bg-danger py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Ofertas</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Disfruta estas papitas</p>
+            </div>
+        </div>
+    </header>
+    {% elif nomCategoria %}
+        <header class="bg-danger py-4">
+            <div class="container px-2 px-lg-2 my-2">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Variedades de {{nomCategoria}}</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Excelente eleccion</p>
+                </div>
+            </div>
+        </header>
+    {% else %}<!-- vista general -->
+    <header class="bg-danger py-4">
+        <div class="container px-2 px-lg-2 my-2">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">De todo un poco</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Toda la posibilidades en un solo lugar</p>
+            </div>
+        </div>
+    </header>
     {% endif %}
-    <div class="container">
-        <div class="row justify-content-center">
+    
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-6 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
             {% for plato in platos %}
             {% if plato.plato_activo == True %}
             <!-- Product card -->
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="container-items">
-                    <div class="item" style="width: 19rem; height: 38rem;">
-                        <div class="item-image">
-                            <figure>
-                                <img src="/media/{{ plato.foto_plato }}" alt="imagen del plato">
-                            </figure>
+            <div class="col mb-5">
+                <div class="card h-100 item d-flex flex-column">
+                    <!-- Product image-->
+                    {% if plato.descuento_activo %}
+                        <div class="badge bg-success text-white position-absolute" style="z-index: 10; top: 1rem; right: 1rem ; font-size: 1rem;">Oferta</div>
+                    {% endif %}
+                    <div class="item-image">
+                        <figure>
+                            <img class="card-img-top" src="/media/{{plato.foto_plato}}" alt="..." />
+                        </figure>
+                        <h6 style="margin: 0;text-align: center;">{{ plato.id_proveedor.nombre_proveedor }}</h6>
+                    </div>
+                    <!-- Product details-->
+                    <div class="card-body p-4 flex-grow-1">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h4 class="fw-bolder">{{ plato.nom_plato }}</h4>
+                              
                         </div>
-                        <div class="item-description">
-                            <h3>{{ plato.nom_plato }}</h3>
-                            <h6 style="margin: 0;">{{ plato.id_proveedor.nombre_proveedor }}</h6>
-                            <span id="info">{{ plato.descripcion_plato}}</span>
-                            {% if banderaOferta %}
-                            <p class="precio-item">{{ plato.precio_plato|floatformat }}</p>
+                        <p id="info" style="text-align: justify;">{{ plato.descripcion_plato}}</p> 
+                    </div>
+                    <!-- Product actions-->
+                    <div class="text-center">
+                        {% if plato.descuento_activo %}
+                            <span class="text-muted text-decoration-line-through">${{ plato.precio_plato|floatformat }}</span>
                             <h5>${{ plato.oferta_plato|floatformat }}</h5>
-                            {% else %}
-                            <p class="precio-item">{{ plato.precio_plato|floatformat }}</p>
-                            {% endif %}
+                        {% else %}
+                            <h5 class="precio-item">${{ plato.precio_plato|floatformat }}</h5>
+                        {% endif %}
                             <a href=""></a>
-                            <button class="btn-add-cart">Añadir al carro</button>
+                    </div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-auto">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" href="#">Agregar al carro</a>
                         </div>
                     </div>
                 </div>
@@ -42,5 +78,4 @@
             {% endfor %}
         </div>
     </div>
-    
 {% endblock %}

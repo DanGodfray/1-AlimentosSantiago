@@ -52,8 +52,8 @@ def platosCategoriaSeleccionada(request,cat):
     categoria = categoria.id_categoria
     #platos de la categoria seleccionada comparandola con el id de la categoria
     plato = Plato.objects.filter(id_categoria=categoria)
-    
-    context = {"platos":plato}
+    nomCategoria = cat
+    context = {"platos":plato, "nomCategoria":nomCategoria}
     return render(request, 'ecommerce/platos.html', context)
 
 #-------------------------FIN VIEWS DE CATALOGOS-------------------------
