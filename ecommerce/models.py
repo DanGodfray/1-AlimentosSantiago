@@ -43,9 +43,9 @@ class Pedido(models.Model):
     comentario_pedido = models.CharField(max_length=200, blank=False, null=False)
     
     estado_pedido = models.CharField(max_length=100, blank=False, null=False)
-    monto_venta = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
-    cant_venta = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
-    fecha_venta = models.DateField(blank=False, null=False)
+    monto_pedido = models.DecimalField(default=1,max_digits=10, decimal_places=2, blank=False, null=False)
+    cant_item = models.IntegerField(default=1,blank=False, null=False)
+    fecha_pdido = models.DateField(default=datetime.date.today)
     retiro_local = models.BooleanField(default=True)
 
     plato = models.ForeignKey('Plato', on_delete=models.CASCADE, db_column='id_plato')
@@ -55,7 +55,7 @@ class Pedido(models.Model):
 
 
     def __str__(self):
-        return f"Pedido {self.id_pedido}"
+        return f"Pedido {self.id_pedido} {self.estado_pedido}"
     
 # Creación de la tabla Entregas
 class Entrega(models.Model):
