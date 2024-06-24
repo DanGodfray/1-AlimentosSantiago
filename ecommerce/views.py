@@ -85,3 +85,9 @@ def registrarPlato(request):
         categoria = Categoria.objects.all()
         context = {"categorias":categoria}
         return render(request, 'ecommerce/publicaciones.html', context)
+    
+def checkout(request):
+    return render(request, 'ecommerce/checkout.html')
+
+def thankyou(request):
+    return render(request, 'ecommerce/thankyou.html')
