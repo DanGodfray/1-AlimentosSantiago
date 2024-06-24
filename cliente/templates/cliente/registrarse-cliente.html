@@ -16,36 +16,59 @@
     <div class="row gx-4 gx-lg-6 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
     <form method="POST" action="{% url 'registrarCliente' %}">
         {% csrf_token %}
-        <h2 style="text-align: center">Datos personales</h2>
         <form method="post">
             {% csrf_token %}
             <fieldset>
-                <legend>Datos Personales</legend>
-                {{ form.nombre_cliente.label_tag }}
-                {{ form.nombre_cliente }}
-                {{ form.apellido_cliente.label_tag }}
-                {{ form.apellido_cliente }}
-                {{ form.rut_cliente.label_tag }}
-                {{ form.rut_cliente }}
+                <legend style="text-align: center">Datos Personales</legend>
+                <div class="mb-2">
+                    {{ form.nombre_cliente.label_tag }}
+                    {{ form.nombre_cliente }}
+                </div>
+                <div class="mb-2">
+                    {{ form.apellido_cliente.label_tag }}
+                    {{ form.apellido_cliente }}
+                </div>
+                <div class="mb-2">
+                    {{ form.rut_cliente.label_tag }}
+                    {{ form.rut_cliente }}
+                </div>
+                <div class="mb-2">
                 {{ form.fono_cliente.label_tag }}
                 {{ form.fono_cliente }}
-                {{ form.empresa.label_tag }}
+                </div>
+                <div class="mb-2">
+                {{ form.empresa.label_tag }}                
                 {{ form.empresa }}
+                </div>
+                <div class="mb-2">
                 {{ form.direccion_cliente.label_tag }}
                 {{ form.direccion_cliente }}
+                </div>
             </fieldset>
+            <hr>
             <fieldset>
-                <legend>Datos de Inicio de Sesión</legend>
+                <legend style="text-align: center">Datos de Inicio de Sesión</legend>
+                <div class="mb-2">
                 {{ form.username.label_tag }}
                 {{ form.username }}
+                </div>
+                <div class="mb-2">
                 {{ form.email.label_tag }}
                 {{ form.email }}
+                </div>
+                <div class="mb-2">
                 {{ form.password1.label_tag }}
                 {{ form.password1 }}
+                </div>
+                <div class="mb-2">
                 {{ form.password2.label_tag }}
                 {{ form.password2 }}
+                </div>
             </fieldset>
-            <button type="submit">Registrarse</button>
+            <br>
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-danger">Ingresar</button>
+            </div>
         </form>
 </div>
 </section>

@@ -6,14 +6,14 @@ from . import views
 
 urlpatterns = [
     #se importa la vista home
-    path('', views.homeProveedor, name='homeProveedor'),
+    path('proveedor', views.homeProveedor, name='homeProveedor'),
     
     #alternativa a la vista home
     #path('main/', views.mainProveedor, name='mainProveedor'),
     
     path('login-proveedor/', views.loginProveedor, name='loginProveedor'),
     
-    path('proveedor/', views.perfilProveedores, name='proveedor'),
+    path('perfil/', views.perfilProveedores, name='proveedor'),
     
     path('proveedor/publicaciones/', views.publicacionProveedores, name='publicaciones'),
     

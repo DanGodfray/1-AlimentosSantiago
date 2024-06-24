@@ -14,8 +14,9 @@ from django.contrib.auth.decorators import login_required
 banderaPlatoActivo = True
 
 def homeProveedor(request):
+    proveedor=request.user
     context={} 
-    return render(request, 'proveedor/home.html')
+    return render(request, 'proveedor/home-proveedor.html')
 
 def mainProveedor(request):
     context={} 
