@@ -1,0 +1,50 @@
+{% extends "cliente/main.html" %}
+
+{% block container %}
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gracias por tu compra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        .checkout-product, .info-checkout-product {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .total-pagar {
+            font-weight: bold;
+        }
+        
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+         
+    </style>
+      </head>
+<body>
+    
+    
+    <h1>Gracias por tu compra!</h1>
+    <p>Tu pedido ha sido confirmado.</p>
+</body>
+
+{% endblock %}

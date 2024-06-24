@@ -34,7 +34,4 @@ urlpatterns = [
     path('home/', include('proveedor.urls')),
     path('home/', include('repartidor.urls')),
     
-    
-    
-    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
