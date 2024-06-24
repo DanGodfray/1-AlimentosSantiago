@@ -5,12 +5,14 @@ from . import views
 
 urlpatterns = [
     
-    path('', views.home, name='home'),
-    path('main/', views.main, name='main'),
+    path('', views.homeCliente, name='homeCliente'),
+    #path('main/', views.main, name='main'),
     
-    path('login/', views.loginCliente, name='loginCliente'),
+    path('login-cliente/', views.loginCliente, name='loginCliente'),
     path('logout/', views.logoutCliente, name='logoutCliente'), 
+    path('registrarse/', views.registrarCliente, name='registrarCliente'),
     
-    path('cliente/', views.perfilClientes, name='cliente'),
+    
+    path('cliente/', views.perfilClientes, name='perfilCliente'),
     
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

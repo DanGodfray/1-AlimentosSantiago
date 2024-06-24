@@ -16,20 +16,22 @@
         <link rel="stylesheet" href="{% static 'css/cart.css' %}">
         <link rel="stylesheet" href="{% static 'css/cards.css' %}">
         
+        {% block extra_head %}
+        {% endblock %}
     </head>
     <body>
-        {% include 'cliente/navbar.html' %}
-        {% if messages %}
+        {% include 'cliente/navbar.html' %}<!--navbar-->
+        {% if messages %}<!-- mensajes de error -->
             {% for message in messages %}
                 <div class="alert alert-warning alert-dismissible fade show " role="alert">
                     <li>{{ message }}</li>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
-        {% endif %}
-        {% block content %}
+        {% endif %}<!-- fin mensajes de error -->
+        {% block content %}<!--end page content-->
         {% endblock %}
-        <!--end page content-->
+        
         
         <!-- Footer-->
         <footer class="py-5 bg-danger">

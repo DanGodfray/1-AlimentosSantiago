@@ -15,7 +15,19 @@
     </div>
 </header>
 
-{% include 'ecommerce/catalogos.html' %}
+{% if user.is_authenticated and user.is_cliente %}
+    <div class="container">
+        <h2>Mis datos:</h2>
+        <p>Nombre: {{ user.cliente.nombre_cliente }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Dirección: {{ user.cliente.direccion }}</p>
+        <p>Teléfono: {{ user.cliente.telefono }}</p>
+        <p>Ciudad: {{ user.cliente.ciudad }}</p>
+        <!-- Add more fields as needed -->
+    </div>
+    </div>
+{% endif %}
+
 
 
 <br><br><br><br><br><br><br><br><br><br>

@@ -7,19 +7,39 @@ from django.contrib import messages
 from datetime import date
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 banderaPlatoActivo = True
 
-def home(request):
+def homeProveedor(request):
     context={} 
-    return render(request, 'cliente/home.html')
+    return render(request, 'proveedor/home.html')
 
-def main(request):
+def mainProveedor(request):
     context={} 
-    return render(request, 'cliente/main.html')
+    return render(request, 'proveedor/main.html')
 
+def loginProveedor(request):
+    context={} 
+    if request.method == 'POST':
+        username = request.POST.get('usernameCliente')
+        password = request.POST.get('passwordCliente')
+        proveedor = authenticate(request, username=username, password=password)
+        if proveedor is not None:
+            print(f'Proveedor: {proveedor} autenticado')
+            login(request, proveedor)
+            messages.success(request, f'Bienvenido {username}!')
+            return redirect('home')
+        else:
+            print(f'cliente: {proveedor} no autenticado')
+            messages.error(request, 'Usuario o contraseña incorrecta, vuelva a intentarlo.')
+            return redirect('loginProveedor')
+    else:
+        return render(request, 'proveedor/login-proveedor.html',{})
+
+@login_required
 def perfilProveedores(request, mensaje=None):
     plato = Plato.objects.all()
     categorias = Categoria.objects.all()

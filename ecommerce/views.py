@@ -12,10 +12,10 @@ from proveedor.models import Proveedor
 #-------------------------VIEWS DE CATALOGOS-------------------------
 
 def listarCatalogos(request):
-    categoria = Categoria.objects.all()
-    plato = Plato.objects.all()
-    oferta = Plato.objects.filter(descuento_activo=True)
-    context = {"categorias":categoria, "platos":plato, "ofertas":oferta}
+    categoria = Categoria.objects.order_by('?').first()
+    plato = Plato.objects.order_by('?').first()
+    oferta = Plato.objects.filter(descuento_activo=True).order_by('?').first()
+    context = {"categorias": [categoria], "platos": [plato], "ofertas": [oferta]}
     return render(request, 'ecommerce/catalogos.html', context)
 
 banderaCatActivo = False
@@ -53,7 +53,7 @@ def platosCategoriaSeleccionada(request,cat):
     #platos de la categoria seleccionada comparandola con el id de la categoria
     plato = Plato.objects.filter(id_categoria=categoria)
     nomCategoria = cat
-    context = {"platos":plato, "nomCategoria":nomCategoria}
+    context = {"platos":plato}
     return render(request, 'ecommerce/platos.html', context)
 
 #-------------------------FIN VIEWS DE CATALOGOS-------------------------

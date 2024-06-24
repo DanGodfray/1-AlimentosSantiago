@@ -4,10 +4,10 @@
         {% include 'cliente/navbar.html' %}
 
         {% block content %}
-        <header class="bg-danger py-2">
-            <div class="container px-4 px-lg-5 my-5">
+        <header class="bg-danger py-4">
+            <div class="container px-2 px-lg-2 my-2">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Bienvenido</h1>
+                    <h1 class="display-4 fw-bolder">Bienvenido a AlimentoSantiago</h1>
                     <p class="lead fw-normal text-white-50 mb-0">¿Hace hambre?</p>
                 </div>
             </div>
@@ -33,7 +33,6 @@
                                         <div class="text-center">
                                             <!-- Product name-->
                                             <h4 class="fw-bolder">{{ plato.nom_plato }}</h4>
-                                              
                                         </div>
                                         <p id="info" style="text-align: justify;">{{ plato.descripcion_plato}}</p> 
                                     </div>
@@ -45,7 +44,7 @@
                                         {% else %}
                                             <h5 class="precio-item">${{ plato.precio_plato|floatformat }}</h5>
                                         {% endif %}
-                                            <a href=""></a>
+                                        <a href=""></a>
                                     </div>
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-auto">
                                         <div class="text-center">
