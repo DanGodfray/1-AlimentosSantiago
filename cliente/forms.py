@@ -1,34 +1,39 @@
 from django import forms
-from .models import Cliente
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Cliente
 
-class ClienteForm(forms.ModelForm):
-    
-    
-	password_cliente = forms.CharField(widget=forms.PasswordInput)
-	
-	class Meta:
-		model = Cliente
-		fields = [
-			'nombre_cliente', 'rut_cliente', 'saldo_cliente', 'empresa',
-			'apellido_cliente', 'fono_cliente'
-		]
-		
-	def __init__(self, *args, **kwargs):
-		super(ClienteForm, self).__init__(*args, **kwargs)
+class ClienteRegistroForm(UserCreationForm):
+    rut_cliente = forms.CharField(label="RUT Cliente", max_length=12, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'RUT Cliente'}))
+    fono_cliente = forms.DecimalField(label="Fono Cliente", max_digits=10, decimal_places=2, required=True, widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Fono Cliente'}))
+    empresa = forms.CharField(label="Empresa", max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Empresa'}))
+    direccion_cliente = forms.CharField(label="Dirección Cliente", max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Dirección Cliente'}))
+    username = forms.CharField(label="Usuario", max_length=150, help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Usuario'}))
+    password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}))
+    password2 = forms.CharField(label="Confirmar Contraseña", widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar Contraseña'}))
+    email = forms.EmailField(label="Correo Electrónico", max_length=254, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo Electrónico'}))
+    nombre_cliente = forms.CharField(label="Nombre", max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}))
+    apellido_cliente = forms.CharField(label="Apellido", max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}))
 
-		self.fields['username'].widget.attrs['class'] = 'form-control'
-		self.fields['username'].widget.attrs['placeholder'] = 'User Name'
-		self.fields['username'].label = ''
-		self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2', 'email', 'nombre_cliente', 'apellido_cliente')
 
-		self.fields['password1'].widget.attrs['class'] = 'form-control'
-		self.fields['password1'].widget.attrs['placeholder'] = 'Password'
-		self.fields['password1'].label = ''
-		self.fields['password1'].help_text = '<ul class="form-text text-muted small"><li>Your password can\'t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can\'t be a commonly used password.</li><li>Your password can\'t be entirely numeric.</li></ul>'
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.first_name = self.cleaned_data['nombre_cliente']
+        user.last_name = self.cleaned_data['apellido_cliente']
+        if commit:
+            user.save()
 
-		self.fields['password2'].widget.attrs['class'] = 'form-control'
-		self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
-		self.fields['password2'].label = ''
-		self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
+            cliente = Cliente.objects.create(
+                user=user,
+                nombre_cliente=user.first_name,
+                apellido_cliente=user.last_name,
+                rut_cliente=self.cleaned_data['rut_cliente'],
+                fono_cliente=self.cleaned_data['fono_cliente'],
+                empresa=self.cleaned_data['empresa'],
+                direccion_cliente=self.cleaned_data['direccion_cliente']
+            )
+
+        return user

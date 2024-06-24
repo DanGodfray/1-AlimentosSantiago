@@ -12,10 +12,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from ecommerce import views
-from .forms import ClienteForm
+#from .forms import ClienteForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from .forms import ClienteRegistroForm
 
 # Create your views here.
 
@@ -61,6 +62,26 @@ def logoutCliente(request):
     except:
         messages.error(request, f'Error al cerrar sesión.')
         return redirect('homeCliente')
+ 
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib import messages
+from .forms import ClienteRegistroForm
+
+def registrarCliente(request):
+    if request.method == 'POST':
+        form = ClienteRegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Usuario registrados exitosamente.')
+            return redirect('perfilCliente')  # Reemplaza 'perfilCliente' con la URL de redirección deseada
+        else:
+            messages.error(request, 'Error: no se pudo registrar el usuario.')
+    else:
+        form = ClienteRegistroForm()
+
+    return render(request, 'cliente/registrarse-cliente.html', {'form': form})
     
 #def registrarCliente(request):
     context={} 
@@ -93,7 +114,7 @@ def logoutCliente(request):
     else:
         return render(request, 'cliente/registrarse-cliente.html',{})    
     
-def registrarCliente(request):
+#def registrarCliente(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
         if form.is_valid():

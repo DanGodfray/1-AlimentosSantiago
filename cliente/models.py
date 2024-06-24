@@ -23,4 +23,4 @@ class Cliente(models.Model):
     #password_cliente = models.CharField(max_length=100, blank=False, null=False)
     
     def __str__(self):
-        return f'{self.nombre_cliente}{self.apellido_cliente}'
+        return f'{self.nombre_cliente} {self.apellido_cliente}'

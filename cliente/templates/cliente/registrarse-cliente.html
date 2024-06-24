@@ -17,49 +17,36 @@
     <form method="POST" action="{% url 'registrarCliente' %}">
         {% csrf_token %}
         <h2 style="text-align: center">Datos personales</h2>
-        <div class="mb-3">
-            <label for="exampleInputNombre" class="form-label">Nombre</label>
-            <input name="nombreCliente" placeholder="Ingrese su nombre" type="text" class="form-control" id="exampleInputNombre">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputApellido" class="form-label">Apellido</label>
-            <input name="apellidoCliente" placeholder="Ingrese su apellido" type="text" class="form-control" id="exampleInputApellido">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputEmail" class="form-label">Email</label>
-            <input name="emailCliente" placeholder="Ingrese su email" type="email" class="form-control" id="exampleInputEmail">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputTelefono" class="form-label">Teléfono</label>
-            <input name="telefonoCliente" placeholder="Ingrese su teléfono" type="text" class="form-control" id="exampleInputTelefono">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputDireccion" class="form-label">Dirección</label>
-            <input name="direccionCliente" placeholder="Ingrese su dirección" type="text" class="form-control" id="exampleInputDireccion">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputDireccion" class="form-label">Empresa afiliada</label>
-            <input name="direccionCliente" placeholder="Ingrese el nombre de la empresa" type="text" class="form-control" id="exampleInputDireccion">
-        </div>
-
-        <hr>
-        <h2 style="text-align: center">Inicio de sesión</h2>
-        <div class="mb-3">
-            <label for="exampleInputNombre" class="form-label">Nombre de usuario</label>
-            <input name="nombreCliente" placeholder="Ingrese nombre para iniciar sesión" type="text" class="form-control" id="exampleInputNombre">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-            <input name="passwordCliente" placeholder="Ingrese su contraseña" type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword2" class="form-label">Confirmar contraseña</label>
-            <input name="confirmPasswordCliente" placeholder="Confirme su contraseña" type="password" class="form-control" id="exampleInputPassword2">
-        </div>
-        <div class="mb-3 text-center">
-            <button type="submit" class="btn btn-danger">Ingresar</button>
-        </div>
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Datos Personales</legend>
+                {{ form.nombre_cliente.label_tag }}
+                {{ form.nombre_cliente }}
+                {{ form.apellido_cliente.label_tag }}
+                {{ form.apellido_cliente }}
+                {{ form.rut_cliente.label_tag }}
+                {{ form.rut_cliente }}
+                {{ form.fono_cliente.label_tag }}
+                {{ form.fono_cliente }}
+                {{ form.empresa.label_tag }}
+                {{ form.empresa }}
+                {{ form.direccion_cliente.label_tag }}
+                {{ form.direccion_cliente }}
+            </fieldset>
+            <fieldset>
+                <legend>Datos de Inicio de Sesión</legend>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+            </fieldset>
+            <button type="submit">Registrarse</button>
+        </form>
 </div>
 </section>
 {% endblock %}
