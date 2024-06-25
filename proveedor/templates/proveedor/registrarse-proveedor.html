@@ -1,42 +1,38 @@
-{% extends "cliente/base.html" %}
+{% extends "proveedor/base-proveedor.html" %}
 {% load static %}
 
 {% block content %}
 
-<header class="bg-danger py-5">
+<header class="bg-primary py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Resgistrarse</h1>
-            <p class="lead fw-normal text-white-50 mb-0">¿Eres nuevo? resgistrate y disfruta de lo bueno</p>
+            <h1 class="display-4 fw-bolder">Resgistrate</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Y se parte de AlimentoSantiago</p>
         </div>
         </div>
     </header>
 
     <section class="py-3">
     <div class="row gx-4 gx-lg-6 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-    <form method="POST" action="{% url 'registrarCliente' %}">
+    <form method="POST" action="{% url 'registrarProveedor' %}">
         {% csrf_token %}
             <fieldset>
-                <legend style="text-align: center">Datos Personales</legend>
+                <legend style="text-align: center">Datos de gestion</legend>
                 <div class="mb-2">
-                    {{ form.nombre_cliente.label_tag }}
-                    {{ form.nombre_cliente }}
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
                 </div>
                 <div class="mb-2">
-                    {{ form.apellido_cliente.label_tag }}
-                    {{ form.apellido_cliente }}
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
                 </div>
                 <div class="mb-2">
-                    {{ form.rut_cliente.label_tag }}
-                    {{ form.rut_cliente }}
+                {{ form.fono_proveedor.label_tag }}
+                {{ form.fono_proveedor }}
                 </div>
                 <div class="mb-2">
-                {{ form.fono_cliente.label_tag }}
-                {{ form.fono_cliente }}
-                </div>
-                <div class="mb-2">
-                {{ form.empresa.label_tag }}                
-                {{ form.empresa }}
+                {{ form.nombre_proveedor.label_tag }}                
+                {{ form.nombre_proveedor }}
                 </div>
                 <div class="mb-2">
                 {{ form.direccion_cliente.label_tag }}
@@ -51,8 +47,8 @@
                 {{ form.username }}
                 </div>
                 <div class="mb-2">
-                {{ form.email.label_tag }}
-                {{ form.email }}
+                {{ form.email_proveedor.label_tag }}
+                {{ form.email_proveedor }}
                 </div>
                 <div class="mb-2">
                 {{ form.password1.label_tag }}
@@ -65,9 +61,9 @@
             </fieldset>
             <br>
             <div class="mb-3 text-center">
-                <button type="submit" class="btn btn-danger">Ingresar</button>
+                <button type="submit" class="btn btn-primary">Ingresar</button>
             </div>
-    </form>
+        </form>
 </div>
 </section>
 {% endblock %}

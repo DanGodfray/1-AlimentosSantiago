@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from ecommerce import views
-#from .forms import ClienteForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
@@ -62,11 +61,6 @@ def logoutCliente(request):
     except:
         messages.error(request, f'Error al cerrar sesión.')
         return redirect('homeCliente')
- 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from django.contrib import messages
-from .forms import ClienteRegistroForm
 
 def registrarCliente(request):
     if request.method == 'POST':

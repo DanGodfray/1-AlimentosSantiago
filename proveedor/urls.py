@@ -11,7 +11,9 @@ urlpatterns = [
     #alternativa a la vista home
     #path('main/', views.mainProveedor, name='mainProveedor'),
     
-    path('login-proveedor/', views.loginProveedor, name='loginProveedor'),
+    path('login/', views.loginProveedor, name='loginProveedor'),
+    path('logout/', views.logoutProveedor, name='logoutProveedor'),
+    path('registrar/', views.registrarProveedor, name='registrarProveedor'),
     
     path('perfil/', views.perfilProveedores, name='proveedor'),
     

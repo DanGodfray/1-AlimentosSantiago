@@ -9,6 +9,11 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from .forms import ProveedorRegistroForm
+
 # Create your views here.
 
 banderaPlatoActivo = True
@@ -21,6 +26,8 @@ def homeProveedor(request):
 def mainProveedor(request):
     context={} 
     return render(request, 'proveedor/main.html')
+
+#----------------------------------autenticacion de proveedor
 
 def loginProveedor(request):
     context={} 
@@ -39,6 +46,43 @@ def loginProveedor(request):
             return redirect('loginProveedor')
     else:
         return render(request, 'proveedor/login-proveedor.html',{})
+    
+def registrarProveedor(request):
+    if request.method == 'POST':
+        form = ProveedorRegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Proveedor registrado exitosamente.')
+            return redirect('proveedor')
+        else:
+            #si ocurrio un error se elimina el usuario creado
+            username = request.POST.get('username')  # Assuming 'username' is a required field
+            if username:
+                try:
+                    user = User.objects.get(username=username)
+                    user.delete()
+                    messages.error(request, 'Error: no se pudo registrar el usuario.')
+                except User.DoesNotExist:
+                    pass  #si el usuario no esta creado
+            else:
+                messages.error(request, 'Error: no se pudo registrar el usuario.')
+    else:
+        form = ProveedorRegistroForm()
+    return render(request, 'proveedor/registrarse-proveedor.html', {'form': form})
+    
+@login_required
+def logoutProveedor(request):
+    context={} 
+    try:
+        logout(request)
+        messages.success(request, f'Se ha cerrado sesión correctamente.')
+        redirect('proveedor')
+    except Exception as e:
+        messages.error(request, f'Error al cerrar sesión: {e}')
+    return redirect('proveedor')
+
+#----------------------------------fin autenticacion de proveedor
 
 @login_required
 def perfilProveedores(request, mensaje=None):
