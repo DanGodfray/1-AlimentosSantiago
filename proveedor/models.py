@@ -10,7 +10,9 @@ class Proveedor(models.Model):
 
         fono_proveedor = models.DecimalField(max_digits=10,decimal_places=2,max_length=15, blank=False, null=False)
         
+        def __str__(self):
+            return f'{self.nombre_proveedor}'
 
-        def save(self, *args, **kwargs):
-            self.nombre_proveedor = self.id_proveedor.nombre_proveedor
-            super().save(*args, **kwargs)
+        #def save(self, *args, **kwargs):
+            #self.nombre_proveedor = self.id_proveedor.nombre_proveedor
+            #super().save(*args, **kwargs)

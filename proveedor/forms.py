@@ -25,17 +25,13 @@ class ProveedorRegistroForm(UserCreationForm):
         user.email = self.cleaned_data['email_proveedor']
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+        
         if commit:
             user.save()
-
-            proveedor = Proveedor.objects.create(
+            Proveedor.objects.create(
                 user=user,
-                #nombre_persona=user.first_name,
-                #apellido_persona=user.last_name,
                 nombre_proveedor=self.cleaned_data['nombre_proveedor'],
-                fono_proveedor=self.cleaned_data['fono_proveedor'],
-                #empresa=self.cleaned_data['empresa'],
-                #direccion_cliente=self.cleaned_data['direccion_cliente']
+                fono_proveedor=self.cleaned_data['fono_proveedor']
             )
 
         return user

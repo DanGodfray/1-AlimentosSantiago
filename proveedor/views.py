@@ -114,13 +114,20 @@ def perfilProveedores(request, mensaje=None):
 
 #metodo para listar todos los platos en el perfil del proveedor, y almacena un mensaje
 def publicacionProveedores(request, mensaje=None):
-    plato = Plato.objects.all()
+    
+    # Get del usuario logueado
+    user = request.user
+        
+    # Get del proveedor logueado para asignarle el plato
+    proveedores = get_object_or_404(Proveedor, user=user)
+    
+    plato = Plato.objects.filter(id_proveedor=proveedores.id_proveedor)
     categorias = Categoria.objects.all()
-    proveedores = Proveedor.objects.all()
+    #proveedores = Proveedor.objects.all()
 
     for p in plato:
         if not p.foto_plato:
-            p.foto_plato = 'img/Ui-12-1024.webp'
+            p.foto_plato = 'img/    Ui-12-1024.webp'
 
     if mensaje is not None:
         context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, }
@@ -132,6 +139,7 @@ def publicacionProveedores(request, mensaje=None):
 
 #metodo para listar los platos por proveedor en el perfil del proveedor
 def listarPlatosPorProv(request, prov):
+    
     proveedor = get_object_or_404(Proveedor, nombre_proveedor=prov.replace("-", " "))
     plato = Plato.objects.filter(id_proveedor=proveedor.id_proveedor)
     
@@ -169,10 +177,10 @@ def platoEsPost(request, plato=None):
         descuento = request.POST.get('descuento_activo') == 'on'
         plato_activo = request.POST.get('plato_activo') == 'on'
 
-        # Get the logged-in User instance
+        # Get del usuario logueado
         user = request.user
         
-        # Get the Proveedor associated with the logged-in User
+        # Get del proveedor logueado para asignarle el plato
         proveedor = get_object_or_404(Proveedor, user=user)
 
         objetoCategoria = get_object_or_404(Categoria, nom_categoria=categoria)
