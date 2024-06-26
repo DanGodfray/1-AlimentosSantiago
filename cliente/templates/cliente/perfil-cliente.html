@@ -20,14 +20,18 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header bg-dark text-white">
-                    <h5 class="card-title">Perfil de Cliente</h5>
+                    <h5 class="card-title">Perfil</h5>
                 </div>
                 <div class="card-body">
+                    <div class="form-group">
+                        <label for="nombre">Saldo actual:</label>
+                        <p style="display: inline-block; margin-left: 10px;">${{ user.cliente.saldo_cliente|floatformat }}</p>
+                    </div>
                     <form method="post">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="nombre">Nombre:</label>
-                            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ cliente.nombre_cliente }}" readonly>
+                            <label for="nombre">Nombre completo:</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ user.cliente.nombre_cliente }} {{ user.cliente.apellido_cliente }}" placeholder="{{ user.cliente.nombre_cliente }} {{ user.cliente.apellido_cliente }}" readonly>
                         </div>
                         <div class="form-group">
                             <label for="email">Correo Electrónico:</label>

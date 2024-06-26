@@ -54,7 +54,7 @@ def loginCliente(request):
             else:
                 messages.error(request, 'Usuario invalido.')
         else:
-            messages.error(request, 'Contraseña o usuario invalido, intententelo mas tarde.')
+            messages.error(request, 'Contraseña o usuario incorrecta, intententelo mas tarde.')
     return render(request, 'cliente/login-cliente.html',{})
 
 @login_required
@@ -121,7 +121,7 @@ def perfilClientes(request, mensaje=None):
                 p.foto_plato = 'img/Ui-12-1024.webp'
 
         if mensaje is not None:
-            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, "listaRepartidores": repartidores, "listaClientes": clientes,'mensaje': mensaje, 'userCliente': userCliente}
+            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, "listaRepartidores": repartidores, "listaClientes": clientes,'mensaje': mensaje, 'userCliente': user}
             return render(request, 'cliente/perfil-cliente.html', context)
         else:
             context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, "listaRepartidores": repartidores, "listaClientes": clientes, 'userCliente': user}
