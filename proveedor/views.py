@@ -20,32 +20,32 @@ banderaPlatoActivo = True
 
 def homeProveedor(request):
     proveedor=request.user
-    context={} 
-    return render(request, 'proveedor/home-proveedor.html')
+    context={'proveedor':proveedor} 
+    return render(request, 'proveedor/home-proveedor.html', context)
 
-def mainProveedor(request):
+#def mainProveedor(request):
     context={} 
     return render(request, 'proveedor/main.html')
 
 #----------------------------------autenticacion de proveedor
 
 def loginProveedor(request):
-    context={} 
     if request.method == 'POST':
-        username = request.POST.get('usernameCliente')
-        password = request.POST.get('passwordCliente')
+        username = request.POST.get('usernameProveedor')
+        password = request.POST.get('passwordProveedor')
         proveedor = authenticate(request, username=username, password=password)
+        
         if proveedor is not None:
             print(f'Proveedor: {proveedor} autenticado')
             login(request, proveedor)
             messages.success(request, f'Bienvenido {username}!')
-            return redirect('home')
+            return redirect('proveedor')
         else:
-            print(f'cliente: {proveedor} no autenticado')
+            print(f'proveedor: {proveedor} no autenticado')
             messages.error(request, 'Usuario o contraseña incorrecta, vuelva a intentarlo.')
             return redirect('loginProveedor')
     else:
-        return render(request, 'proveedor/login-proveedor.html',{})
+        return render(request, 'proveedor/login-proveedor.html',{})    
     
 def registrarProveedor(request):
     if request.method == 'POST':
@@ -77,29 +77,40 @@ def logoutProveedor(request):
     try:
         logout(request)
         messages.success(request, f'Se ha cerrado sesión correctamente.')
-        redirect('proveedor')
+        redirect('homeProveedor')
     except Exception as e:
         messages.error(request, f'Error al cerrar sesión: {e}')
-    return redirect('proveedor')
+    return redirect('homeProveedor')
 
 #----------------------------------fin autenticacion de proveedor
 
 @login_required
 def perfilProveedores(request, mensaje=None):
+    
+    try:
+        proveedores = Proveedor.objects.get(user=request.user)
+    except Proveedor.DoesNotExist:
+        messages.error(request, 'El usuario de proveedor es incorrecto o no existe. intentelo denuevo o registrese como proveedor.')
+        return redirect('homeProveedor') 
+    
     plato = Plato.objects.all()
     categorias = Categoria.objects.all()
-    proveedores = Proveedor.objects.all()
+    proveedores = Proveedor.objects.get(user=request.user)
 
-    for p in plato:
-        if not p.foto_plato:
-            p.foto_plato = 'img/Ui-12-1024.webp'
+    if proveedores:
+        for p in plato:
+            if not p.foto_plato:
+                p.foto_plato = 'img/Ui-12-1024.webp'
 
-    if mensaje is not None:
-        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, }
-        return render(request, 'proveedor/perfil-proveedor.html', context)
+        if mensaje is not None:
+            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, }
+            return render(request, 'proveedor/perfil-proveedor.html', context)
+        else:
+            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores }
+            return render(request, 'proveedor/perfil-proveedor.html', context)
     else:
-        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores }
-        return render(request, 'proveedor/perfil-proveedor.html', context)
+        messages.error(request, 'Proveedor no encontrado')
+        return redirect('proveedor')
 
 #metodo para listar todos los platos en el perfil del proveedor, y almacena un mensaje
 def publicacionProveedores(request, mensaje=None):
@@ -137,7 +148,7 @@ def pausarPlato(request, pk):
     if request.method == 'POST':
         plato.plato_activo = not plato.plato_activo
         plato.save()
-        messages.success(request, f"Plato {'activado' if plato.plato_activo else 'pausado'} correctamente.")
+        messages.success(request, f"Plato '{plato.nom_plato}' {'ACTIVADO' if plato.plato_activo else 'PAUSADO'} correctamente.")
         mensaje = {'mensaje':f'El plato {plato.nom_plato} ha sido {"activado" if plato.plato_activo else "pausado"} correctamente.'}
         
         return publicacionProveedores(request, mensaje)
@@ -146,66 +157,69 @@ def pausarPlato(request, pk):
 
 #metodo que rellena la tabla plato con los datos ingresados por el proveedor
 def platoEsPost(request, plato=None):
-    categoria = request.POST.get('categoria')
-    nombre = request.POST.get('nombre')
-    descripcion = request.POST.get('descripcion')
-    precio = request.POST.get('precio')
-    oferta = request.POST.get('oferta')
-    foto = request.FILES.get('foto')
-    proveedor = request.POST.get('proveedor')
-    fecha = date.today()
+    if request.method == 'POST':
+        categoria = request.POST.get('categoria')
+        nombre = request.POST.get('nombre')
+        descripcion = request.POST.get('descripcion')
+        precio = request.POST.get('precio')
+        oferta = request.POST.get('oferta')
+        foto = request.FILES.get('foto')
+        fecha = date.today()
 
-    descuento = request.POST.get('descuento_activo') == 'on'
-    plato_activo = request.POST.get('plato_activo') == 'on'
+        descuento = request.POST.get('descuento_activo') == 'on'
+        plato_activo = request.POST.get('plato_activo') == 'on'
 
-    objetoProveedor = get_object_or_404(Proveedor, nombre_proveedor=proveedor)
-    objetoCategoria = get_object_or_404(Categoria, nom_categoria=categoria)
-    
-    #muestra la imagen ya subida por el proveedor
-    if foto:
-        fs = FileSystemStorage()
-        filename = fs.save(foto.name, foto)
-        uploaded_file_url = fs.url(filename)
-    else:
-        uploaded_file_url = None
-    
-    if plato is None:
-        # Create new Plato
-        plato = Plato(
-            id_categoria=objetoCategoria,
-            nom_plato=nombre,
-            descripcion_plato=descripcion,
-            precio_plato=precio,
-            oferta_plato=oferta,
-            foto_plato=foto if uploaded_file_url else None,
-            fecha_publicacion=fecha,
-            descuento_activo=descuento,
-            plato_activo=plato_activo,
-            id_proveedor=objetoProveedor
-        )
-        plato.save()
-        messages.success(request, "Plato registrado correctamente.")
+        # Get the logged-in User instance
+        user = request.user
         
-        return redirect('registrarPlato')
-    else:
-        # Update existing Plato
-        plato.id_categoria = objetoCategoria
-        plato.nom_plato = nombre
-        plato.descripcion_plato = descripcion
-        plato.precio_plato = precio
-        plato.oferta_plato = oferta
-        if uploaded_file_url:
-            plato.foto_plato = foto
-        plato.fecha_publicacion = fecha
-        plato.descuento_activo = descuento
-        plato.plato_activo = plato_activo
-        plato.id_proveedor = objetoProveedor
-        plato.save()
-        messages.success(request, "Plato editado correctamente.")
-        mensaje = {'mensaje': 'Plato editado correctamente.'}
-        return redirect('publicaciones')
+        # Get the Proveedor associated with the logged-in User
+        proveedor = get_object_or_404(Proveedor, user=user)
 
+        objetoCategoria = get_object_or_404(Categoria, nom_categoria=categoria)
+
+        # Save the uploaded image
+        if foto:
+            fs = FileSystemStorage()
+            filename = fs.save(foto.name, foto)
+            uploaded_file_url = fs.url(filename)
+        else:
+            uploaded_file_url = None
         
+        if plato is None:
+            # Create new Plato
+            plato = Plato(
+                id_categoria=objetoCategoria,
+                nom_plato=nombre,
+                descripcion_plato=descripcion,
+                precio_plato=precio,
+                oferta_plato=oferta,
+                foto_plato=foto if uploaded_file_url else None,
+                fecha_publicacion=fecha,
+                descuento_activo=descuento,
+                plato_activo=plato_activo,
+                id_proveedor=proveedor
+            )
+            plato.save()
+            messages.success(request, "Plato registrado correctamente.")
+            
+            return redirect('registrarPlato')
+        else:
+            # Update existing Plato
+            plato.id_categoria = objetoCategoria
+            plato.nom_plato = nombre
+            plato.descripcion_plato = descripcion
+            plato.precio_plato = precio
+            plato.oferta_plato = oferta
+            if uploaded_file_url:
+                plato.foto_plato = foto
+            plato.fecha_publicacion = fecha
+            plato.descuento_activo = descuento
+            plato.plato_activo = plato_activo
+            plato.id_proveedor = proveedor
+            plato.save()
+            messages.success(request, "Plato editado correctamente.")
+            
+            return redirect('publicaciones')
 
 def registrarPlato(request):
     if request.method == 'POST':

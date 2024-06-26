@@ -9,7 +9,7 @@ class ProveedorRegistroForm(UserCreationForm):
     fono_proveedor = forms.DecimalField(label="Telefono contacto", max_digits=10, decimal_places=2, required=True, widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Telefono contacto del proveedor'}))
     
     #direccion_cliente = forms.CharField(label="Dirección Cliente", max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Dirección Cliente'}))
-    username = forms.CharField(label="Usuario", max_length=150, help_text="Obligatorio. debe contener menos de 150 characters or fewer. Letters, digits and @/./+/-/_ only.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese nombre de usuario para iniciar sesion'}))
+    username = forms.CharField(label="Usuario", max_length=150, help_text="Obligatorio. debe contener menos de 150 characters or fewer. Letters, digits and @/./+/-/_ only.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese usuario para iniciar sesion'}))
     password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña'}))
     password2 = forms.CharField(label="Confirmar Contraseña", widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar Contraseña'}))
     email_proveedor = forms.EmailField(label="Correo Electrónico", max_length=254, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo Electrónico'}))

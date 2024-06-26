@@ -1,16 +1,18 @@
-{%  extends "cliente/main.html"  %}
+{%  extends "proveedor/base-proveedor.html"  %}
 {% load static %}
 
 
 
-{% block container %}
-<br>
-<br>
-
-<div style="text-align: center" class="col-md-12">
+{% block content %}
+<header class="bg-primary py-2">
+    <div class="container px-2 px-lg-2 my-2">
+        <div class="text-center text-white">
+            <h2 class="display-8 fw-bolder">Crear publicacion</h2>
+        </div>
+    </div>
+</header>
+<div style="text-align: center" class="col-md-12 py-2">
     <div style="display: flex; flex-direction: column; align-items: center;">
-        <h2>Crear publicacion</h2><br>
-        
         <form enctype="multipart/form-data" action="{% url 'registrarPlato' %}" method="POST" style="border-radius: 10px;border: 1px solid grey; padding: 10px; col-md-12">
             <!--token de seguridad obligatorio para el traslado de datos-->
             {% csrf_token %}
@@ -77,32 +79,15 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="descuento_activo" style="margin-bottom: 10px;">Oferta</label>
+                            <label for="descuento_activo" style="margin-bottom: 10px;">Oferta activa:</label>
+                            <input type="checkbox" name="descuento_activo" style="margin-bottom: 10px;" class="form-check-input" {% if listaPlatos.descuento_activo %}checked{% endif %}>
                         </td>
                         <td>
-                            <input type="checkbox" name="descuento_activo" style="margin-bottom: 10px;">
+                            <label for="disponible" style="margin-bottom: 10px;">Publicacion activa:</label>
+                            <input type="checkbox" name="plato_activo" style="margin-bottom: 10px;" class="form-check-input" {% if listaPlatos.plato_activo %}checked{% endif %}>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label for="disponible" style="margin-bottom: 10px;">Activo:</label>
-                        </td>
-                        <td>
-                            <input type="checkbox" name="plato_activo" style="margin-bottom: 10px;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label id="proveedor" for="proveedor" style="margin-bottom: 10px;">Proveedor:</label>
-                        </td>
-                        <td>
-                            <select id="proveedor" name="proveedor" value="" required class="form-control" style="margin-bottom: 10px;">
-                                {% for proveedor in listaProveedores %}
-                                    <option value="{{proveedor.nombre_proveedor}}">{{proveedor.nombre_proveedor}}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                    </tr>
+                    
                     <tr>
                         <td colspan="2">
                             <div id="idMensajes" style="margin-bottom: 10px;"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
@@ -114,7 +99,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <button type="submit" name="opcion" class="btn btn-secondary" style="margin-bottom: 10px;">Publicar</button>
+                            <button type="submit" name="opcion" class="btn btn-success" style="margin-bottom: 10px;">Publicar</button>
                         </td>
                     </tr>
                 </table>
@@ -127,9 +112,9 @@
                 {{mensaje}}
             </div>
         {% endif %}
-
-        <a href="{% url 'publicaciones' %}" class="btn btn-link">Volver</a>
-
+        <div class="py-2">
+            <a href="{% url 'publicaciones' %}" class="btn btn-secondary">Volver</a>
+        </div>
     </div>
 </div>
 

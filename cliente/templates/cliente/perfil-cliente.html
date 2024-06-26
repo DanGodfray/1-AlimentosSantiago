@@ -15,18 +15,46 @@
     </div>
 </header>
 
-{% if user.is_authenticated and user.is_cliente %}
-    <div class="container">
-        <h2>Mis datos:</h2>
-        <p>Nombre: {{ user.cliente.nombre_cliente }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Dirección: {{ user.cliente.direccion }}</p>
-        <p>Teléfono: {{ user.cliente.telefono }}</p>
-        <p>Ciudad: {{ user.cliente.ciudad }}</p>
-        <!-- Add more fields as needed -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title">Perfil de Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ cliente.nombre_cliente }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico:</label>
+                            <input type="email" id="email" name="email" class="form-control" value="{{ cliente.user.email }}" readonly>
+                        </div>
+                        <br>
+                        <!-- Add more fields as necessary -->
+                        <button type="submit" class="btn btn-secondary">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title">Pedidos</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Display pedidos related information -->
+                    <p>Total de Pedidos: {{ pedidos.count }}</p>
+                    <p>Pedidos Activos: </p><!-- { pedidos.filter(activo=True).count }}-->
+                    <a href="% url 'cliente_pedidos' %}" class="btn btn-secondary">Ver Pedidos</a>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-{% endif %}
+</div>
 
 
 

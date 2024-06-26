@@ -77,51 +77,6 @@ def registrarCliente(request):
 
     return render(request, 'cliente/registrarse-cliente.html', {'form': form})
     
-#def registrarCliente(request):
-    context={} 
-    if request.method == 'POST':
-        #datos personales
-        nombre = request.POST.get('nombreCliente')
-        apellido = request.POST.get('apellidoCliente')
-        email = request.POST.get('emailCliente')
-        telefono = request.POST.get('telefonoCliente')
-        direccion = request.POST.get('direccionCliente')
-        #datos para iniciar sesion
-        username = request.POST.get('usernameCliente')
-        password = request.POST.get('passwordCliente')
-        try:
-            cliente = Cliente.objects.create_user(
-                username=username,
-                password=password,
-                email=email,
-                nombre_cliente=nombre,
-                apellido_cliente=apellido,
-                telefono_cliente=telefono,
-                direccion_cliente=direccion
-            )
-            cliente.save()
-            messages.success(request, f'Cliente {nombre} {apellido} registrado correctamente.')
-            return redirect('loginCliente')
-        except:
-            messages.error(request, f'Error al registrar el cliente, vuelva a intentarlo.')
-            return redirect('registrarCliente')
-    else:
-        return render(request, 'cliente/registrarse-cliente.html',{})    
-    
-#def registrarCliente(request):
-    if request.method == 'POST':
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Cliente registrado correctamente.')
-            return redirect('loginCliente')
-        else:
-            messages.error(request, 'Error al registrar el cliente, vuelva a intentarlo.')
-            return redirect('registrarCliente')
-    else:
-        form = ClienteForm()
-        context = {'form': form}
-        return render(request, 'cliente/registrarse-cliente.html', context)
 #-------------------------------fin de autenticacion de cliente
 
 @login_required

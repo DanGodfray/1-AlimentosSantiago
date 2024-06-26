@@ -1,7 +1,7 @@
-{% extends "cliente/main.html" %}
+{% extends "proveedor/base-proveedor.html" %}
 {% load static %}
 
-{% block container %}
+{% block content %}
 <br>
 <br>
 
@@ -65,14 +65,14 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="foto" style="margin-bottom: 10px;">Imagen:</label>
-                        </td>
-                        <td>
+                            <label for="foto" style="display: block; text-align: center; margin-bottom: 10px;">Imagen actual:</label>
                             {% if listaPlatos.foto_plato %}
-                                <img src="{{ listaPlatos.foto_plato.url }}" alt="Current Image" style="max-width: 200px; max-height: 200px; margin-bottom: 10px;">
+                                <img src="{{ listaPlatos.foto_plato.url }}" alt="Current Image" style="display: block; max-width: 200px; max-height: 200px; margin: 0 auto 10px;">
                             {% endif %}
-                            <input type="file" name="foto" id="imagen" class="form-control" style="margin-bottom: 10px;">
-                            <img id="preview" src="#" alt="Selected Image" style="display: none; margin-top: 10px; max-width: 200px; max-height: 200px;">
+                        </td>
+
+                        <td>
+                            <input type="file" name="foto" id="imagen" class="form-control" style="margin-top: 4rem;">
                         </td>
                     </tr>
                     <tr>

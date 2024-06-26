@@ -30,8 +30,8 @@ urlpatterns = [
     path('home/', include('cliente.urls')),
     #path('home/', include('usuarios.urls')),
     
-    path('home/', include('ecommerce.urls')),
-    path('home/', include('proveedor.urls')),
-    path('home/', include('repartidor.urls')),
+    #path('home/', include('ecommerce.urls')),
+    path('proveedor/', include('proveedor.urls')),
+    path('repartidor/', include('repartidor.urls')),
     
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

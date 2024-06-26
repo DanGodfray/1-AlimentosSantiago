@@ -1,20 +1,24 @@
-{%  extends "cliente/main.html"  %}
+{%  extends "proveedor/base-proveedor.html"  %}
 {% load static %}
 
 <!-- extension de la pagina main donde se encuentra el navbar -->
 
 <!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
-{% block container  %}
-<br>
-<br>
-
+{% block content  %}
 <!-- CRUD for publicaciones -->
-<div class="container">
-    <h2>Gestion de publicaciones</h2>
+<header class="bg-primary py-2">
+    <div class="container px-2 px-lg-2 my-2">
+        <div class="text-center text-white">
+            <h2 class="display-8 fw-bolder">Publicaciones</h2>
+        </div>
+    </div>
+</header>
 
+<div class="container py-2">
+        
     <a href="{% url 'proveedor' %}" class="btn btn-secondary">Volver</a>
 
-    <a href="{% url 'registrarPlato' %}" class="btn btn-primary">Crear Publicación</a>
+    <a href="{% url 'registrarPlato' %}" class="btn btn-success">Crear Publicación</a>
 
     <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
         {% if mensaje %}
@@ -31,6 +35,7 @@
                 <th>Descripción</th>
                 <th>Precio</th>
                 <th>Estado</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -63,13 +68,13 @@
                     <td>
                         <form action="{% url 'pausarPlato' plato.id_plato %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn-secondary" style="display: block; width: 80px; margin-bottom: 2px;">
+                            
                                 {% if plato.plato_activo %}
-                                    Pausar
+                                <button type="submit" class="btn btn-secondary" style="display: block; width: 80px; margin-bottom: 2px;">Pausar</button>
                                 {% else %}
-                                    Activar
+                                <button type="submit" class="btn btn-success" style="display: block; width: 80px; margin-bottom: 2px;">Activar</button>
                                 {% endif %}
-                            </button>
+                            
                         </form>
 
                         <a href="{% url 'editarPlato' plato.id_plato %}" class="btn btn-primary" style="display: block; width: 80px; margin-bottom: 2px;">Editar</a>
@@ -83,14 +88,6 @@
             {% empty %}
             <tr>
                 <td colspan="4">No hay publicaciones todavia.</td>
-                <br>
-            <br><br>
-            <br><br>
-            <br><br>
-            <br><br>
-            <br><br>
-            <br><br>
-            <br>
             </tr>
             
             {% endfor %}
@@ -110,7 +107,7 @@
     
 {% endblock %}
 
-{% block extra_head %}
+{% block extra_hea %}
 <style>
     button[type="submit"] {
         font-size: 1rem;

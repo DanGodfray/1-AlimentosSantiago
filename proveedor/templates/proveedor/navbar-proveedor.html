@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{% url 'homeCliente' %}">AlimentoSantiago</a>
+        <a class="navbar-brand" href="{% url 'homeProveedor' %}">AlimentoSantiago</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -9,10 +9,10 @@
                 
             
             {% if user.is_authenticated %} 
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'perfilCliente' %}">Perfil</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'proveedor' %}">Perfil</a></li>
                 
-                <li class="nav-item"><a class="nav-link" href="#!">Pedidos</a></li>   
-                <li class="nav-item"><a class="nav-link" href="{% url 'logoutCliente' %}">Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'publicaciones' %}">Publicaciones</a></li>   
+                <li class="nav-item"><a class="nav-link" href="{% url 'logoutProveedor' %}">Logout</a></li>
             {% else %}
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'homeCliente' %}">Cliente</a></li>
 
@@ -24,9 +24,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Servicios</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'categorias' %}">Publicar preparaciones</a></li>
+                        <li><a class="dropdown-item" href="#">Publicar preparaciones</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="{% url 'platos-ofertas' %}">Transportar pedidos</a></li>
+                        <li><a class="dropdown-item" href="#">Transportar pedidos</a></li>
                         <li><a class="dropdown-item" href="{% url 'platos' %}">Mostrar todo</a></li>
                     </ul>
                 </li>
@@ -34,27 +34,33 @@
 
             
             {% if user.is_authenticated %}<!-- boton - para logout -->
-            
-            <a href="{% url 'logoutCliente' %}" id="register-btn" style="margin-right: 10px;" type="button" class="btn btn-dark">
-                Cerrar sesion
-            </a><!-- fin boton - para logout -->
-            
+            <div class="btn-group" style="margin-right: 10px">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                    {{ user.username }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                  <li><a class="dropdown-item" href="{% url 'proveedor'%}">Perfil</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logoutProveedor' %}">Cerrar sesion</a></li>
+                </ul>
+              </div><!-- fin boton - para logout -->
+            </div>
             {% else %}
             <div class="dropdown" style="padding-left: 10px; float: right; border-radius: 25px; margin-right: 10px;">
-                <button id="register-btn"  type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <button id="register-btn"  type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                     Iniciar sesion
                 </button>
                 <div id="dpcolor"class="dropdown-menu dropdown-menu-sm-end ">
 
-                    <form method="POST" action="{% url 'loginCliente' %}" class="px-4 py-3">
+                    <form method="POST" action="{% url 'loginProveedor' %}" class="px-4 py-3">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="exampleDropdownFormEmail1" class="form-label">Nombre de usuario</label>
-                            <input name="usernameCliente" type="text" class="form-control" id="exampleDropdownFormEmail1" placeholder="Usuario">
+                            <input name="usernameProveedor" type="text" class="form-control" id="exampleDropdownFormEmail1" placeholder="Usuario">
                         </div>
                         <div class="mb-3">
                             <label for="exampleDropdownFormPassword1" class="form-label">Contraseña</label>
-                            <input name="passwordCliente" type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Contraseña">
+                            <input name="passwordProveedor" type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Contraseña">
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
@@ -68,7 +74,7 @@
                     </form>
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'registrarCliente' %}">¿Primera vez por aca? Registrate</a>
+                    <a class="dropdown-item" href="{% url 'registrarProveedor' %}">¿Primera vez por aca? Registrate</a>
                     <a class="dropdown-item" href="#">¿Olvidaste la contraseña?</a>
                 </div>
             </div><!--fin Dropdown - para login -->
