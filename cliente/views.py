@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from ecommerce import views
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import ClienteRegistroForm
@@ -39,17 +39,23 @@ def loginCliente(request):
     if request.method == 'POST':
         username = request.POST.get('usernameCliente')
         password = request.POST.get('passwordCliente')
-        cliente = authenticate(request, username=username, password=password)
-        if cliente is not None:
-            login(request, cliente)
-            print(f'Cliente: {cliente} autenticado')
-            messages.success(request, f'Bienvenido {username}!')
-            return redirect('perfilCliente')
+        role = request.POST.get('role')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            if user.groups.filter(name='cliente').exists() and role == 'cliente':
+                login(request, user)
+                return redirect('perfilCliente')
+            elif user.groups.filter(name='proveedor').exists() and role == 'proveedor':
+                login(request, user)
+                return redirect('homeCliente')
+            elif user.groups.filter(name='repartidor').exists() and role == 'repartidor':
+                login(request, user)
+                return redirect('homeCliente')
+            else:
+                messages.error(request, 'Usuario invalido.')
         else:
-            messages.error(request, 'Usuario o contraseña incorrecta, vuelva a intentarlo.')
-            return redirect('loginCliente')
-    else:
-        return render(request, 'cliente/login-cliente.html',{})
+            messages.error(request, 'Contraseña o usuario invalido, intententelo mas tarde.')
+    return render(request, 'cliente/login-cliente.html',{})
 
 @login_required
 def logoutCliente(request):
@@ -67,9 +73,11 @@ def registrarCliente(request):
         form = ClienteRegistroForm(request.POST)
         if form.is_valid():
             user = form.save()
+            proveedor_group = Group.objects.get(name='cliente') #se le asigna un grupo al momento de registrarse
+            user.groups.add(proveedor_group)
             login(request, user)
             messages.success(request, 'Usuario registrados exitosamente.')
-            return redirect('perfilCliente')  # Reemplaza 'perfilCliente' con la URL de redirección deseada
+            return redirect('perfilCliente')  #se redirige a la pagina de perfil de cliente
         else:
             messages.error(request, 'Error: no se pudo registrar el usuario.')
     else:
@@ -81,24 +89,43 @@ def registrarCliente(request):
 
 @login_required
 def perfilClientes(request, mensaje=None):
-    userCliente=request.user
+    user=request.user
     
     plato = Plato.objects.all()
     categorias = Categoria.objects.all()
     proveedores = Proveedor.objects.all()
     repartidores = Repartidor.objects.all()
     clientes = Cliente.objects.all()
-
-    for p in plato:
-        if not p.foto_plato:
-            p.foto_plato = 'img/Ui-12-1024.webp'
-
-    if mensaje is not None:
-        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, "listaRepartidores": repartidores, "listaClientes": clientes,'mensaje': mensaje, 'userCliente': userCliente}
-        return render(request, 'cliente/perfil-cliente.html', context)
+    
+    role = request.POST.get('role')
+    user = authenticate(request, username=user.username, password=user.password)
+    if user is not None:
+        if user.groups.filter(name='cliente').exists() and role == 'cliente':
+            login(request, user)
+            return redirect('perfilCliente')
+        elif user.groups.filter(name='proveedor').exists() and role == 'proveedor':
+            #login(request, user)
+            return redirect('homeCliente')
+        elif user.groups.filter(name='repartidor').exists() and role == 'repartidor':
+            #login(request, user)
+            return redirect('homeCliente')
+        else:
+            messages.error(request, 'Usuario invalido.')
+            
     else:
-        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, "listaRepartidores": repartidores, "listaClientes": clientes, 'userCliente': userCliente}
-        return render(request, 'cliente/perfil-cliente.html', context)
+        #messages.error(request, 'Contraseña o usuario invalido, intententelo mas tarde.')
+        #return redirect('homeCliente')    
+
+        for p in plato:
+            if not p.foto_plato:
+                p.foto_plato = 'img/Ui-12-1024.webp'
+
+        if mensaje is not None:
+            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, "listaRepartidores": repartidores, "listaClientes": clientes,'mensaje': mensaje, 'userCliente': userCliente}
+            return render(request, 'cliente/perfil-cliente.html', context)
+        else:
+            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, "listaRepartidores": repartidores, "listaClientes": clientes, 'userCliente': user}
+            return render(request, 'cliente/perfil-cliente.html', context)
 
 
     #------aqui deberia comenzar if post para editar perfil de cliente

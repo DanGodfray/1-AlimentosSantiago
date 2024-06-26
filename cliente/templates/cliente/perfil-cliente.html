@@ -6,7 +6,7 @@
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             {% if user.is_authenticated %}
-            <h1 class="display-4 fw-bolder">Bienvenido {{user}}</h1>
+            <h1 class="display-4 fw-bolder">Bienvenido {{user.first_name}} {{user.last_name}}</h1>
             {% else %}
             <h1 class="display-4 fw-bolder">Bienvenido</h1>
             {% endif %}
