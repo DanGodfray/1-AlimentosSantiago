@@ -4,14 +4,38 @@ from .models import Categoria, Plato
 from django.core.paginator import Paginator
 from django.contrib import messages
 from proveedor.models import Proveedor
+from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.models import User, Group, AnonymousUser
 
 
 
 # Create your views here.
 
+def usuarioValido(request, group_name):
+    user = request.user
+    print(f'USUARIOVALIDO: user el usuario actual es: {user}')
+
+    if isinstance(user, AnonymousUser):
+        return True  # permite a usuarios anónimos acceder a la página
+
+    if not user.is_authenticated:
+        logout(request)
+        messages.error(request, 'Usuario no autenticado.')
+        return False
+
+    if not user.groups.filter(name=group_name).exists():
+        logout(request)
+        messages.error(request, 'Usuario invalido.')
+        return False
+
+    return True
+
 #-------------------------VIEWS DE CATALOGOS-------------------------
 
 def listarCatalogos(request):
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente') 
+    
     categoria = Categoria.objects.order_by('?').first()
     plato = Plato.objects.order_by('?').first()
     oferta = Plato.objects.filter(descuento_activo=True).order_by('?').first()
@@ -21,6 +45,9 @@ def listarCatalogos(request):
 banderaCatActivo = False
 
 def listarCategorias(request):
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente') 
+    
     banderaCatActivo = True
     categoria = Categoria.objects.filter(cat_activo=True).all()
     context = {"arregloCat":categoria, "banderaCatActivo":banderaCatActivo}
@@ -29,6 +56,9 @@ def listarCategorias(request):
 banderaOferta = False
 
 def listarOfertas(request):
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente') 
+    
     banderaOferta = True
     plato = Plato.objects.filter(descuento_activo=True)
     context = {"platos":plato, "banderaOferta":banderaOferta}
@@ -36,6 +66,9 @@ def listarOfertas(request):
 
 #view para probar el listado de platos sin parametros
 def listarPlatos(request):
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente') 
+    
     plato = Plato.objects.all()
     
     context = {"platos":plato}
@@ -46,6 +79,9 @@ def listarPlatos(request):
     return render(request, 'ecommerce/platos.html', context)
     
 def platosCategoriaSeleccionada(request,cat):  
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente') 
+    
     #nombre de la categoria como parametro de entrada
     categoria = Categoria.objects.get(nom_categoria=cat)
     #selecciona los platos que pertenecen a la categoria seleccionada
