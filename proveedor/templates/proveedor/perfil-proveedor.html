@@ -20,7 +20,7 @@
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-header bg-dark text-white">
-                        <h5 class="card-title mb-0">Perfil de Proveedor</h5>
+                        <h5 class="card-title mb-0">Perfil</h5>
                     </div>
                     <div class="card-body">
                         <!-- Edit form -->
@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="fono_proveedor">Teléfono:</label>
-                                <input type="text" id="fono_proveedor" name="fono_proveedor" value="{{ listaProveedores.fono_proveedor }}" class="form-control" required>
+                                <input type="text" id="fono_proveedor" name="fono_proveedor" value="{{ listaProveedores.fono_proveedor| floatformat }}" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email:</label>

@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import ProveedorRegistroForm
@@ -20,6 +20,8 @@ banderaPlatoActivo = True
 
 def homeProveedor(request):
     proveedor=request.user
+    print(f'proveedor: {proveedor}')
+    
     context={'proveedor':proveedor} 
     return render(request, 'proveedor/home-proveedor.html', context)
 
@@ -27,13 +29,19 @@ def homeProveedor(request):
     context={} 
     return render(request, 'proveedor/main.html')
 
+
 #----------------------------------autenticacion de proveedor
 
 def loginProveedor(request):
     if request.method == 'POST':
         username = request.POST.get('usernameProveedor')
         password = request.POST.get('passwordProveedor')
+        #role = 'proveedor'
+        
+        #print(f'role: {role}')
         proveedor = authenticate(request, username=username, password=password)
+        
+        #request.session['role'] = role
         
         if proveedor is not None:
             print(f'Proveedor: {proveedor} autenticado')
@@ -52,8 +60,12 @@ def registrarProveedor(request):
         form = ProveedorRegistroForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            
+            cliente_group = Group.objects.get(name='proveedor')  # get del grupo 'proveedor'
+            user.groups.add(cliente_group) 
+            
             messages.success(request, 'Proveedor registrado exitosamente.')
+            login(request, user)
             return redirect('proveedor')
         else:
             #si ocurrio un error se elimina el usuario creado
