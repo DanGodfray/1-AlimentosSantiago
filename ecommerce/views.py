@@ -11,6 +11,7 @@ from django.contrib.auth.models import User, Group, AnonymousUser
 
 # Create your views here.
 
+#--------funcion que se reutiliza para validar el usuario que accede a las vistas
 def usuarioValido(request, group_name):
     user = request.user
     print(f'USUARIOVALIDO: user el usuario actual es: {user}')

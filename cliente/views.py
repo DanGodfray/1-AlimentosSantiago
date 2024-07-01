@@ -19,6 +19,7 @@ from .forms import ClienteRegistroForm
 
 # Create your views here.
 
+#--------funcion que se reutiliza para validar el usuario que accede a las vistas
 def usuarioValido(request, group_name):
     user = request.user
     print(f'USUARIOVALIDO: user el usuario actual es: {user}')
@@ -56,6 +57,8 @@ def main(request):
 #-------------------login, logout, registrar y perfil de cliente-------------------
 
 def loginCliente(request):
+    
+    
     if request.method == 'POST':
         username = request.POST.get('usernameCliente')
         password = request.POST.get('passwordCliente')
@@ -74,11 +77,20 @@ def loginCliente(request):
 
 @login_required
 def logoutCliente(request):
+    clientes = get_object_or_404(Cliente, user=request.user)
+    
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente')  # redirige a la página de inicio si no es un cliente
+    
     logout(request)
     messages.success(request, f'Se ha cerrado sesión correctamente.')
     return redirect('homeCliente')
 
 def registrarCliente(request):
+    
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente')  # redirige a la página de inicio si no es un cliente
+    
     if request.method == 'POST':
         form = ClienteRegistroForm(request.POST)
         if form.is_valid():
@@ -98,6 +110,8 @@ def registrarCliente(request):
 
 @login_required
 def perfilClientes(request, mensaje=None):
+    clientes = get_object_or_404(Cliente, user=request.user)
+    
     if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente')  # redirige a la página de inicio si no es un cliente
 
