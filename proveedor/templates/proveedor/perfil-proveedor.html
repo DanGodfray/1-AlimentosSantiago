@@ -17,7 +17,7 @@
 
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card mb-4">
                     <div class="card-header bg-dark text-white">
                         <h5 class="card-title mb-0">Perfil</h5>
@@ -54,46 +54,71 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="card-title mb-0">Publicaciones</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Cantidad de Publicaciones:</strong> {{ cantidad_publicaciones }}</p>
-                        <p><strong>Publicaciones Activas:</strong> {{ cantidad_publicaciones_activas }}</p>
+                        
+                        <p><strong>Cantidad:</strong> <span class="float-end">{{ listaPlatos.count }}</span></p>
+                        <p><strong>Activas:</strong> <span class="float-end">{{ cuentaPlatos }}</span></p>
+                        <p><strong>En oferta:</strong> <span class="float-end">{{ cuentaOferta }}</span></p>
+                        
                         <a href="{% url 'publicaciones' %}" class="btn btn-secondary">Ver Publicaciones</a>
+                        
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="card-title mb-0">Ventas</h5>
+                    </div>
+                    <div class="card-body">
+                        
+                        <p><strong>Cantidad:</strong> <span class="float-end">{{ listaPlatos.count }}</span></p>
+                        <p><strong>Activas:</strong> <span class="float-end">{{ cuentaPlatos }}</span></p>
+                        <p><strong>En oferta:</strong> <span class="float-end">{{ cuentaOferta }}</span></p>
+                        
+                        <a href="{% url 'publicaciones' %}" class="btn btn-secondary">Analisis de ventas</a>
+                        
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <!-- Carousel of publicaciones -->
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        {% for publicacion in publicaciones %}
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
-                        {% endfor %}
-                    </ol>
-                    <div class="carousel-inner">
-                        {% for publicacion in publicaciones %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                            <img src="{{ publicacion.imagen.url }}" class="d-block w-100" alt="Publicación">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>{{ publicacion.titulo }}</h5>
-                                <p>{{ publicacion.descripcion }}</p>
-                            </div>
+            
+            <div class="col-md-7">
+                <!-- ESTADO DE PEDIDOS -->
+                
+                
+                    <div class="card mb-8">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">Estado de Pedidos</h5>
                         </div>
-                        {% endfor %}
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Estado</th>
+                                        <th>Fecha de Pedido</th>
+                                        <th>Fecha de Entrega</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pedido in pedidos %}
+                                    <tr>
+                                        <td>{{ pedido.estado }}</td>
+                                        <td>{{ pedido.fecha_pedido }}</td>
+                                        <td>{{ pedido.fecha_entrega }}</td>
+                                        <td>{{ pedido.total }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
                     </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Anterior</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Siguiente</span>
-                    </a>
-                </div>
+                                
             </div>
         </div>
     </div>

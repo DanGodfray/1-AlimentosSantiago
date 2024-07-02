@@ -105,20 +105,27 @@ def perfilProveedores(request, mensaje=None):
         messages.error(request, 'El usuario de proveedor es incorrecto o no existe. intentelo denuevo o registrese como proveedor.')
         return redirect('homeProveedor') 
     
-    plato = Plato.objects.all()
+    plato = Plato.objects.filter(id_proveedor=proveedores.id_proveedor)
     categorias = Categoria.objects.all()
     proveedores = Proveedor.objects.get(user=request.user)
-
+    
+    cuentaPlatosActivo = plato.filter(plato_activo=True).count()
+    cuentaOferta = plato.filter(descuento_activo=True).count()
+    
+    print(f'cuentaPlatos: {plato.count()}')
+    print(f'cuentaPlatos activos: {cuentaPlatosActivo}')
+    print(f'cuentaOferta: {cuentaOferta}')
+    
     if proveedores:
         for p in plato:
             if not p.foto_plato:
                 p.foto_plato = 'img/Ui-12-1024.webp'
 
         if mensaje is not None:
-            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, }
+            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, 'cuentaPlatos': cuentaPlatosActivo, 'cuentaOferta': cuentaOferta} 
             return render(request, 'proveedor/perfil-proveedor.html', context)
         else:
-            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores }
+            context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores, 'cuentaPlatos': cuentaPlatosActivo, 'cuentaOferta': cuentaOferta}
             return render(request, 'proveedor/perfil-proveedor.html', context)
     else:
         messages.error(request, 'Proveedor no encontrado')
@@ -135,17 +142,16 @@ def publicacionProveedores(request, mensaje=None):
     
     plato = Plato.objects.filter(id_proveedor=proveedores.id_proveedor)
     categorias = Categoria.objects.all()
-    #proveedores = Proveedor.objects.all()
 
     for p in plato:
         if not p.foto_plato:
             p.foto_plato = 'img/    Ui-12-1024.webp'
 
     if mensaje is not None:
-        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje, }
+        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores,'mensaje': mensaje }
         return render(request, 'proveedor/publicaciones.html', context)
     else:
-        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores }
+        context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores}
         return render(request, 'proveedor/publicaciones.html', context)
     
 
