@@ -64,12 +64,14 @@
                             <h5>${{ plato.oferta_plato|floatformat }}</h5>
                         {% else %}
                             <h5 class="precio-item">${{ plato.precio_plato|floatformat }}</h5>
+                            
                         {% endif %}
+                            <p>ID: {{ plato.id_plato }}</p>
                             <a href=""></a>
                     </div>
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-auto">
                         <div class="text-center">
-                            <a class="btn btn-outline-dark mt-auto" href="#">Agregar al carro</a>
+                            <a id="add-cart" type="button" value="{{ plato.id_plato }}" class="btn btn-outline-dark mt-auto add-cart"  href="#">{{ plato.id_plato }} Agregar al carro</a>
                         </div>
                     </div>
                 </div>
@@ -83,4 +85,35 @@
             {% endfor %}
         </div>
     </div>
+
+{% endblock %}
+
+{% block extra_js %}<!-- script para agregar al carro -->
+
+    <script>
+        $(document).on('click', '#add-cart', function(e){
+
+            e.preventDefault();
+
+            var id = $(this).attr('value');
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'agregarAlCarro' %}',
+                data: {
+                    id_plato: $('#add-cart').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function(json){
+                  console.log(json);
+                },
+                error: function(xhr, errmsg, err){
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+
+            });
+        });
+    </script>
+
 {% endblock %}
