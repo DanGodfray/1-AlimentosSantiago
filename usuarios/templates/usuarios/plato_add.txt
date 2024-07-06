@@ -1,0 +1,149 @@
+{%  extends "usuarios/main.html"  %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    #otracat{
+        display: none;
+    }
+    #otracat2{
+        display: none;
+    }
+    #categoria {
+        opacity: 1; /* Default opacity */
+    }
+    #categoria:disabled {
+        opacity: 0.5; /* Reduced opacity when disabled */
+        pointer-events: none; /* Disable pointer events */
+    }
+    .hidden {
+        display: none; /* Hidden style */
+    }
+</style>
+{% endblock %}
+
+{% block container %}
+<h1>Publicar </h1>
+
+<div style="text-align: center">    
+    <h2>Formulario de CRUD de plato</h2><br>
+    <form action="registroPlato" method="POST">
+        <!--token de seguridad obligatorio para el traslado de datos-->
+        {% csrf_token %}
+        
+        <label id="categoria2" for="categoria">Categoría:</label>
+        <select id="categoria" name="categoria" value="" required>
+
+        {% for categoria in listaCategorias %}
+
+            {% if categoria.nom_categoria == listaPlatos.id_plato.nom_plato %}
+                <option  value="{{categoria.nom_categoria}}" selected>{{categoria.nom_categoria}}</option>
+            {% else %}
+                <option value="{{categoria.nom_categoria}}">{{categoria.nom_categoria}}</option>
+            {% endif %}
+        {% endfor %}
+        </select>
+
+        <label for="categoria">Otra categoria:</label>
+        <input type="checkbox" id="categoria-checkbox" name="categoria">
+        <br>
+        
+        <label id="otracat2" for="otracat">Nombre Categoria:</label>
+        <input type="text" id="otracat" name="categoria" required>
+        <br>
+        
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre"  >
+        <br>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion"></textarea>
+        <br>
+
+        <label for="precio">Precio:</label>
+        <input type="number" name="precio" id="precio" required>
+        <br>
+
+        <label for="oferta">Precio Oferta:</label>
+        <input type="number" name="oferta" id="oferta">
+        <br>
+
+        <label for="foto">Imagen:</label>
+        <input type="file" name="imagen" id="imagen" required>
+        <br>
+
+        <label for="descuento_activo">Oferta</label>
+        <input type="checkbox" name="descuento_activo">
+
+        <label for="disponible">Activo:</label>
+        <input type="checkbox" name="plato_activo">
+        <br>
+        
+        <label id="proveedor" for="proveedor">Proveedor:</label>
+        <select id="proveedor" name="proveedor" value="" required>
+    
+            {% for proveedor in listaProveedores %}
+    
+                {% if proveedor.nombre_proveedor == listaPlatos.id_plato.nombre_plato %}
+                    <option  value="{{proveedor.nombre_proveedor}}" selected>{{proveedor.nombre_proveedor}}</option>
+                {% else %}
+                    <option value="{{proveedor.nombre_proveedor}}">{{proveedor.nombre_proveedor}}</option>
+                {% endif %}
+            {% endfor %}
+            <br>
+        </select>
+
+        <br>
+        <input type="submit" name="opcion">Publicar</input>
+        <br>
+        <br>
+        <button type="submit" name="opcion">Publicar</button>
+        <br>
+    </form>
+    <br>
+    <input type="submit" name="opcion">Publicar</input>
+    <br>
+    <br>
+    <button type="submit" name="opcion">Publicar</button>
+    <br>
+
+    <a href="{% url 'proveedor' %}">Volver</a>
+    <br>
+
+</div>
+
+<script>
+    var categoriaCheckbox = document.getElementById('categoria-checkbox');
+    var otracatInput = document.getElementById('otracat');
+    var otracat2Input = document.getElementById('otracat2');
+    var categoriaSelect = document.getElementById('categoria');
+    var categoria2Select = document.getElementById('categoria2');
+
+    categoriaCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            otracatInput.style.display = 'block';
+            otracat2Input.style.display = 'block';
+            otracatInput.classList.remove('hidden'); // Show otracatInput
+            categoriaSelect.classList.add('hidden'); // Hide categoriaSelect
+            categoria2Select.classList.add('hidden'); // Hide categoriaSelect
+        } else {
+            otracatInput.style.display = 'none';
+            otracat2Input.style.display = 'none';
+            otracatInput.classList.add('hidden'); // Hide otracatInput
+            categoriaSelect.classList.remove('hidden'); // Show categoriaSelect
+            categoria2Select.classList.remove('hidden'); // Show categoriaSelect
+        }
+    });
+</script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
+    $(document).ready(function(){
+        $('#idMensajes').delay(3000).fadeOut("slow");
+    }); 
+</script>
+
+{% endblock %}

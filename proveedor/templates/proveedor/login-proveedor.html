@@ -14,19 +14,20 @@
     <div class="row gx-4 gx-lg-6 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
         <form method="POST" action="{% url 'loginProveedor' %}">
             {% csrf_token %}
+            
             <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
 
             <input name="usernameProveedor" placeholder="Ingrese nombre de usuario" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">Ingrese su correo electronico de cliente.</div>
             </div>
 
             <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Contraseña</label>
 
             <input name="passwordProveedor" placeholder="Ingrese su contraseña" type="password" class="form-control" id="exampleInputPassword1">
+            <input type="hidden" name="role" value="proveedor">
+
             </div>
-            <br>
             <button type="submit" class="btn btn-primary">Ingresar</button>
         </form>
     </div>

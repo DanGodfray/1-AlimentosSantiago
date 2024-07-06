@@ -1,0 +1,55 @@
+{% extends "cliente/base.html" %}
+{% load static %}
+
+{% block content %}<!--end page content-->
+
+<header class="bg-danger py-2">
+    <div class="container px-1 px-lg-1 my-1">
+        <div class="text-center text-white">
+            
+            <h1 class="display-6 fw-bolder">Carro de compras</h1>
+            
+            <p class="lead fw-normal text-white-50 mb-0">¿Para servir o llevar?</p>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-4">
+    <div class="row">
+
+            <div class="col-md-12">
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                            <tr>
+                                <td>{{ item.producto.nombre }}</td>
+                                <td>{{ item.cantidad }}</td>
+                                <td>{{ item.producto.precio }}</td>
+                                <td>{{ item.subtotal }}</td>
+                                <td>
+                                    <a href="{% url 'eliminar' item.producto.id %}">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h3>Total: {{ total }}</h3>
+                <a href="% url 'checkout' %}" class="btn btn-success">Pagar</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <br><br><br><br><br><br><br><br>
+{% endblock %}

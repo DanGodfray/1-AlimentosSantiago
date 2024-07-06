@@ -6,8 +6,6 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 
             
-                
-            
             {% if user.is_authenticated %} 
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'perfilCliente' %}">Perfil</a></li>
                 
@@ -21,7 +19,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'loginCliente' %}">Login</a></li>
 
             {% endif %}
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown"><!-- Catalogo -->
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Catalogo</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url 'categorias' %}">Categorias</a></li>
@@ -33,7 +31,7 @@
             </ul>
 
             
-            {% if user.is_authenticated %}<!-- boton - para logout -->
+            {% if user.is_authenticated %}<!-- boton para logout y perfil -->
             <div class="btn-group" style="margin-right: 10px">
                 <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                     {{ user.username }}
@@ -44,7 +42,7 @@
                   <li><a class="dropdown-item" href="{% url 'logoutCliente' %}">Cerrar sesion</a></li>
                 </ul>
               </div>
-            {% else %}
+            {% else %} <!-- Dropdown - para login -->
 
             <div class="dropdown" style="padding-left: 10px; float: right; border-radius: 25px; margin-right: 10px;">
                 <button id="register-btn"  type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
@@ -76,24 +74,37 @@
                     </form>
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'registrarCliente' %}">¿Primera vez por aca? Registrate</a>
+                    <a class="dropdown-item" href="{% url 'registrarCliente' %}">¿Primera vez por aca? Registrate</a> <!-- enlace para registro -->
                     <a class="dropdown-item" href="#">¿Olvidaste la contraseña?</a>
                 </div>
             </div><!--fin Dropdown - para login -->
             
-            
             {% endif %}
-           
 
-            
             <form class="d-flex"><!-- Carrito de compras -->
-                <button class="btn btn-outline-dark" type="submit">
+
+                {% if user.is_authenticated %}
+
+                <a class="btn btn-outline-dark count-products" type="submit" href="{% url 'carroEstado' %}" class="btn btn-outline-dark">
+                
                     <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
+                    Carro
+                    <span id="contador-productos" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </a>
+
+                {% else %}
+                
+                <a class="btn btn-outline-dark count-products" type="submit" href="{% url 'avisoCarro' %}" class="btn btn-outline-dark">
+                
+                    <i class="bi-cart-fill me-1"></i>
+                    Carro
+                    <span id="contador-productos" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </a>
+
+                {% endif %}
+
             </form><!--fin Carrito de compras -->
-            
+
         </div>
     </div>
 </nav>

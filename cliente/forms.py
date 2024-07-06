@@ -23,6 +23,7 @@ class ClienteRegistroForm(UserCreationForm):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data['nombre_cliente']
         user.last_name = self.cleaned_data['apellido_cliente']
+        
         if commit:
             user.save()
 
