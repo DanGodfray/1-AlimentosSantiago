@@ -1,22 +1,42 @@
-{%  extends "usuarios/main.html"  %}
+{% extends "cliente/base.html" %}
+
 <!-- extension de la pagina main donde se encuentra el navbar -->
-jhjkjkk
+
 <!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
-{% block container  %}
+{% block content  %}
+<header class="bg-danger py-4">
+    <div class="container px-2 px-lg-2 my-2">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Todas las categorias</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Por si te apetece algo en particular</p>
+        </div>
+    </div>
+</header>
 
-<h1> Categorias </h1>
-{% for categoria in arregloCat %}
+<div class="container px-4 px-lg-5 mt-5">
+    <div class="row gx-4 gx-lg-6 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        {% for categoria in arregloCat %}
+        <div class="col mb-4">
+            <a class="" href="{% url 'platosCategoriaSeleccionada' categoria.nom_categoria %}" style="text-decoration: none; color: inherit;">
+            <div class="card h-100 item d-flex flex-column">
+                <div class="item-image text-center">
+                    <figure>
+                        <img class="card-img-top" src="/media/{{categoria.foto_categoria}}" alt="..." />
+                    </figure>
+                    <h6 style="margin: 0;text-align: center;">{{ plato.id_proveedor.nombre_proveedor }}</h6>
+                    <h4 class="fw-bolder">{{ categoria.nom_categoria }}</h4>
 
-    <section>
-    <!--aqui se redirije al template platos.html usando el nombre de la categoria como parametro de entrada, los url se redirigen al name= de los url-->
-    <h5> <a href="{% url 'platosCategoriaSeleccionada' categoria.nom_categoria %}" > {{categoria.nom_categoria}} </a></h5>
-    <img src="/media/{{categoria.foto_categoria}}" alt="imagen de la categoria" width="100" height="100"/>
+                    <div class="card-body p-2 flex-grow-1">
+                        <p id="info" style="text-align: justify;">{{ categoria.des_categoria}}</p>
+                    </div> 
+                     
+                </div>
+            </div>
+            </a>  
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
-    <p>{{categoria.des_categoria}}</p>
-    </section>
-    <br>
-
-{% endfor %}
-    
 
 {% endblock %}

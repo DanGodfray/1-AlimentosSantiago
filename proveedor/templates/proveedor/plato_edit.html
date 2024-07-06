@@ -1,0 +1,196 @@
+{% extends "proveedor/base-proveedor.html" %}
+{% load static %}
+
+{% block content %}
+<br>
+<br>
+
+<div style="text-align: center" class="col-md-12">
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center">
+        <h2>Editar publicacion</h2><br>
+
+        {% if listaPlatos %}
+        <form enctype="multipart/form-data" action="{% url 'editarPlato' listaPlatos.id_plato %}" method="POST" style="border-radius: 10px; border: 1px solid grey; padding: 10px; col-md-12">
+            {% csrf_token %}
+            
+            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                <table class="table" style="display: flex; flex-direction: column; align-items: center; text-align: center">
+                    <tr>
+                        <td>
+                            <label id="categoria2" for="categoria" style="margin-bottom: 10px;">Categoría:</label>
+                        </td>
+                        <td>
+                            <select id="categoria" name="categoria" required class="form-control" style="margin-bottom: 10px;">
+                                {% for categoria in listaCategorias %}
+                                    {% if categoria.nom_categoria == listaPlatos.id_categoria.nom_categoria %}
+                                        <option value="{{ categoria.nom_categoria }}" selected>{{ categoria.nom_categoria }}</option>
+                                    {% else %}
+                                        <option value="{{ categoria.nom_categoria }}">{{ categoria.nom_categoria }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="nombre" style="margin-bottom: 10px;">Nombre Plato:</label>
+                        </td>
+                        <td>
+                            <input type="text" name="nombre" class="form-control" value="{{ listaPlatos.nom_plato }}" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="descripcion" style="margin-bottom: 10px;">Descripción:</label>
+                        </td>
+                        <td>
+                            <textarea name="descripcion" class="form-control" style="margin-bottom: 10px;">{{ listaPlatos.descripcion_plato }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="precio" style="margin-bottom: 10px;">Precio: </label>
+                        </td>
+                        <td>
+                            <input type="number" name="precio" value="{{ listaPlatos.precio_plato|floatformat }}" required class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="oferta" style="margin-bottom: 10px;">Precio Oferta:</label>
+                        </td>
+                        <td>
+                            <input type="number" name="oferta" value="{{ listaPlatos.oferta_plato|floatformat }}" id="oferta" class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="foto" style="display: block; text-align: center; margin-bottom: 10px;">Imagen actual:</label>
+                            {% if listaPlatos.foto_plato %}
+                                <img src="{{ listaPlatos.foto_plato.url }}" alt="Current Image" style="display: block; max-width: 200px; max-height: 200px; margin: 0 auto 10px;">
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <input type="file" name="foto" id="imagen" class="form-control" style="margin-top: 4rem;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="descuento_activo" style="margin-bottom: 10px;">Oferta activa:</label>
+                            <input type="checkbox" name="descuento_activo" style="margin-bottom: 10px;" class="form-check-input" {% if listaPlatos.descuento_activo %}checked{% endif %}>
+                        </td>
+                        <td>
+                            <label for="disponible" style="margin-bottom: 10px;">Estado activo:</label>
+                            <input type="checkbox" name="plato_activo" style="margin-bottom: 10px;" class="form-check-input" {% if listaPlatos.plato_activo %}checked{% endif %}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="proveedor" for="proveedor" style="margin-bottom: 10px;">Proveedor:</label>
+                        </td>
+                        <td>
+                            <select id="proveedor" name="proveedor" required class="form-control" style="margin-bottom: 10px;">
+                                {% for proveedor in listaProveedores %}
+                                    {% if proveedor.nombre_proveedor == listaPlatos.id_proveedor.nombre_proveedor %}
+                                        <option value="{{ proveedor.nombre_proveedor }}" selected>{{ proveedor.nombre_proveedor }}</option>
+                                    {% else %}
+                                        <option value="{{ proveedor.nombre_proveedor }}">{{ proveedor.nombre_proveedor }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div id="idMensajes" style="margin-bottom: 10px;">
+                                {% if mensaje %}
+                                    {{ mensaje }}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" name="opcion" class="btn btn-secondary" style="margin-bottom: 10px;">Modificar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        {% else %}
+            <p>No hay publicaciones disponibles.</p>
+        {% endif %}
+
+        {% if mensaje %}
+            <div id="idMensajes" style="margin-bottom: 10px;">
+                {{ mensaje }}
+            </div>
+        {% endif %}
+
+        <a href="{% url 'publicaciones' %}" class="btn btn-link">Volver</a>
+    </div>
+</div>
+
+<script>
+    var categoriaCheckbox = document.getElementById('categoria-checkbox');
+    var otracatInput = document.getElementById('otracat');
+    var otracat2Input = document.getElementById('otracat2');
+    var categoriaSelect = document.getElementById('categoria');
+    var categoria2Select = document.getElementById('categoria2');
+
+    categoriaCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            otracatInput.style.display = 'block';
+            otracat2Input.style.display = 'block';
+            otracatInput.classList.remove('hidden');
+            categoriaSelect.classList.add('hidden');
+            categoria2Select.classList.add('hidden');
+        } else {
+            otracatInput.style.display = 'none';
+            otracat2Input.style.display = 'none';
+            otracatInput.classList.add('hidden');
+            categoriaSelect.classList.remove('hidden');
+            categoria2Select.classList.remove('hidden');
+        }
+    });
+
+    document.getElementById('imagen').addEventListener('change', function (event) {
+        const [file] = event.target.files;
+        if (file) {
+            document.getElementById('preview').src = URL.createObjectURL(file);
+            document.getElementById('preview').style.display = 'block';
+        }
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#idMensajes').delay(3000).fadeOut("slow");
+    }); 
+</script>
+
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    #otracat {
+        display: none;
+    }
+    #otracat2 {
+        display: none;
+    }
+    #categoria {
+        opacity: 1; /* Default opacity */
+    }
+    #categoria:disabled {
+        opacity: 0.5; /* Reduced opacity when disabled */
+        pointer-events: none; /* Disable pointer events */
+    }
+    .hidden {
+        display: none; /* Hidden style */
+    }
+</style>
+{% endblock %}
+

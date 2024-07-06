@@ -1,0 +1,63 @@
+{% extends "cliente/base.html" %}
+{% load static %}
+
+        {% include 'cliente/navbar.html' %}
+
+        {% block content %}
+        <header class="bg-danger py-4">
+            <div class="container px-2 px-lg-2 my-2">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Bienvenido a AlimentoSantiago</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">¿Hace hambre?</p>
+                </div>
+            </div>
+        </header>
+        <section class="py-1">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-6 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {% for plato in listaPlatos %} <!--CARD DE PLATO-->
+                        {% if plato.plato_activo == True %}
+                            <div class="col mb-5">
+                                <div class="card h-100 item d-flex flex-column">
+                                    {% if plato.descuento_activo %}<!-- etiqueta image-->
+                                        <div class="badge bg-success text-white position-absolute" style="z-index: 10; top: 1rem; right: 1rem ; font-size: 1rem;">Oferta</div>
+                                    {% endif %}
+                                    <div class="item-image"><!-- Product image-->
+                                        <figure>
+                                            <img class="card-img-top" src="/media/{{plato.foto_plato}}" alt="..." />
+                                        </figure>
+                                        <h6 style="margin: 0;text-align: center;">{{ plato.id_proveedor.nombre_proveedor }}</h6>
+                                    </div>
+                                    <!-- Product details-->
+                                    <div class="card-body p-4 flex-grow-1">
+                                        <div class="text-center">
+                                            <!-- Product name-->
+                                            <h4 class="fw-bolder">{{ plato.nom_plato }}</h4>
+                                        </div>
+                                        <p id="info" style="text-align: justify;">{{ plato.descripcion_plato}}</p> 
+                                    </div>
+                                    <!-- Product actions-->
+                                    <div class="text-center">
+                                        {% if plato.descuento_activo %}
+                                            <span class="text-muted text-decoration-line-through">${{ plato.precio_plato|floatformat }}</span>
+                                            <h5>${{ plato.oferta_plato|floatformat }}</h5>
+                                        {% else %}
+                                            <h5 class="precio-item">${{ plato.precio_plato|floatformat }}</h5>
+                                        {% endif %}
+                                        <a href=""></a>
+                                    </div>
+                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent mt-auto">
+                                        <div class="text-center">
+                                            <a class="btn btn-outline-dark mt-auto" href="#">Agregar al carro</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <!--FIN CARD DE PLATO-->      
+                </div>
+            </div>
+        </section>
+        <!-- fin de la seccion-->    
+        {% endblock %}

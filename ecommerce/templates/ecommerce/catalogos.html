@@ -1,4 +1,4 @@
-{%  extends "usuarios/main.html"  %}
+
 
 <!-- extension de la pagina main donde se encuentra el navbar -->
 
@@ -8,13 +8,34 @@
 <p> aqui deberian mostrarse los catalogos </p>
 
 
-<!--
-<p>listado de platos<a href="% url 'platos' %}"> aqui</a></p>
--->
-
 <h3> Categorias </h3>
 <p>listado de categoria<a href="{% url 'categorias' %}"> aqui</a></p>
 <br>    
+<div class="container px-4 px-lg-5 mt-5">
+    <div class="row gx-4 gx-lg-6 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        {% for categoria in categorias|slice:"1" %}
+        <div class="col mb-4">
+            <a class="" href="{% url 'platosCategoriaSeleccionada' categoria.nom_categoria %}" style="text-decoration: none; color: inherit;">
+            <div class="card h-100 item d-flex flex-column">
+                <div class="item-image text-center">
+                    <figure>
+                        <img class="card-img-top" src="/media/{{categoria.foto_categoria}}" alt="..." />
+                    </figure>
+                    <h6 style="margin: 0;text-align: center;">{{ plato.id_proveedor.nombre_proveedor }}</h6>
+                    <h4 class="fw-bolder">{{ categoria.nom_categoria }}</h4>
+
+                    <div class="card-body p-2 flex-grow-1">
+                        <p id="info" style="text-align: justify;">{{ categoria.des_categoria}}</p>
+                    </div> 
+                     
+                </div>
+            </div>
+            </a>  
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+</div>
 
 <h3> Ofertas </h3>
     <p>listado de platos<a href="{% url 'platos-ofertas' %}"> aqui</a></p>

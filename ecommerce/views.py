@@ -3,25 +3,30 @@ from django.http import HttpResponse
 from .models import Categoria, Plato
 from django.core.paginator import Paginator
 from django.contrib import messages
-from usuarios.models import Proveedor
+from proveedor.models import Proveedor
 
-banderaOferta = False
+
 
 # Create your views here.
 
 #-------------------------VIEWS DE CATALOGOS-------------------------
 
 def listarCatalogos(request):
-    categoria = Categoria.objects.all()
-    plato = Plato.objects.all()
-    oferta = Plato.objects.filter(descuento_activo=True)
-    context = {"categorias":categoria, "platos":plato, "ofertas":oferta}
+    categoria = Categoria.objects.order_by('?').first()
+    plato = Plato.objects.order_by('?').first()
+    oferta = Plato.objects.filter(descuento_activo=True).order_by('?').first()
+    context = {"categorias": [categoria], "platos": [plato], "ofertas": [oferta]}
     return render(request, 'ecommerce/catalogos.html', context)
 
+banderaCatActivo = False
+
 def listarCategorias(request):
-    categoria = Categoria.objects.all()
-    context = {"arregloCat":categoria}
+    banderaCatActivo = True
+    categoria = Categoria.objects.filter(cat_activo=True).all()
+    context = {"arregloCat":categoria, "banderaCatActivo":banderaCatActivo}
     return render(request, 'ecommerce/categorias.html', context)
+
+banderaOferta = False
 
 def listarOfertas(request):
     banderaOferta = True
@@ -47,7 +52,7 @@ def platosCategoriaSeleccionada(request,cat):
     categoria = categoria.id_categoria
     #platos de la categoria seleccionada comparandola con el id de la categoria
     plato = Plato.objects.filter(id_categoria=categoria)
-    
+    nomCategoria = cat
     context = {"platos":plato}
     return render(request, 'ecommerce/platos.html', context)
 
@@ -61,7 +66,8 @@ def registrarPlato(request):
         oferta = request.POST.get('oferta')
         categoria = request.POST.get('categoria')
         foto = request.FILES.get('foto')
-        
+        descuento = request.POST.get('descuento')
+        plato_activo = request.POST.get('plato_activo')
         #se obtiene el id de la categoria seleccionada
         categoria = Categoria.objects.get(nom_categoria=categoria)
         #se crea un nuevo plato
@@ -70,7 +76,8 @@ def registrarPlato(request):
                       descripcion_plato=descripcion, 
                       precio_plato=precio, 
                       oferta_plato=oferta, 
-                      foto_plato=foto)
+                      foto_plato=foto,
+                      descuento_activo=descuento, plato_activo=plato_activo)
         plato.save()
         messages.success(request, 'Plato registrado correctamente')
         return redirect('registroPlato')
@@ -78,3 +85,9 @@ def registrarPlato(request):
         categoria = Categoria.objects.all()
         context = {"categorias":categoria}
         return render(request, 'ecommerce/publicaciones.html', context)
+    
+def checkout(request):
+    return render(request, 'ecommerce/checkout.html')
+
+def thankyou(request):
+    return render(request, 'ecommerce/thankyou.html')

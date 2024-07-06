@@ -18,16 +18,20 @@ from django.contrib import admin
 from django.urls import path, include
 from . import settings
 from django.conf.urls.static import static
-from usuarios import views
-from usuarios.views import main,home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('usuarios.urls')),
+    path('', include('cliente.urls')),
+    #path('', include('usuarios.urls')),
+    
     path('', include('ecommerce.urls')),
-    path('home/', include('usuarios.urls')),
-    path('home/', include('ecommerce.urls')),
+    path('', include('proveedor.urls')),
+    path('', include('repartidor.urls')),
+    path('home/', include('cliente.urls')),
+    #path('home/', include('usuarios.urls')),
     
-    
+    #path('home/', include('ecommerce.urls')),
+    path('proveedor/', include('proveedor.urls')),
+    path('repartidor/', include('repartidor.urls')),
     
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
