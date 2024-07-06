@@ -58,7 +58,7 @@ def main(request):
 #-------------------login, logout, registrar y perfil de cliente-------------------
 
 def loginCliente(request):
-    if not usuarioValido(request, 'cliente')
+    if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente')
 
     if request.method == 'POST':
@@ -80,7 +80,7 @@ def loginCliente(request):
 @login_required
 def logoutCliente(request):
 
-    if not usuarioValido(request, 'cliente')
+    if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente')
 
     context={} 
@@ -93,7 +93,7 @@ def logoutCliente(request):
         return redirect('homeCliente')
 
 def registrarCliente(request):
-    if not usuarioValido(request, 'cliente')
+    if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente')
 
     if request.method == 'POST':
