@@ -15,12 +15,33 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path, include
+from . import settings
+from django.conf.urls.static import static
+#este es la importacion del ejemplo visto en clases
 from alumnos import views
 
+from . import views
+
+#se importa paginas
+#from paginas import views
+
+#urls que el usuario puede acceder
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    #estas son las rutas del home al iniciar el servidor
+    path('', include('paginas.urls')),
+    path('', include('catalogos.urls')),
+    
+    path('home/', include('paginas.urls')),
+    
+    #esta es la ruta de catalogos
+    path('home/', include('catalogos.urls')),
+    
+    #engloba todas las urls de la app alumnos
     path('alumnos/', include('alumnos.urls')),
     
-]
+#se incluye el static para que se puedan ver las imagenes en el servidor    
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

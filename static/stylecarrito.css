@@ -1,0 +1,70 @@
+h4, p, h6 {
+    text-align: left;
+}
+
+
+#btn-oscuro2 {
+    margin-top: auto;
+    width: 100%;
+
+    background-color: #a370f7;
+    color: white;
+    border-color: #c29ffa;
+    border-radius: 25px;
+    
+}
+
+/* Responsive styles */
+
+@media (max-width: 576px) {
+    .card {
+        width: 98%; /* One card per row on phones */
+        margin: 1% 1%;
+    }
+}
+
+.row{
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    
+}
+
+/* cosas carrito*/
+
+#oculto {
+    visibility: hidden;
+    display: none;
+}
+
+.product {
+    
+    padding: 0;
+    margin: 0;
+}
+
+#cart {
+    position: fixed;
+    top: 80px; /* Ajusta esto según la altura de tu navbar */
+    right: 20px;
+    width: 300px; /* Ajusta según tus necesidades */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Asegura que el carrito esté por encima de otros elementos */
+    display: none; /* Inicialmente oculto */
+    border-radius: 25px;
+}
+
+
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.cart-total {
+    font-weight: bold;
+}

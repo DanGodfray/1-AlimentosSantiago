@@ -1,0 +1,13 @@
+{% extends "cliente/main.html" %}
+
+{% block container %}
+<h1>Checkout</h1>
+    <div class="checkout-products">
+        <!-- Los productos del carrito se insertarán aquí -->
+    </div>
+    <div class="checkout-total">
+        <p>Total: <span class="total-pagar">$0</span></p>
+    </div>
+    <button id="confirm-purchase">Confirmar Compra</button>
+    
+{% endblock %}

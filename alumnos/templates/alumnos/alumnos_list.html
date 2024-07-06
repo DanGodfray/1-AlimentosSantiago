@@ -1,0 +1,64 @@
+{% extends "alumnos/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My primera chamba</title>
+</head>
+<body style="text-align: center">
+
+    {% block container %}
+    <h1>Editar datos alumnos</h1>
+    <br>
+    <button type="button">
+        <a href="{% url 'alumnosAdd' %}">Add alumno</a>
+    </button>
+    <br><br>
+    <div id="idMensajes">
+        {% if mensaje %}
+
+            {{mensaje}}
+
+        {% endif %}
+    </div>
+
+    <table style="text-align: center; border: 1px solid black;">
+        {% if listaAlumnos %}
+            <tr>
+                    <th >Rut</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Genero</th>
+                    <th>Eliminar</th>
+                    <th>Editar</th>
+            </tr>
+            {% for alumno in listaAlumnos %}
+                <tr>
+                    <td>{{alumno.rut}}</td>
+                    <td>{{alumno.nombre}}</td>
+                    <td>{{alumno.apellido_paterno}}</td>
+                    <td>{{alumno.id_genero.genero}}</td>
+                    
+                    <td><a href="{% url 'alumnos_del' pk=alumno.rut %}">Eliminar</a></td>
+                    <td><a href="{% url 'alumnos_findEdit' pk=alumno.rut %}">Modificar</a><td>
+ 
+                </tr>
+            {% endfor %}
+        {% endif %}    
+        
+    </table>    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#idMensajes').delay(3000).fadeOut("slow");
+        }); 
+    </script>
+
+    {% endblock %}
+</body>
+</html>

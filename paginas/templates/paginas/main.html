@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <!-- Latest Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <link style="stylesheet" href="">
+    <link style="stylesheet" href="style.css">
+
+</head>
+<body>
+    
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">Alimentos Santiago</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Proveedores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Repartidores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'catalogos' %}">Catalogo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">INDEX ALUMNOS</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto ">    
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Login</a>
+                        </li>
+                        {%block carrito%}
+                         
+                        {%endblock%}
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="py-5">
+            <div class="container">
+                
+                <!-- bloque de contenido para heredar el navbar y el footer-->
+                {% block container %} 
+
+                {% endblock %}
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-light py-4">
+        <div class="container text-center">
+            <p>&copy; 2022 Your Company. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Latest Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+</body>
+</html>

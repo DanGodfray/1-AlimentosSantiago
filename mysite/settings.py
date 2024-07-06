@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+#se importa el archivo settings para configurar las rutas de los archivos estaticos
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +32,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+#Aqui se debe agregar la aplicaciones creadas en el proyecto
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'alumnos',
+    'paginas',
+    'catalogos',
+
+    
 ]
 
 MIDDLEWARE = [
@@ -117,6 +124,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+#se agregaron estas lineas para configurar las rutas de los archivos estaticos
+#modificiacion de la ruta de los archivos estaticos
+#MEDIA_URL = 'static/media/'
+MEDIA_URL = 'media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#modificacion de la ruta de los archivos estaticos
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -1,0 +1,71 @@
+{% extends "cliente/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<header class="bg-danger py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Resgistrarse</h1>
+            <p class="lead fw-normal text-white-50 mb-0">¿Eres nuevo? resgistrate y disfruta de lo bueno</p>
+        </div>
+        </div>
+    </header>
+
+    <section class="py-3">
+    <div class="row gx-4 gx-lg-6 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <form method="POST" action="{% url 'registrarCliente' %}">
+        {% csrf_token %}
+        <h2 style="text-align: center">Datos personales</h2>
+        <div class="mb-3">
+            <label for="exampleInputNombre" class="form-label">Nombre</label>
+            <input name="nombreCliente" placeholder="Ingrese su nombre" type="text" class="form-control" id="exampleInputNombre">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputApellido" class="form-label">Apellido</label>
+            <input name="apellidoCliente" placeholder="Ingrese su apellido" type="text" class="form-control" id="exampleInputApellido">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">Email</label>
+            <input name="emailCliente" placeholder="Ingrese su email" type="email" class="form-control" id="exampleInputEmail">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputTelefono" class="form-label">Teléfono</label>
+            <input name="telefonoCliente" placeholder="Ingrese su teléfono" type="text" class="form-control" id="exampleInputTelefono">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputDireccion" class="form-label">Dirección</label>
+            <input name="direccionCliente" placeholder="Ingrese su dirección" type="text" class="form-control" id="exampleInputDireccion">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputDireccion" class="form-label">Empresa afiliada</label>
+            <input name="direccionCliente" placeholder="Ingrese el nombre de la empresa" type="text" class="form-control" id="exampleInputDireccion">
+        </div>
+
+        <hr>
+        <h2 style="text-align: center">Inicio de sesión</h2>
+        <div class="mb-3">
+            <label for="exampleInputNombre" class="form-label">Nombre de usuario</label>
+            <input name="nombreCliente" placeholder="Ingrese nombre para iniciar sesión" type="text" class="form-control" id="exampleInputNombre">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            <input name="passwordCliente" placeholder="Ingrese su contraseña" type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword2" class="form-label">Confirmar contraseña</label>
+            <input name="confirmPasswordCliente" placeholder="Confirme su contraseña" type="password" class="form-control" id="exampleInputPassword2">
+        </div>
+        <div class="mb-3 text-center">
+            <button type="submit" class="btn btn-danger">Ingresar</button>
+        </div>
+    </form>
+</div>
+</section>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    
+</style>
+{% endblock %}
