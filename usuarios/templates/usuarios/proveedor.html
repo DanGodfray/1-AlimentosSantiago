@@ -1,16 +1,24 @@
 {%  extends "usuarios/main.html"  %}
+{% load static %}
 
 <!-- extension de la pagina main donde se encuentra el navbar -->
 
 <!-- bloque de contenido para heredar lo que se encuentra dentro del block es propio de catalogo.html-->
 {% block container  %}
-<h1> Menu proveedor</h1>
-<p> aqui deberian mostrarse las publicaciones </p>
+<br>
+<br>
 
 <!-- CRUD for publicaciones -->
 <div class="container">
-    <h2>Publicaciones</h2>
-    <a href="{% url 'registroPlato' %}" class="btn btn-primary">Crear Publicación</a>
+    <h2>Gestion de publicaciones</h2>
+    <a href="{% url 'registrarPlato' %}" class="btn btn-primary">Crear Publicación</a>
+
+    <div id="idMensajes"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+        {% if mensaje %}
+            {{mensaje.mensaje}}
+        {% endif %}
+    </div>  
+
     <table class="table">
         <thead>
             <tr>
@@ -50,21 +58,25 @@
                 <td >
                     
                     <td>
-                        <a href="{% url 'pausarPlato'  %}" class="btn btn-secondary" style="display: block; width: 80px; margin-bottom: 2px;" action="POST" >
-                            {% if plato.plato_activo %}
-                                Pausar
-                            {% else %}
-                                Activar
-                            {% endif %}
-                        </a>
+                        <form action="{% url 'pausarPlato' plato.id_plato %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-secondary" style="display: block; width: 80px; margin-bottom: 2px;">
+                                {% if plato.plato_activo %}
+                                    Pausar
+                                {% else %}
+                                    Activar
+                                {% endif %}
+                            </button>
+                        </form>
 
-                        <a href="% url 'editar_publicacion' publicacion.id %}" class="btn btn-primary" style="display: block; width: 80px; margin-bottom: 2px;">Editar</a>
+                        <a href="{% url 'editarPlato' plato.id_plato %}" class="btn btn-primary" style="display: block; width: 80px; margin-bottom: 2px;">Editar</a>
 
-                        <a href="% url 'eliminar_publicacion' publicacion.id %}" class="btn btn-danger" style="display: block; width: 80px; margin-right: 2px;">Eliminar</a>
+                        <a href="{% url 'eliminarPlato' plato.id_plato %}" class="btn btn-danger" style="display: block; width: 80px; margin-right: 2px;">Eliminar</a>
                     </td>
                     
                 </td>
             </tr>
+            
             {% empty %}
             <tr>
                 <td colspan="4">No hay publicaciones disponibles.</td>
@@ -76,5 +88,28 @@
 
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
+    $(document).ready(function(){
+        $('#idMensajes').delay(3000).fadeOut("slow");
+    }); 
+</script>
     
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    button[type="submit"] {
+        font-size: 1rem;
+        font-weight: 400;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+        color: #212529;
+        background-color: #f8f9fa;
+        margin: auto;
+        display: block;
+    }
+</style>
 {% endblock %}

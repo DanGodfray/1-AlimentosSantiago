@@ -1,0 +1,10 @@
+la pagina home.html es un archivo de prueba 
+para navegar entre paginas y apps, al momento 
+de montar se podra reemplazar por la version
+del front diseañda 
+
+la pagina main es una pagina de prueba que
+se monta a el view de catalogos y renderea 
+los templates de catalogo
+
+esta carpeta cntendra html, css, js 

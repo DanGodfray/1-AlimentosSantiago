@@ -1,0 +1,101 @@
+{% extends 'proveedor/base-proveedor.html' %}
+
+{% block content %}
+    <!-- Add your profile content here -->
+    <header class="bg-primary py-2">
+        <div class="container px-1 px-lg-1 my-1">
+            <div class="text-center text-white">
+                {% if user.is_authenticated %}
+                <h1 class="display-6 fw-bolder"> {{listaProveedores.nombre_proveedor}}</h1>
+                {% else %}
+                <h1 class="display-6 fw-bolder">Bienvenido</h1>
+                {% endif %}
+                <p class="lead fw-normal text-white-50 mb-0">Perfil</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0">Perfil de Proveedor</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Edit form -->
+                        <form method="post" action="#">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="nombre_proveedor">Nombre de Proveedor:</label>
+                                <input type="text" id="nombre_proveedor" name="nombre_proveedor" value="{{ listaProveedores.nombre_proveedor }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fono_proveedor">Teléfono:</label>
+                                <input type="text" id="fono_proveedor" name="fono_proveedor" value="{{ listaProveedores.fono_proveedor }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" value="{{ user.first_name }} {{ user.last_name }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Nombre de usuario:</label>
+                                <input type="text" id="username" name="username" value="{{ user.username }}" class="form-control" required>
+                            </div>
+                            <br>
+                            <div class="">
+                                <button type="submit" class="btn btn-secondary">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Publicaciones</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Cantidad de Publicaciones:</strong> {{ cantidad_publicaciones }}</p>
+                        <p><strong>Publicaciones Activas:</strong> {{ cantidad_publicaciones_activas }}</p>
+                        <a href="{% url 'publicaciones' %}" class="btn btn-secondary">Ver Publicaciones</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- Carousel of publicaciones -->
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for publicacion in publicaciones %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for publicacion in publicaciones %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ publicacion.imagen.url }}" class="d-block w-100" alt="Publicación">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>{{ publicacion.titulo }}</h5>
+                                <p>{{ publicacion.descripcion }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Siguiente</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br><br><br><br>
+{% endblock %}

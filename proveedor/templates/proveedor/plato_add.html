@@ -1,0 +1,176 @@
+{%  extends "proveedor/base-proveedor.html"  %}
+{% load static %}
+
+
+
+{% block content %}
+<header class="bg-primary py-2">
+    <div class="container px-2 px-lg-2 my-2">
+        <div class="text-center text-white">
+            <h2 class="display-8 fw-bolder">Crear publicacion</h2>
+        </div>
+    </div>
+</header>
+<div style="text-align: center" class="col-md-12 py-2">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <form enctype="multipart/form-data" action="{% url 'registrarPlato' %}" method="POST" style="border-radius: 10px;border: 1px solid grey; padding: 10px; col-md-12">
+            <!--token de seguridad obligatorio para el traslado de datos-->
+            {% csrf_token %}
+            
+            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <label id="categoria2" for="categoria" style="margin-bottom: 10px;">Categoría:</label>
+                        </td>
+                        <td>
+                            <select id="categoria" name="categoria" value="" required class="form-control" style="margin-bottom: 10px;">
+                                {% for categoria in listaCategorias %}
+                                    {% if categoria.nom_categoria == listaPlatos.id_plato.nom_plato %}
+                                        <option  value="{{categoria.nom_categoria}}" selected>{{categoria.nom_categoria}}</option>
+                                    {% else %}
+                                        <option value="{{categoria.nom_categoria}}">{{categoria.nom_categoria}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="nombre" style="margin-bottom: 10px;">Nombre:</label>
+                        </td>
+                        <td>
+                            <input type="text" name="nombre" class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="descripcion" style="margin-bottom: 10px;">Descripción:</label>
+                        </td>
+                        <td>
+                            <textarea name="descripcion" class="form-control" style="margin-bottom: 10px;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="precio" style="margin-bottom: 10px;">Precio:</label>
+                        </td>
+                        <td>
+                            <input type="number" name="precio" id="precio" required class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="oferta" style="margin-bottom: 10px;">Precio Oferta:</label>
+                        </td>
+                        <td>
+                            <input type="number" name="oferta" id="oferta" class="form-control" style="margin-bottom: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="foto" style="margin-bottom: 10px;">Imagen:</label>
+                        </td>
+                        <td>
+                            <input type="file" name="foto" id="imagen" class="form-control" style="margin-bottom: 10px;">
+                        </td>
+
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="descuento_activo" style="margin-bottom: 10px;">Oferta activa:</label>
+                            <input type="checkbox" name="descuento_activo" style="margin-bottom: 10px;" class="form-check-input" {% if listaPlatos.descuento_activo %}checked{% endif %}>
+                        </td>
+                        <td>
+                            <label for="disponible" style="margin-bottom: 10px;">Publicacion activa:</label>
+                            <input type="checkbox" name="plato_activo" style="margin-bottom: 10px;" class="form-check-input" {% if listaPlatos.plato_activo %}checked{% endif %}>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2">
+                            <div id="idMensajes" style="margin-bottom: 10px;"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+                                {% if mensaje %}
+                                    {{mensaje}}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" name="opcion" class="btn btn-success" style="margin-bottom: 10px;">Publicar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </form>
+
+        {% if mensaje %}
+            <div id="idMensajes" style="margin-bottom: 10px;"><!--ESTE DIV SE UTILIZA PARA MOSTRAR MENSAJES DE ERROR O EXITO MEDIANTE EL id="idMensajes"-->
+                {{mensaje}}
+            </div>
+        {% endif %}
+        <div class="py-2">
+            <a href="{% url 'publicaciones' %}" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var categoriaCheckbox = document.getElementById('categoria-checkbox');
+    var otracatInput = document.getElementById('otracat');
+    var otracat2Input = document.getElementById('otracat2');
+    var categoriaSelect = document.getElementById('categoria');
+    var categoria2Select = document.getElementById('categoria2');
+
+    categoriaCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            otracatInput.style.display = 'block';
+            otracat2Input.style.display = 'block';
+            otracatInput.classList.remove('hidden'); // Show otracatInput
+            categoriaSelect.classList.add('hidden'); // Hide categoriaSelect
+            categoria2Select.classList.add('hidden'); // Hide categoriaSelect
+        } else {
+            otracatInput.style.display = 'none';
+            otracat2Input.style.display = 'none';
+            otracatInput.classList.add('hidden'); // Hide otracatInput
+            categoriaSelect.classList.remove('hidden'); // Show categoriaSelect
+            categoria2Select.classList.remove('hidden'); // Show categoriaSelect
+        }
+    });
+</script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
+    $(document).ready(function(){
+        $('#idMensajes').delay(3000).fadeOut("slow");
+    }); 
+</script>
+
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    #otracat{
+        display: none;
+    }
+    #otracat2{
+        display: none;
+    }
+    #categoria {
+        opacity: 1; /* Default opacity */
+    }
+    #categoria:disabled {
+        opacity: 0.5; /* Reduced opacity when disabled */
+        pointer-events: none; /* Disable pointer events */
+    }
+    .hidden {
+        display: none; /* Hidden style */
+    }
+</style>
+{% endblock %}
