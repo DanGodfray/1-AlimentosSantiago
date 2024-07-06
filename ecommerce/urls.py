@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     
     #-------------------------URLS DE CATALOGOS-------------------------
+    #-------------------------URLS DE CATALOGOS-------------------------
     #url que muestra el catalogo general
     path('catalogos/', views.listarCatalogos , name='catalogos'),
     

@@ -1,4 +1,5 @@
 {% extends "cliente/base.html" %}
+{% extends "cliente/base.html" %}
 
 {% block content %}
     {% if banderaOferta %}<!-- filtrar por ofertas -->
@@ -28,7 +29,38 @@
             </div>
         </div>
     </header>
+{% block content %}
+    {% if banderaOferta %}<!-- filtrar por ofertas -->
+    <header class="bg-danger py-4">
+        <div class="container px-2 px-lg-2 my-2">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Ofertas</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Disfruta estas papitas</p>
+            </div>
+        </div>
+    </header>
+    {% elif nomCategoria %}
+        <header class="bg-danger py-4">
+            <div class="container px-2 px-lg-2 my-2">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Variedades de {{nomCategoria}}</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Excelente eleccion</p>
+                </div>
+            </div>
+        </header>
+    {% else %}<!-- vista general -->
+    <header class="bg-danger py-4">
+        <div class="container px-2 px-lg-2 my-2">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">De todo un poco</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Toda la posibilidades en un solo lugar</p>
+            </div>
+        </div>
+    </header>
     {% endif %}
+    
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-6 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
     
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-6 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -113,3 +145,4 @@
 </script>
 
 {% endblock %}
+

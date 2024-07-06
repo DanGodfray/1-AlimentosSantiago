@@ -54,6 +54,8 @@ def listarCatalogos(request):
 
 banderaCatActivo = False
 
+banderaCatActivo = False
+
 def listarCategorias(request):
     if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente') 
@@ -62,6 +64,8 @@ def listarCategorias(request):
     categoria = Categoria.objects.filter(cat_activo=True).all()
     context = {"arregloCat":categoria, "banderaCatActivo":banderaCatActivo}
     return render(request, 'ecommerce/categorias.html', context)
+
+banderaOferta = False
 
 banderaOferta = False
 
@@ -75,13 +79,19 @@ def listarOfertas(request):
     return render(request, 'ecommerce/platos.html', context)
 
 #view para probar el listado de platos sin parametros
+#view para probar el listado de platos sin parametros
 def listarPlatos(request):
     if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente') 
     
     plato = Plato.objects.all()
     
+    
     context = {"platos":plato}
+    #debug para revisar el nombre de los proveedores en el objeto plato
+    for plato in context['platos']:
+        print(f'nombre proveedor: {plato.id_proveedor.nombre_proveedor}')
+    
     #debug para revisar el nombre de los proveedores en el objeto plato
     for plato in context['platos']:
         print(f'nombre proveedor: {plato.id_proveedor.nombre_proveedor}')
@@ -98,6 +108,7 @@ def platosCategoriaSeleccionada(request,cat):
     categoria = categoria.id_categoria
     #platos de la categoria seleccionada comparandola con el id de la categoria
     plato = Plato.objects.filter(id_categoria=categoria)
+    nomCategoria = cat
     nomCategoria = cat
     context = {"platos":plato}
     return render(request, 'ecommerce/platos.html', context)

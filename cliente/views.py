@@ -40,10 +40,11 @@ def usuarioValido(request, group_name):
     return True
 
 def homeCliente(request):
-    cliente = request.user
-    print(f'cliente: {cliente}')
+    cliente=request.user
     
-    usuarioValido(request, 'cliente')  #redirje a login si no es un cliente
+    print(f'cliente: {cliente}')
+
+    usuarioValido(request, 'cliente')
 
     plato = Plato.objects.order_by('?').all()
     
@@ -57,8 +58,9 @@ def main(request):
 #-------------------login, logout, registrar y perfil de cliente-------------------
 
 def loginCliente(request):
-    
-    
+    if not usuarioValido(request, 'cliente'):
+        return redirect('homeCliente')
+
     if request.method == 'POST':
         username = request.POST.get('usernameCliente')
         password = request.POST.get('passwordCliente')
@@ -77,41 +79,47 @@ def loginCliente(request):
 
 @login_required
 def logoutCliente(request):
-    clientes = get_object_or_404(Cliente, user=request.user)
-    
+
     if not usuarioValido(request, 'cliente'):
-        return redirect('homeCliente')  # redirige a la página de inicio si no es un cliente
-    
-    logout(request)
-    messages.success(request, f'Se ha cerrado sesión correctamente.')
-    return redirect('homeCliente')
+        return redirect('homeCliente')
+
+    context={} 
+    try:
+        logout(request)
+        messages.success(request, f'Se ha cerrado sesión correctamente.')
+        return redirect('homeCliente')
+    except:
+        messages.error(request, f'Error al cerrar sesión.')
+        return redirect('homeCliente')
 
 def registrarCliente(request):
-    
     if not usuarioValido(request, 'cliente'):
-        return redirect('homeCliente')  # redirige a la página de inicio si no es un cliente
-    
+        return redirect('homeCliente')
+
     if request.method == 'POST':
         form = ClienteRegistroForm(request.POST)
         if form.is_valid():
             user = form.save()
-            cliente_group = Group.objects.get(name='cliente')
-            user.groups.add(cliente_group)
-            user.save()
+            proveedor_group = Group.objects.get(name='cliente') #se le asigna un grupo al momento de registrarse
+            user.groups.add(proveedor_group)
             login(request, user)
-            messages.success(request, 'Usuario registrado exitosamente.')
-            return redirect('perfilCliente')
+            messages.success(request, 'Usuario registrados exitosamente.')
+            return redirect('perfilCliente')  #se redirige a la pagina de perfil de cliente
         else:
             messages.error(request, 'Error: no se pudo registrar el usuario.')
     else:
         form = ClienteRegistroForm()
 
     return render(request, 'cliente/registrarse-cliente.html', {'form': form})
+    
+#-------------------------------fin de autenticacion de cliente
+
+#-------------------perfil de cliente-------------------
 
 @login_required
 def perfilClientes(request, mensaje=None):
     clientes = get_object_or_404(Cliente, user=request.user)
-    
+
     if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente')  # redirige a la página de inicio si no es un cliente
 
@@ -134,6 +142,3 @@ def perfilClientes(request, mensaje=None):
         context['mensaje'] = mensaje
 
     return render(request, 'cliente/perfil-cliente.html', context)
-
-
-    #------aqui deberia comenzar if post para editar perfil de cliente
