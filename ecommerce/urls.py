@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     
+    #-------------------------URLS DE CATALOGOS-------------------------
     #url que muestra el catalogo general
     path('catalogos/', views.listarCatalogos , name='catalogos'),
     
@@ -18,7 +19,10 @@ urlpatterns = [
     
     #este path se utiliza para mostrar los platos de una categoria seleccionada
     path('catalogos/categoria/<str:cat>', views.platosCategoriaSeleccionada , name='platosCategoriaSeleccionada'),
+    #-------------------------FIN URLS DE CATALOGOS-------------------------
     
+    path('checkout/', views.checkout, name='checkout'),
+    path('thankyou/', views.thankyou, name='thankyou'),
     
     
     
