@@ -10,6 +10,14 @@ from django.contrib.auth.decorators import login_required
 from .carro import Carro
 
 
+
+def checkout(request):
+    return render(request, 'ecommerce/checkout.html')
+
+def thankyou(request):
+    return render(request, 'ecommerce/thankyou.html')
+
+
 # Create your views here.
 
 #--------funcion que se reutiliza para validar el usuario que accede a las vistas
@@ -118,24 +126,35 @@ def carroEstado(request):
 #view para agregar un plato al carro
 @login_required
 def agregarAlCarro(request):
-    #if not usuarioValido(request, 'cliente'):
-    #    return redirect('homeCliente') 
-    
-    #se obtiene el id del plato que se desea agregar al carro
     carro = Carro(request)
 
     if request.POST.get('action') == 'post':
         id_plato = request.POST.get('id_plato')
         
+        if not id_plato:
+            return JsonResponse({'error': 'No se ha seleccionado un plato'}, status=400)
+
+        try:
+            id_plato = int(id_plato)
+        except ValueError:
+            return JsonResponse({'error': 'ID de plato no válido'}, status=400)
+
         plato = get_object_or_404(Plato, id_plato=id_plato)
-        #se agrega el plato al carro y a la sesion
         carro.add(plato=plato)
-        #se guarda el carro en la sesion y se retorna una respuesta en formato json
-        response=JsonResponse({'Nombre plato: ', plato.nombre_plato, 'Precio: ', plato.precio_plato})
+
+        print(f'ID_PLATO que se agrego es: {id_plato}')
+        print(f'ID_PLATO 2da vez: {id_plato}')
+        print(f'Plato: {plato.nom_plato}')
+        print(f'Carro: {carro.carro.get(str(id_plato))}')
+
+        response = JsonResponse({
+            'Nombre plato': plato.nom_plato,
+            'Precio': plato.oferta_plato if plato.descuento_activo else plato.precio_plato
+        })
         
         return response
-
     
+    return JsonResponse({'error': 'No se ha seleccionado un plato'}, status=400)
 
 #view para eliminar la cantidad en el carro
 @login_required

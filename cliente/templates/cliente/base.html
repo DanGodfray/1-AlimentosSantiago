@@ -25,7 +25,7 @@
         {% include 'cliente/navbar.html' %}<!--navbar-->
         {% if messages %}<!-- mensajes de error -->
             {% for message in messages %}
-                <div class="alert alert-warning alert-dismissible fade show" id="idMensajes" role="alert">
+            <div class="container alert alert-warning alert-dismissible fade show position-fixed top-1 start-50 translate-middle-x" id="idMensajes" role="alert" style="margin-top: 5px;">
                     <li>{{ message }}</li>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -48,8 +48,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
-            $(document).ready(function(){
-                $('#idMensajes').delay(60000).fadeOut("slow");
+            $(d  ocument).ready(function(){
+                $('#idMensajes').delay(20000).fadeOut("shrink");
             }); 
         </script>
 

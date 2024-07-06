@@ -23,8 +23,8 @@ urlpatterns = [
     
     #-------------------------URLS DE CHECKOUT ALFA-------------------------
     
-    ###path('checkout/', views.checkout, name='checkout'),
-    ###path('thankyou/', views.thankyou, name='thankyou'),
+    #path('checkout/', views.checkout, name='checkout'),
+    #path('thankyou/', views.thankyou, name='thankyou'),
     
     #-------------------------FIN URLS DE CHECKOUT ALFA-------------------------
     
