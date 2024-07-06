@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, AnonymousUser
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import ProveedorRegistroForm
@@ -18,8 +18,31 @@ from .forms import ProveedorRegistroForm
 
 banderaPlatoActivo = True
 
+#--------funcion que se reutiliza para validar el usuario que accede a las vistas
+def usuarioValido(request, group_name):
+    user = request.user
+    print(f'USUARIOVALIDO: user el usuario actual es: {user}')
+
+    if isinstance(user, AnonymousUser):
+        return True  # permite a usuarios anónimos acceder a la página
+
+    if not user.is_authenticated:
+        logout(request)
+        messages.error(request, 'Usuario no autenticado.')
+        return False
+
+    if not user.groups.filter(name=group_name).exists():
+        logout(request)
+        messages.error(request, 'Usuario invalido.')
+        return False
+
+    return True
+
+
 def homeProveedor(request):
+
     proveedor=request.user
+    usuarioValido(request, 'proveedor')
     context={'proveedor':proveedor} 
     return render(request, 'proveedor/home-proveedor.html', context)
 
@@ -30,6 +53,9 @@ def homeProveedor(request):
 #----------------------------------autenticacion de proveedor
 
 def loginProveedor(request):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     if request.method == 'POST':
         username = request.POST.get('usernameProveedor')
         password = request.POST.get('passwordProveedor')
@@ -48,6 +74,9 @@ def loginProveedor(request):
         return render(request, 'proveedor/login-proveedor.html',{})    
     
 def registrarProveedor(request):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     if request.method == 'POST':
         form = ProveedorRegistroForm(request.POST)
         if form.is_valid():
@@ -73,6 +102,9 @@ def registrarProveedor(request):
     
 @login_required
 def logoutProveedor(request):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     context={} 
     try:
         logout(request)
@@ -86,6 +118,8 @@ def logoutProveedor(request):
 
 @login_required
 def perfilProveedores(request, mensaje=None):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
     
     try:
         proveedores = Proveedor.objects.get(user=request.user)
@@ -113,10 +147,13 @@ def perfilProveedores(request, mensaje=None):
         return redirect('proveedor')
 
 #metodo para listar todos los platos en el perfil del proveedor, y almacena un mensaje
+@login_required
 def publicacionProveedores(request, mensaje=None):
     
     # Get del usuario logueado
     user = request.user
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
         
     # Get del proveedor logueado para asignarle el plato
     proveedores = get_object_or_404(Proveedor, user=user)
@@ -138,8 +175,11 @@ def publicacionProveedores(request, mensaje=None):
     
 
 #metodo para listar los platos por proveedor en el perfil del proveedor
+@login_required
 def listarPlatosPorProv(request, prov):
-    
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     proveedor = get_object_or_404(Proveedor, nombre_proveedor=prov.replace("-", " "))
     plato = Plato.objects.filter(id_proveedor=proveedor.id_proveedor)
     
@@ -150,7 +190,12 @@ def listarPlatosPorProv(request, prov):
     context = {"listaPlatos": plato, "listarProveedor": proveedor, "banderaProv": prov}
     return render(request, 'proveedor/publicaciones.html', context)
 
+#metodo para pausar los platos por proveedor en el perfil del proveedor
+@login_required
 def pausarPlato(request, pk):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     plato = get_object_or_404(Plato, id_plato=pk)
     
     if request.method == 'POST':
@@ -164,7 +209,11 @@ def pausarPlato(request, pk):
     return render(request, 'proveedor/publicaciones.html', {'plato': plato})
 
 #metodo que rellena la tabla plato con los datos ingresados por el proveedor
+@login_required
 def platoEsPost(request, plato=None):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     if request.method == 'POST':
         categoria = request.POST.get('categoria')
         nombre = request.POST.get('nombre')
@@ -229,7 +278,11 @@ def platoEsPost(request, plato=None):
             
             return redirect('publicaciones')
 
+@login_required
 def registrarPlato(request):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     if request.method == 'POST':
         
         print('REGISTRARPLATO: ESTO ES UN POST')
@@ -244,7 +297,11 @@ def registrarPlato(request):
         context = {"listaPlatos": plato, "listaCategorias": categorias, "listaProveedores": proveedores}
         return render(request, 'proveedor/plato_add.html', context)
 
+@login_required
 def eliminarPlato(request, pkplato):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     try:
         plato = get_object_or_404(Plato, id_plato=pkplato)
         plato.delete()
@@ -253,7 +310,11 @@ def eliminarPlato(request, pkplato):
         messages.error(request, f"Error al eliminar el plato: {e}")
     return redirect('publicaciones')
 
+@login_required
 def editarPlato(request, pkplato):
+    if not usuarioValido(request, 'proveedor'):
+        return redirect('homeProveedor')
+
     plato = get_object_or_404(Plato, id_plato=pkplato)
     if request.method == 'POST':
         return platoEsPost(request, plato)
