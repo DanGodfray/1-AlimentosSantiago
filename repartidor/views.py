@@ -56,3 +56,37 @@ def loginRepartidor(request):
             return redirect('loginRepartidor')
     else:
         return render(request, 'repartidor/login-repartidor.html', {})
+    
+def logoutRepartidor(request):
+
+    if not usuarioValido(request, 'repartidor'):
+        return redirect('homeRepartidor')
+
+    context={} 
+    try:
+        logout(request)
+        messages.success(request, f'Se ha cerrado sesión correctamente.')
+        return redirect('homeRepartidor')
+    except:
+        messages.error(request, f'Error al cerrar sesión.')
+        return redirect('homeRepartidor')
+
+def registrarCliente(request):
+    if not usuarioValido(request, 'repartidor'):
+        return redirect('homeRepartidor')
+
+    if request.method == 'POST':
+        form = RepartidorRegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            proveedor_group = Group.objects.get(name='repartidor') #se le asigna un grupo al momento de registrarse
+            user.groups.add(proveedor_group)
+            login(request, user)
+            messages.success(request, 'Usuario registrados exitosamente.')
+            return redirect('perfilCliente')  #se redirige a la pagina de perfil de cliente
+        else:
+            messages.error(request, 'Error: no se pudo registrar el usuario.')
+    else:
+        form = RepartidorRegistroForm()
+
+    return render(request, 'repartidor/registrarse-repartidor.html', {'form': form})
