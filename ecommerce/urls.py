@@ -31,6 +31,8 @@ urlpatterns = [
     
     #-------------------------URLS DE CARRO V2-------------------------
     
+    path('actualizar-carro/', views.actualizarCarro, name='actualizarCarro'),
+    
     path('home/carro', views.avisoCarro, name='avisoCarro'),
     
     path('cliente/carro/', views.carroEstado, name='carroEstado'),

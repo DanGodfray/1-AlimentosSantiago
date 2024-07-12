@@ -53,9 +53,18 @@ class Pedido(models.Model):
     id_repartidor = models.ForeignKey(Repartidor, on_delete=models.CASCADE, db_column='id_repatidor', blank=True, null=True)
     id_agenda = models.ForeignKey('Agenda', on_delete=models.CASCADE, db_column='id_agenda',blank=True, null=True)
 
-
     def __str__(self):
         return f"Pedido {self.id_pedido} {self.estado_pedido}"
+    
+# creacion de la tabla itemPedido para agregar los platos al pedido    
+class itemPedido(models.Model):
+    plato = models.ForeignKey('Plato', on_delete=models.SET_NULL, null=True)
+    pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, null=True)
+    cantidad_item = models.IntegerField(default=0, blank=True, null=True)
+    fecha_agregado = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Item del Pedido N°: {self.id}"
     
 # Creación de la tabla Entregas
 class Entrega(models.Model):

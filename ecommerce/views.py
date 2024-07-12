@@ -8,7 +8,8 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User, Group, AnonymousUser
 from django.contrib.auth.decorators import login_required
 from .carro import Carro
-
+from .models import Pedido, Agenda, Entrega
+import json
 
 
 def checkout(request):
@@ -113,9 +114,32 @@ def platosCategoriaSeleccionada(request,cat):
     context = {"platos":plato}
     return render(request, 'ecommerce/platos.html', context)
 
-#-------------------------FIN VIEWS DE CATALOGOS-------------------------
+#-------------------------FIN VIEWS DE CATALOGOS----------------------<<<<
 
-#-------------------------VIEWS DE CARRO DE COMPRAS-------------------------
+def actualizarCarro(request):
+    data= json.loads(request.body)
+    platoId = data['platoId']
+    action = data['action']
+    
+    print(f'ID_PLATO: {platoId}, ACTION: {action}')
+    
+    cliente = request.user.cliente
+    #grupo = cliente.groups.first()
+    plato = Plato.objects.get(id_plato=platoId)
+    
+    print(f'CLIENTE: {cliente}, PLATO: {plato.nom_plato}, IDPLATO: {plato.id_plato}')
+    
+    #SE DEBE CREAR LA TABLA ITEM PEDIDO
+    
+    #pedido = Pedido.objects.get_or_create(id_cliente=cliente, estado_pedido='Pendiente')
+    
+    #print(f'PEDIDO: {pedido}')
+    
+    #itemPlato = Plato.objects.get_or_create(pedido=pedido, id_plato=plato.id_plato)
+    
+    return JsonResponse('Carro actualizado', safe=False)
+
+#-------------------------VIEWS DE CARRO DE COMPRAS----------------------<<<<
 
 def avisoCarro(request):
     if not usuarioValido(request, 'cliente'):
