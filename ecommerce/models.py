@@ -48,7 +48,8 @@ class Pedido(models.Model):
     fecha_pdido = models.DateField(default=datetime.date.today)
     retiro_local = models.BooleanField(default=True)
 
-    plato = models.ForeignKey('Plato', on_delete=models.CASCADE, db_column='id_plato')
+    completado = models.BooleanField(default=False)
+    plato = models.ForeignKey('Plato', on_delete=models.CASCADE, db_column='id_plato', blank=True, null=True)
     id_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, db_column='id_cliente')
     id_repartidor = models.ForeignKey(Repartidor, on_delete=models.CASCADE, db_column='id_repatidor', blank=True, null=True)
     id_agenda = models.ForeignKey('Agenda', on_delete=models.CASCADE, db_column='id_agenda',blank=True, null=True)
@@ -74,7 +75,12 @@ class Entrega(models.Model):
     fecha_entrega = models.DateField(blank=False, null=False)
     hora_entrega = models.TimeField(blank=False, null=False)
     
+    entregado = models.BooleanField(default=False)
+    fecha_creacion = models.DateField(default=datetime.date.today)
+    
     id_repartidor = models.ForeignKey(Repartidor, on_delete=models.CASCADE, db_column='id_repatidor')
+    id_pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, db_column='id_pedido')
+    id_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, db_column='id_cliente')
 
     def __str__(self):
         return f"Entrega {self.id_entrega}"
