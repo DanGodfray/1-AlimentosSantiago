@@ -1,3 +1,4 @@
+from django.forms import DecimalField
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import Categoria, Plato
@@ -8,7 +9,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User, Group, AnonymousUser
 from django.contrib.auth.decorators import login_required
 from .carro import Carro
-from .models import Pedido, Agenda, Entrega
+from .models import Pedido, Agenda, Entrega, itemPedido
 import json
 
 
@@ -111,7 +112,7 @@ def platosCategoriaSeleccionada(request,cat):
     plato = Plato.objects.filter(id_categoria=categoria)
     nomCategoria = cat
     nomCategoria = cat
-    context = {"platos":plato}
+    context = {"platos":plato, "nomCategoria":nomCategoria}
     return render(request, 'ecommerce/platos.html', context)
 
 #-------------------------FIN VIEWS DE CATALOGOS----------------------<<<<
@@ -124,10 +125,10 @@ def actualizarCarro(request):
     print(f'ID_PLATO: {platoId}, ACTION: {action}')
     
     cliente = request.user.cliente
-    #grupo = cliente.groups.first()
     plato = Plato.objects.get(id_plato=platoId)
+     
     
-    print(f'CLIENTE: {cliente}, PLATO: {plato.nom_plato}, IDPLATO: {plato.id_plato}')
+    print(f'CLIENTE: {cliente}, PLATO: {plato.nom_plato}, IDPLATO: {plato.id_plato}, PRECIO NORMAL: {plato.precio_plato}, OFERTA ACTIVA: {plato.descuento_activo}, PRECIO OFERTA: {plato.oferta_plato}')
     
     #SE DEBE CREAR LA TABLA ITEM PEDIDO
     
@@ -149,13 +150,27 @@ def avisoCarro(request):
     
     return redirect('homeCliente')
 
+
 #view para agregar un plato al carro
-@login_required
+#@login_required
 def carroEstado(request):
     if not usuarioValido(request, 'cliente'):
         return redirect('homeCliente') 
     
-    return render(request, 'cart/carro.html')
+    if request.user.is_authenticated:
+        cliente = request.user.cliente
+        
+        #se crea un pedido si no existe uno
+        pedido, created = Pedido.objects.get_or_create(id_cliente=cliente, completado=False)
+        items = pedido.itempedido_set.all()
+        
+    else:
+        items = []
+        #pedido = {'get_cart_total':0, 'get_cart_items':0}    
+        
+    context = {'listaItems':items, 'listaPedidos':pedido}
+    
+    return render(request, 'cart/carro.html', context)
 
 
 #view para agregar un plato al carro

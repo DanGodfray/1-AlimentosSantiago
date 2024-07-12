@@ -18,4 +18,4 @@ class Cliente(models.Model):
     saldo_cliente = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False, default=35000)
     
     def __str__(self):
-        return f'{self.nombre_cliente} {self.apellido_cliente}'
+        return f'{self.user.username}'

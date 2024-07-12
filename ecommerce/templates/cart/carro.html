@@ -22,61 +22,45 @@
       <div class="col-lg-9">
         <div class="card border shadow-0">
           <div class="m-4">
-            <div class="row gy-3 mb-4">
-              <div class="col-lg-5">
-                <div class="me-lg-5">
-                  <div class="d-flex">
-                    <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/11.webp" class="border rounded me-3" style="width: 96px; height: 96px;" />
-                    <div class="">
-                        <a href="#" class="nav-link">Nombre Del Plato 1</a>
-                        <p class="text-muted">Descripcion del plato 1</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
-                <div class="input-group" >
-                  <button class="btn btn-outline-secondary" type="button">-</button>
-                  <input type="text" class="form-control text-center" value="1" >
-                  <button class="btn btn-outline-secondary" type="button">+</button>
-                </div>
-              </div>
-              <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
-                <div class="">
-                  <text class="h6">$44.80</text> <br />
-                  <small class="text-muted text-nowrap"> $12.20 / precio oferta </small>
-                </div>
-              </div>
-              <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                <div class="float-md-end">
-                  <a href="#" class="btn btn-light border text-danger icon-hover-danger">Eliminar</a>
-                </div>
-              </div>
-            </div>
+
+            {% for item in listaItems %}
 
             <div class="row gy-3 mb-4"><!--row 2 -->
                 <div class="col-lg-5">
                   <div class="me-lg-5">
-                    <div class="d-flex">
-                      <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/12.webp" class="border rounded me-3" style="width: 96px; height: 96px;" />
+                    <div class="d-flex ">
+                      <img src="/media/{{item.plato.foto_plato}}" alt="..."  class="border rounded me-3 card-img-top" style="width: 96px; height: 96px; object-fit: cover;" />
                       <div class="">
-                        <a href="#" class="nav-link">Nombre Del Plato 2</a>
-                        <p class="text-muted">Descripcion del plato 2</p>
+                        <p class="nav-link">{{item.plato.nom_plato}}</p>
+                        <a href="{% url 'platosCategoriaSeleccionada' item.plato.id_categoria.nom_categoria %}" class="nav-link text-muted">{{item.plato.id_categoria.nom_categoria}}</a>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
-                  <div class="input-group" >
-                    <button class="btn btn-outline-secondary" type="button">-</button>
-                    <input type="text" class="form-control text-center" value="1" >
-                    <button class="btn btn-outline-secondary" type="button">+</button>
-                  </div>
+                    <div class="input-group">
+                        <button onclick="handleButtonClick('subtract', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary" type="button">-</button>
+                        <input id="cantidad_item_{{ item.id }}" type="text" class="form-control text-center" value="{{item.cantidad_item}}">
+                        <button onclick="handleButtonClick('add', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary" type="button">+</button>
+                      </div>
                 </div>
                 <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
                   <div class="">
-                    <text class="h6">$44.80</text> <br />
-                    <small class="text-muted text-nowrap"> $12.20 / precio oferta </small>
+
+                    <!-- 
+                    <text class="h6">${{ item.plato.precio_plato|floatformat }}</text> <br />
+                    <small class="text-muted text-nowrap">${{ item.plato.oferta_plato|floatformat }}</small>
+                    -->
+
+                    {% if item.plato.descuento_activo %}
+                        <text class="h6">${{ item.plato.precio_plato|floatformat }}</text>
+                    {% else %}
+                            <text class="h6">${{ item.plato.oferta_plato|floatformat }}</text> <br />
+                            
+                            <small class="text-muted text-nowrap text-decoration-line-through precio-item">${{ item.plato.precio_plato|floatformat }}</small>
+                            
+                    {% endif %}
+
                   </div>
                 </div>
                 <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
@@ -86,45 +70,13 @@
                 </div>
               </div><!--end row 2 -->
 
-            <div class="row gy-3">
-              <div class="col-lg-5">
-                <div class="me-lg-5">
-                  <div class="d-flex">
-                    <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/13.webp" class="border rounded me-3" style="width: 96px; height: 96px;" />
-                    <div class="">
-                      <a href="#" class="nav-link">Nombre Del Plato 3</a>
-                      <p class="text-muted">Descripcion del plato</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
-                <div class="input-group" >
-                  <button class="btn btn-outline-secondary" type="button">-</button>
-                  <input type="text" class="form-control text-center" value="1" >
-                  <button class="btn btn-outline-secondary" type="button">+</button>
-                </div>
-              </div>
-              <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
-                <div class="">
-                  <text class="h6">$44.80</text> <br />
-                  <small class="text-muted text-nowrap"> $12.20 / precio oferta </small>
-                </div>
-              </div>
-              <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                <div class="float-md-end">
-                    <a href="#" class="btn btn-light border text-danger icon-hover-danger">Eliminar</a>
-                  </div>
-              </div>
+                {% endfor %}  
+
             </div>
-          </div>
 
           <div class="border-top pt-4 mx-4 mb-4">
-            <p><i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within 1-2 weeks</p>
-            <p class="text-muted">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip
-            </p>
+            <p><i class="fas fa-truck text-muted fa-lg"></i>Comentario o informacion adicional:</p>
+            <textarea class="form-control" rows="2" placeholder="Ingrese informacion adicional relacionada al pedido (alergenos, indicaciones, instrucciones, etc)"></textarea>
           </div>
         </div>
       </div>
@@ -143,27 +95,27 @@
             </form>
           </div>
         </div>
-
+        {% if listaPedidos %}
         <div class="card shadow-0 border">
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <p class="mb-2">Sub-total:</p>
-              <p class="mb-2">$329.00</p>
+              <p class="mb-2">${{listaPedidos.get_total_pedido|floatformat}}</p>
             </div>
             <div class="d-flex justify-content-between">
               <p class="mb-2">Descuentos:</p>
-              <p class="mb-2 text-success">-$60.00</p>
+              <p class="mb-2 text-success">-${{listaPedidos.get_total_pedido_oferta|floatformat}}</p>
             </div>
             <div class="d-flex justify-content-between">
               <p class="mb-2">IVA:</p>
-              <p class="mb-2">$14.00</p>
+              <p class="mb-2">${{listaPedidos.get_iva_pedido|floatformat}}</p>
             </div>
             <hr />
             <div class="d-flex justify-content-between">
               <p class="mb-2">Total venta:</p>
-              <p class="mb-2 fw-bold">$283.00</p>
+              <p class="mb-2 fw-bold">${{listaPedidos.get_total_pedido_descontado|floatformat}}</p>
             </div>
-
+            {% endif %}
             <div class="mt-3">
               <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Pagar </a>
               <a href="#" class="btn btn-light w-100 border mt-2"> Seguir comprando </a>
@@ -179,4 +131,26 @@
 
 
     <br><br><br><br><br><br><br><br>
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+    // Function to handle the button click event
+    function handleButtonClick(operation, inputId) {
+        const inputElement = document.getElementById(inputId);
+        let value = parseInt(inputElement.value);
+
+        if (operation === 'add') {
+            value += 1;
+        } else if (operation === 'subtract') {
+            if (value > 0) {
+                value -= 1;
+            }
+        }
+
+        inputElement.value = value;
+    }
+  </script>
+
 {% endblock %}
