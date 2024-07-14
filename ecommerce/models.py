@@ -32,7 +32,7 @@ class Plato(models.Model):
 
     fecha_publicacion = models.DateField(default=datetime.date.today)
     #banderas de actividad
-    descuento_activo = models.BooleanField(default=True)
+    descuento_activo = models.BooleanField(default=False)
     plato_activo = models.BooleanField(default=True)
 
     def _str_(self):
@@ -80,7 +80,7 @@ class Pedido(models.Model):
     #calculo del total de la compra con descuento
     @property
     def get_total_pedido_oferta(self):
-        itempedido = self.itempedido_set.filter(plato__descuento_activo=False)
+        itempedido = self.itempedido_set.filter(plato__descuento_activo=True)
         total = sum([item.get_total_item_oferta for item in itempedido])
         return total
     
@@ -106,7 +106,7 @@ class itemPedido(models.Model):
     fecha_agregado = models.DateField(auto_now_add=True)
     
     def __str__(self):
-        return f"ID item: {self.id}, del Pedido: {self.pedido.id_pedido} con {self.cantidad_item} platos: {self.plato.nom_plato}"
+        return f"item ID: {self.id}, contiene el plato: {self.plato.nom_plato} , del pedido ID: {self.pedido.id_pedido}, del cliente: {self.pedido.id_cliente.nombre_cliente} {self.pedido.id_cliente.apellido_cliente}"
     
     #calculo del total del item
     @property
@@ -120,6 +120,13 @@ class itemPedido(models.Model):
         total = (self.plato.precio_plato - self.plato.oferta_plato) * self.cantidad_item
         return total
     
+    #calculo del total del item que contenga descuento activo
+    @property
+    def get_total_item_oferta_descontada(self):
+        total = self.plato.precio_plato * self.cantidad_item
+        if self.plato.descuento_activo:
+            total = self.plato.oferta_plato * self.cantidad_item
+        return total
     
 # Creación de la tabla Entregas
 class Entrega(models.Model):

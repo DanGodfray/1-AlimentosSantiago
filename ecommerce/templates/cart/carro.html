@@ -21,66 +21,90 @@
       <!-- cart -->
       <div class="col-lg-9">
         <div class="card border shadow-0">
-          <div class="m-4">
+          <div class="mx-4 mt-4">
 
             {% for item in listaItems %}
 
-            <div class="row gy-3 mb-4"><!--row 2 -->
+            <div class="pb-4 row gy-3 mb-4 border-bottom"><!--row 2 -->
                 <div class="col-lg-5">
                   <div class="me-lg-5">
                     <div class="d-flex ">
                       <img src="/media/{{item.plato.foto_plato}}" alt="..."  class="border rounded me-3 card-img-top" style="width: 96px; height: 96px; object-fit: cover;" />
                       <div class="">
-                        <p class="nav-link">{{item.plato.nom_plato}}</p>
+                        <p class="h6" class=" nav-link">{{item.plato.nom_plato}}</p>
                         <a href="{% url 'platosCategoriaSeleccionada' item.plato.id_categoria.nom_categoria %}" class="nav-link text-muted">{{item.plato.id_categoria.nom_categoria}}</a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
+                <div class="col-lg-3 col-sm-auto col-5 d-flex align-items-center">
                     <div class="input-group">
                         <button onclick="handleButtonClick('subtract', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary" type="button">-</button>
-                        <input id="cantidad_item_{{ item.id }}" type="text" class="form-control text-center" value="{{item.cantidad_item}}">
+                        <input  id="cantidad_item_{{ item.id }}" type="number" class=" form-control text-center" value="{{item.cantidad_item}}">
                         <button onclick="handleButtonClick('add', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary" type="button">+</button>
                       </div>
                 </div>
                 <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
                   <div class="">
 
-                    <!-- 
-                    <text class="h6">${{ item.plato.precio_plato|floatformat }}</text> <br />
-                    <small class="text-muted text-nowrap">${{ item.plato.oferta_plato|floatformat }}</small>
-                    -->
-
                     {% if item.plato.descuento_activo %}
-                        <text class="h6">${{ item.plato.precio_plato|floatformat }}</text>
-                    {% else %}
-                            <text class="h6">${{ item.plato.oferta_plato|floatformat }}</text> <br />
-                            
-                            <small class="text-muted text-nowrap text-decoration-line-through precio-item">${{ item.plato.precio_plato|floatformat }}</small>
-                            
+
+                      <text class="h6">${{ item.plato.oferta_plato|floatformat }}</text> <br /> 
+                      <small class="text-muted text-nowrap text-decoration-line-through precio-item">${{ item.plato.precio_plato|floatformat }}</small>
+
+                    {% else %}    
+                      <text class="h6">${{ item.plato.precio_plato|floatformat }}</text>
                     {% endif %}
 
                   </div>
+
                 </div>
+                
                 <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                  <div class="float-md-end">
-                    <a href="#" class="btn btn-light border text-danger icon-hover-danger">Eliminar</a>
+                  <div class="d-flex flex-column align-items-lg-end">
+
+                    <!--esto es solo para mobile-->
+                    <div class="text-center mb-3 d-sm-none align-items-lg-end col-sm-1">
+                      <div class="text-muted text-center">
+                        <text>Total: </text>
+                        <b>${{ item.get_total_item_oferta_descontada|floatformat }}</b>
+                      </div>
+                    </div>
+                    <!--fin esto es solo para mobile-->
+
+                    <div class="float-md-end mb-2 mb-lg-1 ">
+                      <a href="#" class="btn btn-light border text-danger icon-hover-danger">Eliminar</a>
+                    </div>
+
+                    <!--esto es solo para desktop-->
+                    <div class="d-none d-lg-flex flex-column align-items-lg-end">
+                      <div class="text-muted text-center text-lg-start mt-2">
+                        <text>Total: </text>
+                        <b>${{ item.get_total_item_oferta_descontada|floatformat }}</b>
+                      </div>
+                    </div>
+                    <!--fin esto es solo para desktop-->
+
                   </div>
                 </div>
+
               </div><!--end row 2 -->
+
+                {% empty %}
+
+                <h5 style="text-align: center">El carro se encuentra vacio</h5>
 
                 {% endfor %}  
 
             </div>
 
-          <div class="border-top pt-4 mx-4 mb-4">
-            <p><i class="fas fa-truck text-muted fa-lg"></i>Comentario o informacion adicional:</p>
-            <textarea class="form-control" rows="2" placeholder="Ingrese informacion adicional relacionada al pedido (alergenos, indicaciones, instrucciones, etc)"></textarea>
+          <div class=" mx-4 mb-4">
+            <p><i class="fas fa-truck text-muted fa-lg"></i>Comentarios o informacion adicional:</p>
+            <textarea class="form-control" rows="2" placeholder="Ingrese informacion adicional relacionada al pedido (alergenos, indicaciones, etc)"></textarea>
           </div>
         </div>
       </div>
-      <!-- cart -->
+      <!-- end of cart -->
       <!-- summary -->
       <div class="col-lg-3">
         <div class="card mb-3 border shadow-0">
