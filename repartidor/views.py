@@ -45,6 +45,7 @@ def homeRepartidor(request):
 
     return render(request, 'repartidor/home-repartidor.html', {})
 
+@login_required
 def loginRepartidor(request):
     if not usuarioValido(request, 'repartidor'):
         return redirect('homeRepartidor')
@@ -64,7 +65,8 @@ def loginRepartidor(request):
             return redirect('loginRepartidor')
     else:
         return render(request, 'repartidor/login-repartidor.html', {})
-    
+
+@login_required    
 def logoutRepartidor(request):
 
     if not usuarioValido(request, 'repartidor'):
@@ -101,6 +103,7 @@ def registrarRepartidor(request):
         form = RepartidorRegistroForm()
 
     return render(request, 'repartidor/registrarse-repartidor.html', {'form': form})
+
 
 def perfilRepartidor(request, mensaje=None):
     if not usuarioValido(request, 'repartidor'):
