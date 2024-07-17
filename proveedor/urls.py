@@ -17,7 +17,7 @@ urlpatterns = [
     
     path('perfil/', views.perfilProveedores, name='proveedor'),
     
-    path('proveedor/publicaciones/', views.publicacionProveedores, name='publicaciones'),
+    path('perfil/publicaciones/', views.publicacionProveedores, name='publicaciones'),
     
     path('proveedor/<str:prov>', views.listarPlatosPorProv, name='listarPlatosPorProv'),
     

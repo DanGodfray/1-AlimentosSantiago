@@ -1,0 +1,232 @@
+{% extends "cliente/base.html" %}
+{% load static %}
+
+{% block content %}<!--end page content-->
+
+<header class="bg-danger py-2">
+    <div class="container px-1 px-lg-1 my-1">
+        <div class="text-center text-white">
+            
+            <h1 class="display-6 fw-bolder">Verificar y pagar</h1>       
+            <p class="lead fw-normal text-white-50 mb-0">¿Para servir o llevar?</p>
+
+        </div>
+    </div>
+</header>
+
+
+<section class="bg-light my-0"><!-- cart + summary -->
+  <div class="container">
+    <div class="row">
+      
+      <div class="col-lg-6"><!--columna izquiera-->
+
+        <div class="card mb-3 border shadow-0"><!--carta envio-->
+          <div class="card-body">
+            <form enctype="multipart/form-data" action="" method="POST" >
+              <div class="form-group">
+                <label style="text-align: center" class=" form-label">Tipo de envio</label>
+                <div>
+                  <input type="radio" name="tipo_envio" id="retiro_local" value="True">
+                  <label for="retiro_local">Retiro en local</label>
+                </div>
+                <div>
+                  <input type="radio" name="tipo_envio" id="envio_domicilio" value="False">
+                  <label for="envio_domicilio">Envío a domicilio</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div><!--fin de carta envio-->
+
+        {% if listaPedidos.pedido.domicilio_proveedor %}
+        <div class="card mb-3 border shadow-0"><!--carta envio-->
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label style="text-align: center" class=" form-label">Tipo de envio</label>
+                <div>
+                  <input type="radio" name="tipo_envio" id="retiro_local" value="True">
+                  <label for="retiro_local">Retiro en local</label>
+                </div>
+                <div>
+                  <input type="radio" name="tipo_envio" id="envio_domicilio" value="False">
+                  <label for="envio_domicilio">Envío a domicilio</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div><!--fin de carta envio-->
+        {% endif %}
+
+        <div class="card mb-3 border shadow-0"><!--carta calendario-->
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label class="form-label">¿Quieres agendar tu pedido? (opcional)</label>
+
+                <!-- flatpickr CSS and javascript --><!--Aqui va un calendario-->
+                <div class="input">
+                  <div class="d-flex ">
+                    <form action="% url 'pausarPlato' plato.id_plato %}" method="post">
+                      <input class="form-control bg-white datepicker " data-date-format="m/d/Y G:iK" data-enable-time="true">
+                      <div style="width: 1rem;"></div>
+                      <button type="submit" class="btn btn-outline-success border">Guardar</button>
+                      <div style="width: 1rem;"></div>
+                    </form>  
+                      <button class="btn btn-outline-warning border" onclick="document.querySelector('.datepicker').value = ''">Limpiar</button>
+                    
+                  </div>
+                </div><!--Aqui va un calendario-->
+              </div>
+            </form>
+          </div>
+        </div><!--fin de carta calendario-->
+        
+      </div><!--fin de columna izquierda-->
+      <!-- end of cart -->
+      <!-- summary -->
+      {% if listaPedidos %}
+      <div class="col-lg-6"><!--columna derecha-->
+
+        <div class="card border shadow-0 mb-3"><!-- cart -->
+          <div class="mx-4 mt-4">
+
+            {% for item in listaItems %}
+
+            <form enctype="multipart/form-data" action="" method="POST" >
+            <div class="pb-4 row gy-3 mb-4 border-bottom"><!--row 2 -->
+                <div class="col-lg-5">
+                  <div class="me-lg-5">
+                    <div class="d-flex ">
+                      <img src="/media/{{item.plato.foto_plato}}" alt="..."  class="border rounded me-3 card-img-top" style="width: 48px; height: 48px; object-fit: cover;" />
+                      <div class="">
+                        <p class="h6" class=" nav-link">{{item.plato.nom_plato}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center"><!--Precio oferta-->
+                  <div class="">
+
+                    {% if item.plato.descuento_activo %}
+
+                      <text class="h6">${{ item.plato.oferta_plato|floatformat }}</text> <br /> 
+                      <small class="text-muted text-nowrap text-decoration-line-through precio-item">${{ item.plato.precio_plato|floatformat }}</small>
+
+                    {% else %}    
+                      <text class="h6">${{ item.plato.precio_plato|floatformat }}</text>
+                    {% endif %}
+
+                  </div>
+
+                </div>
+
+                <div class="col-lg-2 col-sm-2 col-2 d-flex align-items-center"><!--Cantidad de items en el carro-->
+                  <div class="">
+                    <input type="text" class="form-control" value="{{item.cantidad_item}}" readonly>
+                  </div>
+                </div>
+                
+                <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                  <div class="d-flex flex-column align-items-lg-end">
+
+                    <!--esto es solo para mobile-->
+                    <div class="text-center mb-3 d-sm-none align-items-lg-end col-sm-1">
+                      <div class="text-muted text-center">
+                        <text>Total: </text>
+                        <b>${{ item.get_total_item_oferta_descontada|floatformat }}</b>
+                      </div>
+                    </div>
+                    <!--fin esto es solo para mobile-->
+
+                    <!--esto es solo para desktop-->
+                    <div class="d-none d-lg-flex flex-column align-items-lg-end">
+                      <div class="text-muted text-center text-lg-start mt-2">
+                        <text>Total: </text>
+                        <b>${{ item.get_total_item_oferta_descontada|floatformat }}</b>
+                      </div>
+                    </div>
+                    <!--fin esto es solo para desktop-->
+
+                  </div>
+                </div>
+
+              </div><!--end row 2 -->
+
+                {% empty %}
+
+                <h5 style="text-align: center">El carro se encuentra vacio</h5>
+
+                {% endfor %}                 
+                
+            </div>
+
+          <div class=" mx-4 mb-4">
+            <p><i class="fas fa-truck text-muted fa-lg"></i>Comentarios / informacion adicional:</p>
+            <text class="" rows="2" placeholder="{{listaPedidos.comentario_pedido}}"></text>
+          </div>
+
+          </form><!--fin del form-->
+        </div>
+        
+        <div class="card shadow-0 border mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Articulos en carro: </p>
+              <p class="mb-2">{{listaPedidos.get_cantidad_items_pedido|floatformat}}</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Sub-total:</p>
+              <p class="mb-2">${{listaPedidos.get_total_pedido|floatformat}}</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Descuentos:</p>
+              <p class="mb-2 text-success">-${{listaPedidos.get_total_pedido_oferta|floatformat}}</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">IVA:</p>
+              <p class="mb-2">${{listaPedidos.get_iva_pedido|floatformat}}</p>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Total venta:</p>
+              <p class="mb-2 fw-bold">${{listaPedidos.get_total_pedido_descontado|floatformat}}</p>
+            </div>
+            {% endif %}
+            <div class="mt-3">
+              <a href="#" class="btn btn-success w-100 shadow-0 mb-2">Pagar </a>
+              <a href="{% url 'carroEstado' %}" class="btn btn-outline-danger w-100 border mt-2">Volver al carro</a>
+            </div>
+          </div>
+        </div>
+      </div><!--fin de columna derecha-->
+      <!-- summary -->
+    </div>
+  </div>
+</section>
+<!-- cart + summary -->
+
+
+    <br><br><br><br><br><br><br><br>
+{% endblock %}
+
+{% block extra_js%}
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+  flatpickr('.datepicker', {
+    // put options here if your don't want to add them via data- attributes
+});
+
+</script>
+
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+{% endblock %}

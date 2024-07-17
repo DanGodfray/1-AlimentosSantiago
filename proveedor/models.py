@@ -7,8 +7,10 @@ class Proveedor(models.Model):
         nombre_proveedor = models.CharField(max_length=100, blank=False, null=False)
         
         user = models.OneToOneField(User, on_delete=models.CASCADE)
+        
+        domicilio_proveedor = models.CharField(default='s/n', max_length=100, blank=False, null=False)
 
-        fono_proveedor = models.DecimalField(max_digits=10,decimal_places=2,max_length=15, blank=False, null=False)
+        fono_proveedor = models.IntegerField( blank=False, null=False)
         
         def __str__(self):
             return f'{self.nombre_proveedor}'

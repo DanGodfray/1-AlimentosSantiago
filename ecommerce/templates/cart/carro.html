@@ -7,49 +7,168 @@
     <div class="container px-1 px-lg-1 my-1">
         <div class="text-center text-white">
             
-            <h1 class="display-6 fw-bolder">Carro de compras</h1>
-            
-            <p class="lead fw-normal text-white-50 mb-0">¿Para servir o llevar?</p>
+            <h1 class="display-6 fw-bolder">Carro de compras</h1>       
+            <p class="lead fw-normal text-white-50 mb-0">¿Que va llevar de rico?</p>
+
         </div>
     </div>
 </header>
 
-<div class="container mt-4">
+<!-- cart + summary -->
+<section class="bg-light my-0">
+  <div class="container">
     <div class="row">
+      <!-- cart -->
+      <div class="col-lg-9">
+        <div class="card border shadow-0">
+          <div class="mx-4 mt-4">
 
-            <div class="col-md-12">
+            {% for item in listaItems %}
+
+            <form enctype="multipart/form-data" action="" method="POST" >
+            <div class="pb-4 row gy-3 mb-4 border-bottom"><!--row 2 -->
+                <div class="col-lg-5">
+                  <div class="me-lg-5">
+                    <div class="d-flex ">
+                      <img src="/media/{{item.plato.foto_plato}}" alt="..."  class="border rounded me-3 card-img-top" style="width: 96px; height: 96px; object-fit: cover;" />
+                      <div class="">
+                        <p class="h6" class=" nav-link">{{item.plato.nom_plato}}</p>
+                        <a href="{% url 'platosCategoriaSeleccionada' item.plato.id_categoria.nom_categoria %}" class="nav-link text-muted">{{item.plato.id_categoria.nom_categoria}}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-auto col-5 d-flex align-items-center">
+                    <div class="input-group">
+                        <button onclick="handleButtonClick('subtract', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary actualiza-carrito" data-plato={{item.plato.id_plato}} data-action="quitar" type="button" value="{{ item.plato.id_plato }}" type="button">-</button>
+                        
+                        <input  id="cantidad_item_{{ item.id }}" type="number" class=" form-control text-center" value="{{item.cantidad_item}}">
+
+                        <button onclick="handleButtonClick('add', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary actualiza-carrito" data-plato={{item.plato.id_plato}} data-action="agregar" type="button" value="{{ item.plato.id_plato }}" type="button">+</button>
+                      </div>
+                </div>
+                <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
+                  <div class="">
+
+                    {% if item.plato.descuento_activo %}
+
+                      <text class="h6">${{ item.plato.oferta_plato|floatformat }}</text> <br /> 
+                      <small class="text-muted text-nowrap text-decoration-line-through precio-item">${{ item.plato.precio_plato|floatformat }}</small>
+
+                    {% else %}    
+                      <text class="h6">${{ item.plato.precio_plato|floatformat }}</text>
+                    {% endif %}
+
+                  </div>
+
+                </div>
                 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th>Subtotal</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in cart %}
-                            <tr>
-                                <td>{{ item.producto.nombre }}</td>
-                                <td>{{ item.cantidad }}</td>
-                                <td>{{ item.producto.precio }}</td>
-                                <td>{{ item.subtotal }}</td>
-                                <td>
-                                    <a href="{% url 'eliminar' item.producto.id %}">Eliminar</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <h3>Total: {{ total }}</h3>
-                <a href="% url 'checkout' %}" class="btn btn-success">Pagar</a>
+                <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                  <div class="d-flex flex-column align-items-lg-end">
 
+                    <!--esto es solo para mobile-->
+                    <div class="text-center mb-3 d-sm-none align-items-lg-end col-sm-1">
+                      <div class="text-muted text-center">
+                        <text>Total: </text>
+                        <b>${{ item.get_total_item_oferta_descontada|floatformat }}</b>
+                      </div>
+                    </div>
+                    <!--fin esto es solo para mobile-->
+
+                    <div class="float-md-end mb-2 mb-lg-1 ">
+                      <a href="#" data-plato={{item.plato.id_plato}} data-action="eliminar" class="btn btn-light border text-danger icon-hover-danger actualiza-carrito">Eliminar</a>
+                    </div>
+
+                    <!--esto es solo para desktop-->
+                    <div class="d-none d-lg-flex flex-column align-items-lg-end">
+                      <div class="text-muted text-center text-lg-start mt-2">
+                        <text>Total: </text>
+                        <b>${{ item.get_total_item_oferta_descontada|floatformat }}</b>
+                      </div>
+                    </div>
+                    <!--fin esto es solo para desktop-->
+
+                  </div>
+                </div>
+
+              </div><!--end row 2 -->
+
+                {% empty %}
+
+                <h5 style="text-align: center">El carro se encuentra vacio</h5>
+
+                {% endfor %}                 
+                  <p class="d-flex justify-content text-muted">Articulos en carro: {{listaPedidos.get_cantidad_items_pedido|floatformat}}</p>
             </div>
+
+          <div class=" mx-4 mb-4">
+            <p><i class="fas fa-truck text-muted fa-lg"></i>Comentarios / informacion adicional:</p>
+            <textarea class="form-control" value="{{listaPedidos.comentario_pedido}}" rows="2" placeholder="Ingrese informacion adicional relacionada al pedido (alergenos, indicaciones, etc)"></textarea>
+          </div>
+
+          <!--fin del form-->
         </div>
+      </div>
+      <!-- end of cart -->
+      <!-- summary -->
+      {% if listaPedidos %}
+      <div class="col-lg-3">
+        
+        <div class="card shadow-0 border">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Sub-total:</p>
+              <p class="mb-2">${{listaPedidos.get_total_pedido|floatformat}}</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Descuentos:</p>
+              <p class="mb-2 text-success">-${{listaPedidos.get_total_pedido_oferta|floatformat}}</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">IVA:</p>
+              <p class="mb-2">${{listaPedidos.get_iva_pedido|floatformat}}</p>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Total venta:</p>
+              <p class="mb-2 fw-bold">${{listaPedidos.get_total_pedido_descontado|floatformat}}</p>
+            </div>
+            {% endif %}
+            <div class="mt-3">
+              <a href="{% url 'verificarCarro' %}" class="btn btn-outline-success w-100 shadow-0 mb-2"> Verificar y pagar </a>
+              <a href="{% url 'homeCliente' %}" class="btn btn-light w-100 border mt-2"> Seguir vitrineando </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- summary -->
     </div>
-</div>
+  </div>
+</section>
+<!-- cart + summary -->
+
 
     <br><br><br><br><br><br><br><br>
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+    // Function to handle the button click event
+    function handleButtonClick(operation, inputId) {
+        const inputElement = document.getElementById(inputId);
+        let value = parseInt(inputElement.value);
+
+        if (operation === 'add') {
+            value += 1;
+        } else if (operation === 'subtract') {
+            if (value > 0) {
+                value -= 1;
+            }
+        }
+
+        inputElement.value = value;
+    }
+  </script>
+
 {% endblock %}
