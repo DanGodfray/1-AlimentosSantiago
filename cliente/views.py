@@ -39,6 +39,20 @@ def usuarioValido(request, group_name):
 
     return True
 
+#--------funcion que se reutiliza para visualizar la cantidad de items en el carro de compras
+def visualizarCantidadCarro(request):
+    if request.user.is_authenticated:
+        cliente = request.user.cliente
+        pedido, created = Pedido.objects.get_or_create(id_cliente=cliente, completado=False)
+        items = pedido.itempedido_set.all()
+        itemsCarro = pedido.get_cantidad_items_pedido
+    else:
+        items = []
+        pedido = {'get_total_item_oferta_descontada':0, 'get_total_item':0, 'get_cantidad_items_pedido':0}
+        itemsCarro = pedido['get_cantidad_items_pedido']
+        
+    return itemsCarro
+
 def homeCliente(request):
     cliente=request.user
     
@@ -48,7 +62,7 @@ def homeCliente(request):
 
     plato = Plato.objects.order_by('?').all()
     
-    context = {'listaPlatos': plato, 'cliente': cliente} 
+    context = {'listaPlatos': plato, 'cliente': cliente, 'itemsCarro': visualizarCantidadCarro(request)} 
     return render(request, 'cliente/home.html', context)
 
 def main(request):

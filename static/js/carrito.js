@@ -13,21 +13,42 @@ for (var i = 0; i < actualizarBotones.length; i++) {
         if (user === 'AnonymousUser') {
             console.log('Usuario no autenticado');
         } else {
-            console.log('Usuario autenticado, enviando datos...');
-            actualizarPedidoUsuario(idPlato, action);
+            //console.log('Usuario autenticado, enviando datos...');
+            //actualizarPedidoUsuario(idPlato, action);
+
+            var url = '/actualizar-carro/'
+
+            fetch(url, {
+                method: 'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ 'platoId': idPlato, 'action': action })
+            })
+        
+                .then((response) => {
+                    return response.json();
+                })
+        
+                .then((data) => {
+                    console.log('data:', data);
+                    //location.reload();
+                });
+
         }
     });
 }
 
 function actualizarPedidoUsuario(platoId, action) {
-    //console.log('Usuario autenticado, enviando datos...');
+    console.log('Usuario autenticado, enviando datos...');
 
     var url = '/actualizar-carro/'
 
     fetch(url, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+        headers:{
+            'Content-Type':'application/json',
             'X-CSRFToken': csrftoken,
         },
         body: JSON.stringify({ 'platoId': platoId, 'action': action })
@@ -39,6 +60,6 @@ function actualizarPedidoUsuario(platoId, action) {
 
         .then((data) => {
             console.log('data:', data);
-            //location.reload();
+            location.reload();
         });
 }

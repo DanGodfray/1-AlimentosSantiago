@@ -8,7 +8,7 @@
         <div class="text-center text-white">
             
             <h1 class="display-6 fw-bolder">Carro de compras</h1>       
-            <p class="lead fw-normal text-white-50 mb-0">¿Para servir o llevar?</p>
+            <p class="lead fw-normal text-white-50 mb-0">¿Que va llevar de rico?</p>
 
         </div>
     </div>
@@ -25,6 +25,7 @@
 
             {% for item in listaItems %}
 
+            <form enctype="multipart/form-data" action="" method="POST" >
             <div class="pb-4 row gy-3 mb-4 border-bottom"><!--row 2 -->
                 <div class="col-lg-5">
                   <div class="me-lg-5">
@@ -39,9 +40,11 @@
                 </div>
                 <div class="col-lg-3 col-sm-auto col-5 d-flex align-items-center">
                     <div class="input-group">
-                        <button onclick="handleButtonClick('subtract', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary" type="button">-</button>
+                        <button onclick="handleButtonClick('subtract', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary actualiza-carrito" data-plato={{item.plato.id_plato}} data-action="quitar" type="button" value="{{ item.plato.id_plato }}" type="button">-</button>
+                        
                         <input  id="cantidad_item_{{ item.id }}" type="number" class=" form-control text-center" value="{{item.cantidad_item}}">
-                        <button onclick="handleButtonClick('add', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary" type="button">+</button>
+
+                        <button onclick="handleButtonClick('add', 'cantidad_item_{{ item.id }}')" class="btn btn-outline-secondary actualiza-carrito" data-plato={{item.plato.id_plato}} data-action="agregar" type="button" value="{{ item.plato.id_plato }}" type="button">+</button>
                       </div>
                 </div>
                 <div class="col-lg-2 col-sm-6 col-6 d-flex align-items-center">
@@ -73,7 +76,7 @@
                     <!--fin esto es solo para mobile-->
 
                     <div class="float-md-end mb-2 mb-lg-1 ">
-                      <a href="#" class="btn btn-light border text-danger icon-hover-danger">Eliminar</a>
+                      <a href="#" data-plato={{item.plato.id_plato}} data-action="eliminar" class="btn btn-light border text-danger icon-hover-danger actualiza-carrito">Eliminar</a>
                     </div>
 
                     <!--esto es solo para desktop-->
@@ -94,32 +97,23 @@
 
                 <h5 style="text-align: center">El carro se encuentra vacio</h5>
 
-                {% endfor %}  
-
+                {% endfor %}                 
+                  <p class="d-flex justify-content text-muted">Articulos en carro: {{listaPedidos.get_cantidad_items_pedido|floatformat}}</p>
             </div>
 
           <div class=" mx-4 mb-4">
-            <p><i class="fas fa-truck text-muted fa-lg"></i>Comentarios o informacion adicional:</p>
-            <textarea class="form-control" rows="2" placeholder="Ingrese informacion adicional relacionada al pedido (alergenos, indicaciones, etc)"></textarea>
+            <p><i class="fas fa-truck text-muted fa-lg"></i>Comentarios / informacion adicional:</p>
+            <textarea class="form-control" value="{{listaPedidos.comentario_pedido}}" rows="2" placeholder="Ingrese informacion adicional relacionada al pedido (alergenos, indicaciones, etc)"></textarea>
           </div>
+
+          <!--fin del form-->
         </div>
       </div>
       <!-- end of cart -->
       <!-- summary -->
+      {% if listaPedidos %}
       <div class="col-lg-3">
-        <div class="card mb-3 border shadow-0">
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <label class="form-label">¿Quieres agendar tu pedido?</label>
-                <div class="input-group">
-                  <button class="btn btn-light border">Agendar</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        {% if listaPedidos %}
+        
         <div class="card shadow-0 border">
           <div class="card-body">
             <div class="d-flex justify-content-between">
@@ -141,8 +135,8 @@
             </div>
             {% endif %}
             <div class="mt-3">
-              <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Pagar </a>
-              <a href="#" class="btn btn-light w-100 border mt-2"> Seguir comprando </a>
+              <a href="{% url 'verificarCarro' %}" class="btn btn-outline-success w-100 shadow-0 mb-2"> Verificar y pagar </a>
+              <a href="{% url 'homeCliente' %}" class="btn btn-light w-100 border mt-2"> Seguir vitrineando </a>
             </div>
           </div>
         </div>

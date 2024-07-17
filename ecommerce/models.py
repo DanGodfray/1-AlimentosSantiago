@@ -69,7 +69,7 @@ class Pedido(models.Model):
         total = sum([item.get_total_item for item in itempedido])
         return total
     
-    #calculo del total de la compra con oferta
+    #calculo del total de la compra en oferta
     @property
     def get_total_pedido_descontado(self):
         itempedido = self.itempedido_set.all()
@@ -84,7 +84,7 @@ class Pedido(models.Model):
         total = sum([item.get_total_item_oferta for item in itempedido])
         return total
     
-    #calculo de la cantidad de items en el pedido
+    #cuenta la cantidad de items en el pedido
     @property
     def get_cantidad_items_pedido(self):
         itempedido = self.itempedido_set.all()

@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.forms import DecimalField
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
@@ -42,6 +43,20 @@ def usuarioValido(request, group_name):
 
     return True
 
+#--------funcion que se reutiliza para visualizar la cantidad de items en el carro de compras
+def visualizarCantidadCarro(request):
+    if request.user.is_authenticated:
+        cliente = request.user.cliente
+        pedido, created = Pedido.objects.get_or_create(id_cliente=cliente, completado=False)
+        items = pedido.itempedido_set.all()
+        itemsCarro = pedido.get_cantidad_items_pedido
+    else:
+        items = []
+        pedido = {'get_total_item_oferta_descontada':0, 'get_total_item':0, 'get_cantidad_items_pedido':0}
+        itemsCarro = pedido['get_cantidad_items_pedido']
+        
+    return itemsCarro
+
 #-------------------------VIEWS DE CATALOGOS-------------------------
 
 def listarCatalogos(request):
@@ -51,10 +66,8 @@ def listarCatalogos(request):
     categoria = Categoria.objects.order_by('?').first()
     plato = Plato.objects.order_by('?').first()
     oferta = Plato.objects.filter(descuento_activo=True).order_by('?').first()
-    context = {"categorias": [categoria], "platos": [plato], "ofertas": [oferta]}
+    context = {"categorias": [categoria], "platos": [plato], "ofertas": [oferta], "itemsCarro": visualizarCantidadCarro(request)}
     return render(request, 'ecommerce/catalogos.html', context)
-
-banderaCatActivo = False
 
 banderaCatActivo = False
 
@@ -64,7 +77,7 @@ def listarCategorias(request):
     
     banderaCatActivo = True
     categoria = Categoria.objects.filter(cat_activo=True).all()
-    context = {"arregloCat":categoria, "banderaCatActivo":banderaCatActivo}
+    context = {"arregloCat":categoria, "banderaCatActivo":banderaCatActivo, "itemsCarro": visualizarCantidadCarro(request)}
     return render(request, 'ecommerce/categorias.html', context)
 
 banderaOferta = False
@@ -77,7 +90,7 @@ def listarOfertas(request):
     
     banderaOferta = True
     plato = Plato.objects.filter(descuento_activo=True)
-    context = {"platos":plato, "banderaOferta":banderaOferta}
+    context = {"platos":plato, "banderaOferta":banderaOferta, "itemsCarro": visualizarCantidadCarro(request)}
     return render(request, 'ecommerce/platos.html', context)
 
 #view para probar el listado de platos sin parametros
@@ -89,7 +102,7 @@ def listarPlatos(request):
     plato = Plato.objects.all()
     
     
-    context = {"platos":plato}
+    context = {"platos":plato, "itemsCarro": visualizarCantidadCarro(request)}
     #debug para revisar el nombre de los proveedores en el objeto plato
     for plato in context['platos']:
         print(f'nombre proveedor: {plato.id_proveedor.nombre_proveedor}')
@@ -111,32 +124,39 @@ def platosCategoriaSeleccionada(request,cat):
     #platos de la categoria seleccionada comparandola con el id de la categoria
     plato = Plato.objects.filter(id_categoria=categoria)
     nomCategoria = cat
-    nomCategoria = cat
-    context = {"platos":plato, "nomCategoria":nomCategoria}
+    context = {"platos":plato, "nomCategoria":nomCategoria, "itemsCarro": visualizarCantidadCarro(request)}
     return render(request, 'ecommerce/platos.html', context)
 
 #-------------------------FIN VIEWS DE CATALOGOS----------------------<<<<
-
+@login_required
 def actualizarCarro(request):
     data= json.loads(request.body)
-    platoId = data['platoId']
-    action = data['action']
+    platoId = data['platoId'] #actualiza los datos del js
+    action = data['action'] #actualiza los datos del js
     
     print(f'ID_PLATO: {platoId}, ACTION: {action}')
     
     cliente = request.user.cliente
     plato = Plato.objects.get(id_plato=platoId)
-     
+    pedido, created = Pedido.objects.get_or_create(id_cliente=cliente, completado=False)    
     
-    print(f'CLIENTE: {cliente}, PLATO: {plato.nom_plato}, IDPLATO: {plato.id_plato}, PRECIO NORMAL: {plato.precio_plato}, OFERTA ACTIVA: {plato.descuento_activo}, PRECIO OFERTA: {plato.oferta_plato}')
+    pedidoItemVar, created = itemPedido.objects.get_or_create(pedido=pedido, plato=plato)
     
-    #SE DEBE CREAR LA TABLA ITEM PEDIDO
+    if action == 'agregar':
+        pedidoItemVar.cantidad_item = (pedidoItemVar.cantidad_item + 1)
+    elif action == 'quitar':
+        pedidoItemVar.cantidad_item = (pedidoItemVar.cantidad_item - 1)
     
-    #pedido = Pedido.objects.get_or_create(id_cliente=cliente, estado_pedido='Pendiente')
+    if pedidoItemVar.cantidad_item <= 0 or action == 'eliminar':
+        pedidoItemVar.delete()   
     
-    #print(f'PEDIDO: {pedido}')
+    print(f'Cantidad antes de guardar: {pedidoItemVar.cantidad_item},')
     
-    #itemPlato = Plato.objects.get_or_create(pedido=pedido, id_plato=plato.id_plato)
+    try:
+        pedidoItemVar.save()
+        print(f'Se guardó exitosamente: {pedidoItemVar}')
+    except IntegrityError as e:
+        print(f'Error al guardar: {e}')
     
     return JsonResponse('Carro actualizado', safe=False)
 
@@ -166,12 +186,36 @@ def carroEstado(request):
         
     else:
         items = []
-        #pedido = {'get_cart_total':0, 'get_cart_items':0}    
+        pedido = {'get_total_item_oferta_descontada':0, 'get_total_item':0, 'get_cantidad_items_pedido':0}
+   
         
-    context = {'listaItems':items, 'listaPedidos':pedido}
+    context = {'listaItems':items, 'listaPedidos':pedido , 'itemsCarro': visualizarCantidadCarro(request)}
+    
+    print(f'PEDIDO: {pedido}, estado almacenado: {pedido.completado}, cliente: {cliente}')
     
     return render(request, 'cart/carro.html', context)
 
+#view para verificar el carro de compras del cliente
+@login_required
+def verificarCarro(request):
+    
+    if request.user.is_authenticated:
+        cliente = request.user.cliente
+        
+        #se crea un pedido si no existe uno
+        pedido, created = Pedido.objects.get_or_create(id_cliente=cliente, completado=False)
+        items = pedido.itempedido_set.all()
+        
+    else:
+        items = []
+        pedido = {'get_total_item_oferta_descontada':0, 'get_total_item':0, 'get_cantidad_items_pedido':0}
+   
+        
+    context = {'listaItems':items, 'listaPedidos':pedido, 'itemsCarro': visualizarCantidadCarro(request)}
+    
+    print(f'VERIFICAR CARRO: {pedido}, estado almacenado: {pedido.completado}, cliente: {cliente}')
+    
+    return render(request, 'cart/verficar-carro.html', context)
 
 #view para agregar un plato al carro
 @login_required
