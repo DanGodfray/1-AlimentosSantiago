@@ -1,0 +1,32 @@
+{% extends 'repartidor/base-repartidor.html' %}
+
+{% block content %}
+    <!-- Add your profile content here -->
+    <header class="bg-success py-2">
+        <div class="container px-1 px-lg-1 my-1">
+            <div class="text-center text-white">
+                {% if user.is_authenticated %}
+                <!--<h1 class="display-6 fw-bolder"> {{listaProveedores.nombre_proveedor}}</h1> aqui deberia estar el nombre de la persona logeada-->
+                {% else %}
+                <h1 class="display-6 fw-bolder">Bienvenido</h1>
+                {% endif %}
+                <p class="lead fw-normal text-white-50 mb-0">Perfil</p>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <h2>Rutas del Repartidor</h2>
+            <div class="entrega">
+                <div class="carta" style="width: 25rem; height: 38rem;" >
+                    <h3>ruta de entrega</h3>
+                </div>
+                <div id="map"></div> 
+                
+            </div>
+        </div>
+
+    </section>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEQz4ZksUcnjxEbMVnjbZFmmx0HkgL__8&callback=initMap"></script>  
+
+{% endblock %}

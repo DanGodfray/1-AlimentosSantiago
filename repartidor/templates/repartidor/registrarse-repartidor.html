@@ -1,0 +1,71 @@
+{% extends "repartidor/base-repartidor.html" %}
+{% load static %}
+
+{% block content %}
+
+<header class="bg-success py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Registrate</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Y se parte de AlimentoSantiago</p>
+        </div>
+        </div>
+    </header>
+
+    <section class="py-3">
+    <div class="row gx-4 gx-lg-6 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <form method="POST" action="{% url 'registrarRepartidor' %}">
+        {% csrf_token %}
+            <fieldset>
+                <legend style="text-align: center">Datos de gestion</legend>
+                <div class="mb-2">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                </div>
+                <div class="mb-2">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                </div>
+                <div class="mb-2">
+                {{ form.fono_repartidor.label_tag }}
+                {{ form.fono_repartidor }}
+                </div>
+                <div class="mb-2">
+                {{ form.rut_repartidor.label_tag }}                
+                {{ form.rut_repartidor }}
+                </div>
+            </fieldset>
+            <hr>
+            <fieldset>
+                <legend style="text-align: center">Datos de Inicio de Sesión</legend>
+                <div class="mb-2">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                </div>
+                <div class="mb-2">
+                {{ form.email_repartidor.label_tag }}
+                {{ form.email_repartidor }}
+                </div>
+                <div class="mb-2">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                </div>
+                <div class="mb-2">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                </div>
+            </fieldset>
+            <br>
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+        </form>
+</div>
+</section>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    
+</style>
+{% endblock %}

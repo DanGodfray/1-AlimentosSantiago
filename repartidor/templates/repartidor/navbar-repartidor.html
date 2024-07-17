@@ -16,17 +16,17 @@
             {% else %}
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'homeCliente' %}">Cliente</a></li>
 
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'homeRepartidor' %}">Repartidor</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'homeProveedor' %}">Proveedor</a></li>
 
-                <li class="nav-item"><a class="nav-link" href="{% url 'registrarProveedor' %}">Registrarse</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'registrarRepartidor' %}">Registrarse</a></li>
                 
-                <li class="nav-item"><a class="nav-link" href="{% url 'loginProveedor' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'loginRepartidor' %}">Login</a></li>
 
             {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Servicios</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Publicar preparaciones</a></li>
+                        <li><a class="dropdown-item" href="#">Ver rtuas de entrega</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#">Transportar pedidos</a></li>
                         <li><a class="dropdown-item" href="{% url 'platos' %}">Mostrar todo</a></li>
@@ -43,7 +43,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                   <li><a class="dropdown-item" href="{% url 'proveedor'%}">Perfil</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{% url 'logoutProveedor' %}">Cerrar sesion</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logoutRepartidor' %}">Cerrar sesion</a></li>
                 </ul>
               </div><!-- fin boton - para logout -->
             </div>
@@ -54,7 +54,7 @@
                 </button>
                 <div id="dpcolor"class="dropdown-menu dropdown-menu-sm-end ">
 
-                    <form method="POST" action="{% url 'loginProveedor' %}" class="px-4 py-3">
+                    <form method="POST" action="{% url 'loginRepartidor' %}" class="px-4 py-3">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="exampleDropdownFormEmail1" class="form-label">Nombre de usuario</label>
@@ -76,7 +76,7 @@
                     </form>
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'registrarProveedor' %}">¿Primera vez por aca? Registrate</a>
+                    <a class="dropdown-item" href="{% url 'registrarRepartidor' %}">¿Primera vez por aca? Registrate</a>
                     <a class="dropdown-item" href="#">¿Olvidaste la contraseña?</a>
                 </div>
             </div><!--fin Dropdown - para login -->

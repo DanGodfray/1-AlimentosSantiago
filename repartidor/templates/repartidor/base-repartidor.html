@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>AlimentoSantiago Repartidor</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}"/>
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+        <link rel="stylesheet" href="{% static 'css/cards.css' %}">
+        
+        {% block extra_head %}
+        {% endblock %}
+    </head>
+    <body>
+        {% include 'repartidor/navbar-repartidor.html' %}<!--navbar-->
+        {% if messages %}<!-- mensajes de error -->
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" id="idMensajes" role="alert">
+                    <li>{{ message }}</li>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}<!-- fin mensajes de error -->
+        {% block content %}<!--end page content-->
+        {% endblock %}
+        
+        
+        <!-- Footer-->
+        <footer class="bg-success py-5">
+
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; El comilon 2024</p></div>
+
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'js/cart.js' %}"></script>
+        <script src="{% static 'js/map.js' %}"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                <script> //<!--ESTE SCRIPT SE UTILIZA PARA OCULTAR EL DIV DE MENSAJES DE ERROR O EXITO-->
+            $(document).ready(function(){
+                $('#idMensajes').delay(60000).fadeOut("slow");
+            }); 
+        </script>
+        
+    </body>
+</html>
