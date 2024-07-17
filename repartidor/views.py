@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from ecommerce.models import Categoria, Plato, Pedido
+from cliente.models import Cliente
+from ecommerce.models import Categoria, Entrega, Plato, Pedido
+from repartidor.forms import RepartidorRegistroForm
 from .models import Repartidor
 from proveedor.models import Proveedor
 from repartidor.models import Repartidor
@@ -37,6 +39,12 @@ def usuarioValido(request, group_name):
 
     return True
 
+def homeRepartidor(request):
+    if not usuarioValido(request, 'repartidor'):
+        return redirect('homeRepartidor')
+
+    return render(request, 'repartidor/home-repartidor.html', {})
+
 def loginRepartidor(request):
     if not usuarioValido(request, 'repartidor'):
         return redirect('homeRepartidor')
@@ -71,22 +79,47 @@ def logoutRepartidor(request):
         messages.error(request, f'Error al cerrar sesión.')
         return redirect('homeRepartidor')
 
-def registrarCliente(request):
-    if not usuarioValido(request, 'repartidor'):
-        return redirect('homeRepartidor')
-
+def registrarRepartidor(request):
+   # if not usuarioValido(request, 'repartidor'):
+    #    return redirect('homeRepartidor')
+    print('antes del if')
     if request.method == 'POST':
+        print('durante el if')
         form = RepartidorRegistroForm(request.POST)
         if form.is_valid():
+            print('dentro del if importante')
             user = form.save()
-            proveedor_group = Group.objects.get(name='repartidor') #se le asigna un grupo al momento de registrarse
-            user.groups.add(proveedor_group)
+            repartidor_group = Group.objects.get(name='repartidor') #se le asigna un grupo al momento de registrarse
+            user.groups.add(repartidor_group)
             login(request, user)
             messages.success(request, 'Usuario registrados exitosamente.')
-            return redirect('perfilCliente')  #se redirige a la pagina de perfil de cliente
+            return redirect('perfilRepartidor')  #se redirige a la pagina de perfil de cliente
         else:
+            print('despues else ')
             messages.error(request, 'Error: no se pudo registrar el usuario.')
     else:
         form = RepartidorRegistroForm()
 
     return render(request, 'repartidor/registrarse-repartidor.html', {'form': form})
+
+def perfilRepartidor(request, mensaje=None):
+    if not usuarioValido(request, 'repartidor'):
+        return redirect('homeProveedor')
+    
+    try:
+        repartidores = Repartidor.objects.get(user=request.user)
+    except Proveedor.DoesNotExist:
+        messages.error(request, 'El usuario de Repartidor es incorrecto o no existe. intentelo denuevo o registrese como Repartidor.')
+        return redirect('homeRepartidor') 
+    
+    #repartidor = Repartidor.objects.all()
+     # Filtrar las entregas asignadas al repartidor
+    #entregas_asignadas = Entrega.objects.filter(id_repartidor=repartidor.id_repartirdor)
+    
+    # Filtrar los pedidos asociados a esas entregas
+    #pedidos_por_entregar = Pedido.objects.filter(id_pedido__in=entregas_asignadas.values('id_pedido'))
+    
+    # Si necesitas obtener todos los clientes asociados a esos pedidos
+    #clientes = Cliente.objects.filter(id_cliente__in=pedidos_por_entregar.values('id_cliente')).distinct()
+
+    return render(request, 'repartidor/perfil-repartidor.html' )

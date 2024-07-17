@@ -13,4 +13,4 @@ class Repartidor(models.Model):
     rut_repartidor = models.CharField(max_length=12, blank=False, null=False)
     fono_repartidor = models.CharField(max_length=15, blank=False, null=False)
     def __str__(self):
-        return f'{self.user.username}'
+        return self.rut_repartidor
