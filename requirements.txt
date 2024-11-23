@@ -1,1 +1,5 @@
 django>=4.0,<5.0
+bootstrap4>=0.1.0
+django-crispy-forms>=1.6.0
+sqlparse>=0.4.2
+whitenoise>=5.3.0
