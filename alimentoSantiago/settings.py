@@ -37,6 +37,7 @@ CSRF_COOKIE_SECURE = True  # Las cookies CSRF solo se enviarán sobre HTTPS
 SESSION_COOKIE_SECURE = True  # Las cookies de sesión solo se enviarán sobre HTTPS
 SECURE_BROWSER_XSS_FILTER = True  # Protección contra XSS
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Evitar sniffing de contenido
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Reconoce HTTPS detrás de proxy
 
 # Application definition
 
