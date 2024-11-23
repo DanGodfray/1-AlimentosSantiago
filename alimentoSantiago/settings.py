@@ -25,10 +25,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-jmm&^e^b&r(mrx70^bh(uzv3ztsd=4*6mbyleogp=#me7nwp2w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://ecommerce1-byh6ghfwbua6c9bj.brazilsouth-01.azurewebsites.net',
+]
+
+CSRF_COOKIE_SECURE = True  # Las cookies CSRF solo se enviarán sobre HTTPS
+SESSION_COOKIE_SECURE = True  # Las cookies de sesión solo se enviarán sobre HTTPS
+SECURE_BROWSER_XSS_FILTER = True  # Protección contra XSS
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Evitar sniffing de contenido
 
 # Application definition
 
