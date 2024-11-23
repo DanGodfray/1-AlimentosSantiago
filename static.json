@@ -1,0 +1,9 @@
+{
+    "static": {
+      "skip_files": ["*.py", "*.md", "*.txt"],
+      "headers": {
+        "*.css": "text/css",
+        "*.js": "application/javascript"
+      }
+    }
+  }

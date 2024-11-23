@@ -1,0 +1,18 @@
+SUPERUSER/ADMIN:
+USR: administrador
+PASS: 12345678
+
+CLIENTE:
+USR: eliseo1
+PASS: test12345678
+
+PROVEEDORES:
+USR: elgolozo1
+PASS: test12345678
+
+USR: yolitia
+PASS: test12345678
+
+REPATIDORES:
+USR: elchamo
+PASS: test12345678
